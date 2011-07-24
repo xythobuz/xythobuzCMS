@@ -1,0 +1,16 @@
+body { 
+	font-family: serif;
+}
+
+nav {
+	display: none;
+}
+
+.bar {
+	display: none;
+}
+
+a[href]:after {
+	content: " <"attr(href)">";
+	font-style: italic;
+}
