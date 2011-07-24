@@ -81,6 +81,15 @@ Table 'cms' erfolgreich erstellt!<br>
 		$content = $content."\$sql_username = '".$_POST['Username']."';\n";
 		$content = $content."\$sql_password = '".$_POST['Password']."';\n";
 		$content = $content."\$sql_database = '".$_POST['Database']."';\n";
+		$content = $content."\$xythobuzCMS_root = '".$_POST['root']."';\n";
+		$content = $content."\$xythobuzCMS_author = '".$_POST['author']."';\n";
+		$content = $content."\$xythobuzCMS_authormail = '".$_POST['authormail']."';\n";
+		$content = $content."\$xythobuzCMS_lang = '".$_POST['lang']."';\n";
+		$content = $content."\$xythobuzCMS_title = '".$_POST['title']."';\n";
+		$content = $content."\$xythobuzCMS_logo = '".$_POST['logo']."';\n";
+		$content = $content."\$xythobuzCMS_birth = ".$_POST['birth'].";\n";
+		$content = $content."\$xythobuzCMS_flattr = '".$_POST['flattr']."';\n";
+		$content = $content."\$xythobuzCMS_piwiktoken = '".$_POST['piwiktoken']."';\n";
 		$content = $content."?>";
 
 		if (!file_exists($configFile)) {
@@ -120,6 +129,15 @@ Table 'cms' erfolgreich erstellt!<br>
 		<label>CMS Username: <input type="text" name="user" /></label><br>
 		<label>CMS Password: <input type="password" name="pass1" /></label><br>
 		<label>CMS Pass again: <input type="password" name="pass2" /></label><br>
+		<label>Root URL: <input type="text" name="root" /></label><br>
+		<label>Author Name: <input type="text" name="author" /></label><br>
+		<label>Author Mail: <input type="text" name="authormail" /></label><br>
+		<label>Language Code (de, en...) <input type="text" name="lang" /></label><br>
+		<label>Page Title: <input type="text" name="title" /></label><br>
+		<label>Logo Path (relative): <input type="text" name="logo" /></label><br>
+		<label>Birthdate as Unix Timestamp: <input type="text" name="birth" /></label><br>
+		<label>Flattr URL: <input type="text" name="flattr" /></label><br>
+		<label>Piwik API Token: <input type="text" name="piwiktoken" /></label><br>
 		<input type="submit" name="formaction" value="Save" />
 	</fieldset>
 </form>

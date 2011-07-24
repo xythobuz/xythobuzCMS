@@ -1,11 +1,11 @@
 <?
+include('sql.php');
 include('func.php');
 header1();
 ?>
 <link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="http://www.xythobuz.org/rss.xml" />
 <meta name="description" content="xythobuzs Blog">
 <?
-include('sql.php');
 $db = mysql_connect($sql_host, $sql_username, $sql_password);
 mysql_select_db($sql_database);
 if (mysql_errno()) {

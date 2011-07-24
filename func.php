@@ -3,14 +3,14 @@
 function header1() {
 ?>
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="<? echo $xythobuzCMS_lang; ?>">
 <head>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="style.css" media="screen" type="text/css" />
 <link rel="stylesheet" href="print.css" media="print" type="text/css" />
-<link rel="author" href="mailto:taucher.bodensee@googlemail.com" />
-<link rel="shortcut icon" href="http://www.xythobuz.org/favicon.ico" />
-<meta name="author" content="Thomas Buck">
+<link rel="author" href="<? echo $xythobuzCMS_authormail; ?>" />
+<link rel="shortcut icon" href="<? echo $xythobuzCMS_root; ?>/favicon.ico" />
+<meta name="author" content="<? echo $xythobuzCMS_author; ?>">
 <?
 }
 
@@ -21,7 +21,7 @@ function body1() {
 
 function body2() {
 ?>
-<title>xythobuz.org</title>
+<title><? echo $xythobuzCMS_title; ?></title>
 </head>
 <body>
 <?
@@ -103,15 +103,14 @@ function bottom1($lang) {
 	}
 ?>
 		<p>
-		<img src="img/me.jpg" alt="Foto von mir"><br>
-		Thomas B.<br>
-		aus Baden-Württemberg<br>
-		Alter: 
+		<img src="<? echo $xythobuzCMS_logo; ?>" alt="Me"><br>
+		<? echo $xythobuzCMS_author; ?><br>
+		Age: 
 <?
 }
 
 function bottom2() {
-$birth = 759193200;
+$birth = $xythobuzCMS_birth;
 $now = time();
 $diff = $now - $birth;
 $age = 0;
@@ -122,11 +121,7 @@ while ($diff > 31536000) {
 echo $age;
 ?>
 		</p><p>
-		<a href="/files/88CA7E47.asc">GPG Public Key</a><br>
-		<a href="http://www.facebook.com/profile.php?id=100001690006633">Facebook</a><br>
-		<a href="https://plus.google.com/u/0/117184960308617552633">google+</a><br>
-		taucher.bodensee@<span style="display:none">Eat this, spam!</span>gmail.com<br>
-		<a href="https://github.com/xythobuz">github</a>
+<? include("links.php"); ?>
 		</p><p style="font-size:xx-small">
 <?
 // Create String with Link to current site.
@@ -148,11 +143,11 @@ $url = str_replace("'", '&#39;', $url);
 		<a href="http://jigsaw.w3.org/css-validator/check/referer">
         <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="CSS ist valide!">
 		</a>
-		<a href="http://feed1.w3.org/check.cgi?url=http%3A//www.xythobuz.org/rss.xml"><img src="valid_rss.png" alt="Valides RSS"></a><br>
-		<a href="http://flattr.com/thing/323928/xythobuz-on-Flattr" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
+		<a href="http://feed1.w3.org/check.cgi?url=<? echo str_replace(":", "%3A", $xythobuzCMS_root); ?>/rss.xml"><img src="img/valid_rss.png" alt="Valides RSS"></a><br>
+		<a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
 <?
 $curl_handle = curl_init();
-curl_setopt($curl_handle,CURLOPT_URL,'http://www.xythobuz.org/piwik/index.php?module=API&method=VisitsSummary.getUniqueVisitors&idSite=1&period=day&date=today&format=xml&token_auth=REDACTED!!');
+curl_setopt($curl_handle,CURLOPT_URL, $xythobuzCMS_root.'/piwik/index.php?module=API&method=VisitsSummary.getUniqueVisitors&idSite=1&period=day&date=today&format=xml&token_auth='.$xythobuzCMS_piwiktoken);
 curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
 curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
 $buffer = curl_exec($curl_handle);
@@ -169,7 +164,7 @@ if (!empty($buffer)) {
 </div>
 <!-- Piwik --> 
  <script type="text/javascript">
- var pkBaseURL = (("https:" == document.location.protocol) ? "https://xythobuz.org/piwik/" : "http://xythobuz.org/piwik/");
+var pkBaseURL = (("https:" == document.location.protocol) ? "<? echo $xythobuzCMS_root; ?>/piwik/" : "<? echo $xythobuzCMS_root; ?>/piwik/");
  document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
  </script><script type="text/javascript">
  try {
@@ -177,7 +172,7 @@ if (!empty($buffer)) {
  piwikTracker.trackPageView();
  piwikTracker.enableLinkTracking();
  } catch( err ) {}
- </script><noscript><p><img src="http://xythobuz.org/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+ </script><noscript><p><img src="<? echo $xythobuzCMS_root; ?>/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
  <!-- End Piwik Tracking Code -->
 </body>
 </html>

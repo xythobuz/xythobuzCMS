@@ -1,10 +1,9 @@
 <?
+include('sql.php');
 include('func.php');
 header1();
 ?>
 <meta name="description" content="<?
-
-include('sql.php');
 $db = mysql_connect($sql_host, $sql_username, $sql_password);
 mysql_select_db($sql_database);
 if (mysql_errno()) {
