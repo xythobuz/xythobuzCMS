@@ -1,6 +1,7 @@
 <?
 
 function header1() {
+	include("sql.php");
 ?>
 <!DOCTYPE HTML>
 <html lang="<? echo $xythobuzCMS_lang; ?>">
@@ -20,6 +21,7 @@ function body1() {
 }
 
 function body2() {
+	include("sql.php");
 ?>
 <title><? echo $xythobuzCMS_title; ?></title>
 </head>
@@ -92,6 +94,7 @@ function prefered_language ($available_languages,$http_accept_language="auto") {
 }
 
 function bottom1($lang) {
+	include("sql.php");
 	if ($lang == "en") {
 ?>
 		<br>-&gt; <a href="news.php?lang=en">Blog</a><br>
@@ -110,6 +113,7 @@ function bottom1($lang) {
 }
 
 function bottom2() {
+include("sql.php");
 $birth = $xythobuzCMS_birth;
 $now = time();
 $diff = $now - $birth;
@@ -154,7 +158,7 @@ $buffer = curl_exec($curl_handle);
 curl_close($curl_handle);
 
 if (!empty($buffer)) {
-	$s_array = array("<result>", "</result>");
+	$s_array = array("<result>", "</result>", "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
 	echo "<p style=\"font-size:x-small\">";
 	echo str_replace($s_array, "", $buffer);
 	echo " Besucher heute</p>\n";
