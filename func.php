@@ -152,7 +152,7 @@ $url = str_replace("'", '&#39;', $url);
 		<a href="http://flattr.com/thing/323928/xythobuz-on-Flattr" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
 <?
 $curl_handle = curl_init();
-curl_setopt($curl_handle,CURLOPT_URL,'http://www.xythobuz.org/piwik/index.php?module=API&method=VisitsSummary.getUniqueVisitors&idSite=1&period=day&date=today&format=xml&token_auth=f524e123446603734ee601fd54f0a085');
+curl_setopt($curl_handle,CURLOPT_URL,'http://www.xythobuz.org/piwik/index.php?module=API&method=VisitsSummary.getUniqueVisitors&idSite=1&period=day&date=today&format=xml&token_auth=REDACTED!!');
 curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
 curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
 $buffer = curl_exec($curl_handle);
