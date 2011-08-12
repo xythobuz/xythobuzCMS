@@ -1,6 +1,6 @@
 # xythobuzCMS
 
-xythobuzCMS is a PHP CMS, dependent on MySQL, which is used on [this website](http://xythobuz.org).
+xythobuzCMS is a PHP CMS, dependent on MySQL (and [piwik](http://piwik.org/)), which is used on [this website](http://xythobuz.org).
 
 ## Installation
 
@@ -10,4 +10,4 @@ xythobuzCMS is a PHP CMS, dependent on MySQL, which is used on [this website](ht
 
 ## License
 
-xythouzCMS is in the Public Domain!
+xythobuzCMS is in the Public Domain!
