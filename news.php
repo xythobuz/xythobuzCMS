@@ -39,6 +39,11 @@ if (isset($_POST['inhalt'])) {
 				exit;
 			}
 			echo "Comment added...";
+			$subject = "New Comment!";
+			$body = $_POST['autor']." posted the following comment on ".$xythobuzCMS_title.":\n".$_POST['inhalt']."\n\n<a href=\"".$xythobuzCMS_root."/news.php?beitrag=".$_GET['beitrag']."\">Link zum Artikel</a>\n";
+			if (!mail($xythobuzCMS_authormail, $subject, $body)) {
+				echo "Mail Error!";
+			}
 		}
 	}
 } else {
