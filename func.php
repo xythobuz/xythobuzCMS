@@ -249,9 +249,9 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 
 function checkComment($comment) {
 	$filter = array("viagra", "penis", "rolex", "buy", "cheap");
-	foreach ($filter as $key) {
-		if (stripos($comment, $filter[$key]) !== false) {
-			return $filter[$key];
+	foreach ($filter as $key=>$val) {
+		if (stripos($comment, $val) !== false) {
+			return $val;
 		}
 	}
 	return -1;

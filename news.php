@@ -17,6 +17,7 @@ body1();
 <?
 
 if (isset($_GET['beitrag'])) {
+if (is_numeric($_GET['beitrag'])) {
 if (isset($_POST['inhalt'])) {
 	if (isset($_POST['autor'])) {
 		$res = checkComment($_POST['inhalt']);
@@ -25,14 +26,15 @@ if (isset($_POST['inhalt'])) {
 			exit;
 		} else {
 			$sql = 'INSERT INTO
-					cms(datum, autor, inhalt, parent)
-				VALUES
-					(FROM UNIXTIME('.time().'),
-					"'.mysql_real_escape_string($_POST['autor']).'",
-					"'.mysql_real_escape_string($_POST['inhalt']).'",
-					'.mysql_real_escape_string($_GET['beitrag']).'")';
+				cms_comments(datum, autor, inhalt, parent)
+			VALUES
+				(FROM_UNIXTIME('.time().'),
+				"'.mysql_real_escape_string($_POST['autor']).'",
+				"'.mysql_real_escape_string($_POST['inhalt']).'",
+				'.mysql_real_escape_string($_GET['beitrag']).')';
 			$result = mysql_query($sql);
 			if (!$result) {
+				echo mysql_error();
 				echo "Query Error!";
 				exit;
 			}
@@ -71,15 +73,22 @@ if (isset($_POST['inhalt'])) {
 		datum ASC';
 	$result = mysql_query($sql);
 	if ($result) {
-		while ($row = mysql_fetch_array($result)) {
+		
+		$row = mysql_fetch_array($result);
+		if ($row == false) {
+			echo "<hr><p>No Comments!</p>\n";
+		} else {
+			do {
 ?>
 		<hr>
 		<p><? echo stripslashes($row['autor']); ?> (<? echo $row['datum']; ?>)</p>
 		<p><? echo stripslashes($row['inhalt']); ?></p>
 <?
+			} while ($row = mysql_fetch_array($result));
 		}
 	} else {
-		echo "<hr><p>No Comments!</p>\n";
+		echo "Query Error!";
+		exit;
 	}
 ?>
 		<hr>
@@ -87,10 +96,11 @@ if (isset($_POST['inhalt'])) {
 			<fieldset>
 				<label>Name: <input type="text" name="autor" /></label>
 			</fieldset>
-			<textarea name="inhalt" rows="20" cols="80">Hier Kommentar eingeben...</textarea>
+			<textarea name="inhalt" rows="20" cols="68"></textarea>
 			<input type="submit" name="formaction" value="Add Comment!" />
 		</form>
 <?
+}
 }
 } else {
 

@@ -165,8 +165,8 @@ if (!isset($_GET['p'])) {
 		<label>Link Text: *<input type="text" name="link" /></label>
 		<label>Order: <input type="text" name="order" /></label>
 	</fieldset>
-	<textarea name="content" rows="20" cols="80">Hier Inhalt eingeben</textarea>
-	<textarea name="content_en" rows="20" cols="80">No translation available...</textarea>
+	<textarea name="content" rows="20" cols="68">Hier Inhalt eingeben</textarea>
+	<textarea name="content_en" rows="20" cols="68">No translation available...</textarea>
 	<input type="submit" name="formaction" value="Add Page!" />
 </form>
 <?
@@ -259,7 +259,7 @@ if (!isset($_GET['p'])) {
 <form action="admin.php?p=addnews" method="post">
 	<fieldset>
 		<label>Überschrift: <input type="text" name="ueber"></label><br>
-		<textarea name="content" rows="20" cols="80"></textarea><br>
+		<textarea name="content" rows="20" cols="68"></textarea><br>
 		<input type="submit" name="formaction" value="Add" />
 	</fieldset>
 </form>
@@ -369,10 +369,10 @@ if (!isset($_GET['p'])) {
 		<label>Order: <input type="text" name="ord" value="<?
 			echo $row['ord'];
 ?>"></label><br>
-		<textarea name="content" rows="20" cols="80"><?
+		<textarea name="content" rows="20" cols="68"><?
 			echo stripslashes($row['inhalt']);
 ?></textarea><br>
-		<textarea name="content_en" rows="20" cols="80"><?
+		<textarea name="content_en" rows="20" cols="68"><?
 			echo stripslashes($row['inhalt_en']);
 ?></textarea><br>
 		<input type="submit" name="formaction" value="Save" />
@@ -511,11 +511,12 @@ if (!isset($_GET['p'])) {
 			$sql = 'SELECT
 				id,
 				autor,
-				inhalt
+				inhalt,
+				parent
 			FROM
 				cms_comments
 			ORDER BY
-				datum ASC';
+				parent';
 			$result = mysql_query($sql);
 			if (!$result) {
 				die ('Query-Error!');
@@ -524,12 +525,23 @@ if (!isset($_GET['p'])) {
 <table border="1">
 <tr><th>Autor</th>
 <th>Inhalt</th>
+<th>Parent</th>
 <th>Löschen?</th></tr>
 <?
 			while ($row = mysql_fetch_array($result)) {
 				echo "<tr>";
 				echo "<td>".$row['autor']."</td>\n";
 				echo "<td>".$row['inhalt']."</td>\n";
+				$sql = 'SELECT
+					ueberschrift
+				FROM cms_news
+				WHERE id = '.$row['parent'];
+				$result2 = mysql_query($sql);
+				if (!$result2) {
+					die ('Query Error!');
+				}
+				$row2 = mysql_fetch_array($result2);
+				echo "<td>".$row2['ueberschrift']."</td>\n";
 				echo '<td><a href="admin.php?p=deletecomment&amp;w='.$row['id'].'">Löschen</a></td></tr>'."\n";
 			}
 ?>
