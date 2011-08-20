@@ -46,6 +46,18 @@ if (isset($_POST['Host'])) {
 	if (!$result) {
 		echo "Query Fehler!";
 		exit;
+	} 
+	
+	$sql = 'CREATE TABLE cms_comments (
+		id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+		datum DATETIME NOT NULL,
+		parent INT NOT NULL,
+		autor VARCHAR(100) NOT NULL,
+		inhalt TEXT NOT NULL )';
+	$result = mysql_query($sql);
+	if ($result == NULL) {
+		echo mysql_error();
+		die ("Query Fehler!");
 	} else {
 		?>
 Table 'cms' erfolgreich erstellt!<br>

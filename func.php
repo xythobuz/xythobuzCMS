@@ -247,4 +247,14 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 	}
 }
 
+function checkComment($comment) {
+	$filter = array("viagra", "penis", "rolex", "buy", "cheap");
+	foreach ($filter as $key) {
+		if (stripos($comment, $filter[$key]) !== false) {
+			return $filter[$key];
+		}
+	}
+	return -1;
+}
+
 ?>

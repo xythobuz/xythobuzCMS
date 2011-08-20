@@ -29,6 +29,7 @@ if (!isset($_GET['p'])) {
 <a href="admin.php?p=delete">Delete Page</a><br>
 <a href="admin.php?p=addnews">Add News</a><br>
 <a href="admin.php?p=deletenews">Delete News</a><br>
+<a href="admin.php?p=deletecomment">Delete Comment</a><br>
 <a href="admin.php?p=user">Manage Users</a><br>
 <hr>
 <a href="/piwik/">Piwik Statistics</a><br>
@@ -504,7 +505,47 @@ if (!isset($_GET['p'])) {
 			print "Deleted Database Entry...<br>\n";
 		}
 	}
-
+	
+	if ($_GET['p'] == 'deletecomment') {
+		if (!isset($_GET['w'])) {
+			$sql = 'SELECT
+				id,
+				autor,
+				inhalt
+			FROM
+				cms_comments
+			ORDER BY
+				datum ASC';
+			$result = mysql_query($sql);
+			if (!$result) {
+				die ('Query-Error!');
+			}
+?>
+<table border="1">
+<tr><th>Autor</th>
+<th>Inhalt</th>
+<th>Löschen?</th></tr>
+<?
+			while ($row = mysql_fetch_array($result)) {
+				echo "<tr>";
+				echo "<td>".$row['autor']."</td>\n";
+				echo "<td>".$row['inhalt']."</td>\n";
+				echo '<td><a href="admin.php?p=deletecomment&amp;w='.$row['id'].'">Löschen</a></td></tr>'."\n";
+			}
+?>
+</table>
+<?
+		} else {
+			$sql = 'DELETE FROM cms_comments
+				WHERE id = '.mysql_real_escape_string($_GET['w']).'';
+			$result = mysql_query($sql);
+			if (!$result) {
+				print "Database delete failed! (44)<br>\n";
+				exit;
+			}
+			print "Deleted Database Entry...<br>\n";
+		}
+	}
 
 	if ($_GET['p'] == 'user') {
 		if (!isset($_GET['user'])) {

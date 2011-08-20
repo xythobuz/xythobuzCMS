@@ -15,7 +15,31 @@ body1();
 ?>
 	<p><a href="/rss.xml"><img src="/img/rss.png" alt="RSS Feed"></a></p>
 <?
+
 if (isset($_GET['beitrag'])) {
+if (isset($_POST['inhalt'])) {
+	if (isset($_POST['autor'])) {
+		$res = checkComment($_POST['inhalt']);
+		if ($res != -1) {
+			echo "Bad Word: ".$res."\n";
+			exit;
+		} else {
+			$sql = 'INSERT INTO
+					cms(datum, autor, inhalt, parent)
+				VALUES
+					(FROM UNIXTIME('.time().'),
+					"'.mysql_real_escape_string($_POST['autor']).'",
+					"'.mysql_real_escape_string($_POST['inhalt']).'",
+					'.mysql_real_escape_string($_GET['beitrag']).'")';
+			$result = mysql_query($sql);
+			if (!$result) {
+				echo "Query Error!";
+				exit;
+			}
+			echo "Comment added...";
+		}
+	}
+} else {
 	$sql = 'SELECT
 		inhalt,
 		ueberschrift,
@@ -35,7 +59,39 @@ if (isset($_GET['beitrag'])) {
 	<p style="font-size:xx-small"><? echo $row['datum']; ?></p>
 	<p><? echo stripslashes($row['inhalt']); ?></p>
 <?
-
+	$sql = 'SELECT
+		inhalt,
+		datum,
+		autor
+	FROM
+		cms_comments
+	WHERE
+		parent = '.mysql_real_escape_string($_GET['beitrag']).'
+	ORDER BY
+		datum ASC';
+	$result = mysql_query($sql);
+	if ($result) {
+		while ($row = mysql_fetch_array($result)) {
+?>
+		<hr>
+		<p><? echo stripslashes($row['autor']); ?> (<? echo $row['datum']; ?>)</p>
+		<p><? echo stripslashes($row['inhalt']); ?></p>
+<?
+		}
+	} else {
+		echo "<hr><p>No Comments!</p>\n";
+	}
+?>
+		<hr>
+		<form action="news.php?beitrag=<? echo $_GET['beitrag']; ?>" method="post">
+			<fieldset>
+				<label>Name: <input type="text" name="autor" /></label>
+			</fieldset>
+			<textarea name="inhalt" rows="20" cols="80">Hier Kommentar eingeben...</textarea>
+			<input type="submit" name="formaction" value="Add Comment!" />
+		</form>
+<?
+}
 } else {
 
 	$sql = 'SELECT
