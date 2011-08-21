@@ -1,14 +1,14 @@
 <?
-include('sql.php');
+include('config.php');
 include('func.php');
 header1();
-?>
-<meta name="description" content="<?
 $db = mysql_connect($sql_host, $sql_username, $sql_password);
 mysql_select_db($sql_database);
 if (mysql_errno()) {
 	die ('Konnte keine Verbindung zur Datenbank aufbauen');
 }
+?>
+<meta name="description" content="<?
 if (!isset($_GET['p'])) {
 	$_GET['p'] = "home";
 }

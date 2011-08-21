@@ -1,20 +1,12 @@
-<? include('auth.php'); ?>
-<!DOCTYPE HTML>
-<html lang="de">
-<head>
-<meta charset="utf-8" />
-<link rel="stylesheet" href="style.css" media="screen" />
-<link rel="stylesheet" href="print.css" media="print" />
-<link rel="author" href="mailto:taucher.bodensee@googlemail.com" />
-<link rel="shortcut icon" href="http://www.xythobuz.org/favicon.ico" />
-<meta name="author" content="Thomas Buck">
-<?
-include('sql.php');
+<? include('auth.php');
+include('config.php');
+include('func.php');
 $db = mysql_connect($sql_host, $sql_username, $sql_password);
 mysql_select_db($sql_database);
 if (mysql_errno()) {
 	die ('Konnte keine Verbindung zur Datenbank aufbauen');
 }
+header1();
 ?>
 <title>xythobuz.org CMS Administration</title>
 </head>
@@ -28,15 +20,19 @@ if (!isset($_GET['p'])) {
 <a href="admin.php?p=edit">Edit Page</a><br>
 <a href="admin.php?p=delete">Delete Page</a><br>
 <a href="admin.php?p=addnews">Add News</a><br>
+<a href="admin.php?p=editnews">Edit News</a><br>
 <a href="admin.php?p=deletenews">Delete News</a><br>
 <a href="admin.php?p=deletecomment">Delete Comment</a><br>
 <a href="admin.php?p=user">Manage Users</a><br>
+<a href="admin.php?p=addlink">Add Link</a><br>
+<a href="admin.php?p=editlinks">Edit Links</a><br>
 <hr>
 <a href="/piwik/">Piwik Statistics</a><br>
 <?
+
+
 	// Update sitemap
 	$sitemap = "<?xml version='1.0' encoding='UTF-8'?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\nxmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\nxsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9\nhttp://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">\n\n<url>\n\t<loc>http://www.xythobuz.org/index.php</loc>\n</url>\n<url>\n\t<loc>http://www.xythobuz.org/news.php</loc>\n</url>\n\n";
-
 	$sql = 'SELECT
 				kuerzel
 			FROM
@@ -54,7 +50,6 @@ if (!isset($_GET['p'])) {
 		$sitemap = $sitemap."</loc>\n</url>\n\n";
 	}
 	$sitemap = $sitemap."</urlset>";
-
 	$path = 'sitemap.xml';
 	if(!file_exists($path)) {
 		if (touch($path)) {
@@ -75,6 +70,8 @@ if (!isset($_GET['p'])) {
 	fclose($handle);
 	print "Saved $path...<br>\n";
 
+	
+	// Recreate RSS Feed
 	$sql = 'SELECT
 				datum,
 				ueberschrift,
@@ -118,17 +115,19 @@ if (!isset($_GET['p'])) {
 		}
 	}
 	if (!$handle = fopen($path, "w")) {
-		print "Kann $path nicht öffnen!<br>\n";
+		print "Could not open $path<br>\n";
 		exit;
 	}
 	if (!fwrite($handle, $rss)) {
-		print "Kann nicht in $path schreiben!<br>\n";
+		print "Could not write to $path<br>\n";
 		exit;
 	}
 	fclose($handle);
 	print "Saved $path...<br>\n";
 
 } else {
+
+	// Add a page
 	if ($_GET['p'] == 'add') {
 		if(!isset($_POST['content'])) {
 ?>
@@ -252,6 +251,8 @@ if (!isset($_GET['p'])) {
 		}
 	}
 	
+
+	// Add a blog entry
 	if ($_GET['p'] == 'addnews') {
 		if (!isset($_POST['ueber'])) {
 ?>
@@ -280,11 +281,12 @@ if (!isset($_GET['p'])) {
 		}
 	}
 
+
+	// Edit a page
 	if ($_GET['p'] == 'edit') {
 ?>
 <h1>Edit Page</h1>
 <?
-		// kuerzel, linktext, beschreibung, pfad, indent
 		if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 ?>
 <p>Select Page:</p>
@@ -414,6 +416,161 @@ if (!isset($_GET['p'])) {
 		}
 	}
 
+	
+	// Add Link
+	if ($_GET['p'] == "addlink") {
+		if ($_POST['title'] == "") {
+?>
+<form action="admin.php?p=addlink" method="post">
+	<label>Title: <input type="text" name="title"></label><br>
+	<label>URL: <input type="text" name="url"></label><br>
+	<label>Order: <input type="text" name="order"></label><br>
+	<input type="submit" name="formaction" value="Add Link">
+</form>
+<?
+		} else {
+			$sql = 'INSERT INTO
+					cms_links(title, url, ord)
+				VALUES
+					( "'.mysql_real_escape_string($_POST['title']).'",
+					"'.mysql_real_escape_string($_POST['url']).'",
+					'.mysql_real_escape_string($_POST['order']).' )';
+			$result = mysql_query($sql);
+			if (!$result) {
+				die("Query Error!");
+			}
+			echo "Added Link!";
+		}
+	}
+
+
+	// Edit links
+	if ($_GET['p'] == "editlinks") {
+		if ($_GET['w'] == "") {
+			$sql = 'SELECT
+				ord,
+				title,
+				url,
+				id
+			FROM
+				cms_links
+			ORDER BY
+				ord ASC';
+			$result = mysql_query($sql);
+			if (!$result) {
+				die ("Query Error");
+			}
+?>
+<table border="1">
+<tr><th>Order</th>
+<th>Title</th>
+<th>URL</th>
+<th>Save</th></tr>
+<?
+			while ($row = mysql_fetch_array($result)) {
+				echo "<form action=\"admin.php?p=editlinks&amp;w=";
+				echo $row['id']."\" method=\"post\">";
+				echo "<tr>";
+				echo "<td><input type=\"text\" name=\"order\" value=\"".stripslashes($row['ord'])."\"></td>";
+
+				echo "<td><input type=\"text\" name=\"titel\" value=\"".stripslashes($row['title'])."\"></td>";
+				echo "<td><input type\"text\" name=\"link\" value=\"".stripslashes($row['url'])."\"></td>";
+				echo "<td><input type=\"submit\" name=\"formaction\" value=\"Save\"></td>";
+				echo "</tr></form>";
+			}
+		} else {
+			$sql = 'UPDATE
+				cms_links
+			SET
+				url = "'.mysql_real_escape_string($_POST['link']).'",
+				title = "'.mysql_real_escape_string($_POST['titel']).'",
+				ord = '.mysql_real_escape_string($_POST['order']).'
+			WHERE
+				id = '.mysql_real_escape_string($_GET['w']);
+			$result = mysql_query($sql);
+			if (!$result) {
+				die ("Query Error!");
+			}
+			echo "Edited!";
+
+		}
+	}
+
+	
+	// Edit a blog entry
+	if ($_GET['p'] == 'editnews') {
+		if (!isset($_GET['w'])) {
+			$sql = 'SELECT
+				id,
+				ueberschrift
+			FROM
+				cms_news
+			ORDER BY
+				id';
+			$result = mysql_query($sql);
+			if (!$result) {
+				die ('Query-Error!');
+			}
+?>
+<table border="1">
+<tr><th>ID</th>
+<th>Heading</th>
+<th>Edit?</th></tr>
+<?
+			while ($row = mysql_fetch_array($result)) {
+				echo "<tr>";
+				echo "<td>".stripslashes($row['id'])."</td>\n";
+				echo "<td>".stripslashes($row['ueberschrift'])."</td>\n";
+				echo '<td><a href="admin.php?p=editnews&amp;w='.$row['id'].'">Edit</a></td></tr>'."\n";
+			}
+?>
+</table>
+<?
+		} else {
+			if (!isset($_POST['inhalt'])) {
+				// Show edit form
+				$sql = 'SELECT
+					ueberschrift,
+					inhalt
+				FROM cms_news
+				WHERE id = '.stripslashes($_GET[w]);
+				$result = mysql_query($sql);
+				if (!$result) {
+					die ('Could not read table cms_news');
+				}
+				$row = mysql_fetch_array($result);
+?>
+<form action="admin.php?p=editnews&amp;w=<? echo $_GET['w']; ?>" method="post">
+	<fieldset>
+		<label>Heading: <input type="text" name="head" value="<?
+			echo $row['ueberschrift'];
+?>"></label><br>
+		<textarea name="inhalt" rows="20" cols="68"><?
+			echo stripslashes($row['inhalt']);
+?></textarea><br>
+		<input type="submit" name="formaction" value="Save" />
+	</fieldset>
+</form>
+<?
+			} else {
+				$sql = 'UPDATE
+					cms_news
+				SET
+					ueberschrift = "'.mysql_real_escape_string($_POST['head']).'",
+					inhalt = "'.mysql_real_escape_string($_POST['inhalt']).'"
+				WHERE id = '.mysql_real_escape_string($_GET['w']);
+				$result = mysql_query($sql);
+				if (!$result) {
+					echo mysql_error();
+					die ("Could not update cms_news");
+				}
+				echo "Updated successfully!";
+			}
+		}
+	}
+
+	
+	// Delete a page
 	if ($_GET['p'] == 'delete') {
 		if (!isset($_GET['w'])) {
 			$sql = 'SELECT
@@ -466,6 +623,8 @@ if (!isset($_GET['p'])) {
 		}
 	}
 
+
+	// Delete a blog entry
 	if ($_GET['p'] == 'deletenews') {
 		if (!isset($_GET['w'])) {
 			$sql = 'SELECT
@@ -505,7 +664,9 @@ if (!isset($_GET['p'])) {
 			print "Deleted Database Entry...<br>\n";
 		}
 	}
-	
+
+
+	// Delete comments
 	if ($_GET['p'] == 'deletecomment') {
 		if (!isset($_GET['w'])) {
 			$sql = 'SELECT
@@ -559,6 +720,8 @@ if (!isset($_GET['p'])) {
 		}
 	}
 
+
+	// Now following: Adding and Deleting users
 	if ($_GET['p'] == 'user') {
 		if (!isset($_GET['user'])) {
 ?>
@@ -634,6 +797,8 @@ if (!isset($_GET['p'])) {
 		}
 	}
 
+	
+	// Create a new user
 	if ($_GET['p'] == "newuser") {
 		if ($_POST['pass1'] != $_POST['pass2']) {
 			echo "New Passwords not equal!";
@@ -659,7 +824,9 @@ if (!isset($_GET['p'])) {
 		}
 		echo "User created!<br>\n";
 	}
+	
 
+	// Delete a User
 	if ($_GET['p'] == "deluser") {
 		$sql = 'SELECT username FROM cms_user';
 		$result = mysql_query($sql);
@@ -695,4 +862,4 @@ mysql_close($db);
 <a href="admin.php">Admin</a><br>
 </div>
 </body>
-</head>
+</html>

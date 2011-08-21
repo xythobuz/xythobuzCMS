@@ -1,12 +1,12 @@
 <?
 	if ((isset($_POST['username'])) && (isset($_POST['passwort'])) && ($_POST['username'] != "") && ($_POST['passwort'] != "")) {
-		session_start();
-		include('sql.php');
+		include('config.php');
 		$db = mysql_connect($sql_host, $sql_username, $sql_password);
 		mysql_select_db($sql_database);
 		if (mysql_errno()) {
 			die ('Konnte keine Verbindung zur Datenbank aufbauen');
 		}
+		session_start();
 		$username = mysql_real_escape_string($_POST['username']);
 		$passwort = $_POST['passwort'];
 		$hostname = $_SERVER['HTTP_HOST'];

@@ -1,7 +1,7 @@
 <?
 
 function header1() {
-	include("sql.php");
+	include("config.php");
 ?>
 <!DOCTYPE HTML>
 <html lang="<? echo $xythobuzCMS_lang; ?>">
@@ -21,17 +21,12 @@ function body1() {
 }
 
 function body2() {
-	include("sql.php");
+	include("config.php");
 ?>
 <title><? echo $xythobuzCMS_title; ?></title>
 </head>
 <body>
 <?
-	if (eregi("MSIE",getenv("HTTP_USER_AGENT")) || eregi("Internet Explorer",getenv("HTTP_USER_AGENT"))) {
-?>
-	<div class="bar">Du verwendest Internet Explorer. Dieser Browser unterstützt aktuelle Web Standards nur unzureichend. Wechsle doch zu <a href="http://www.mozilla.com/">Firefox, einem freien Browser</a>!</div>
-<?
-	}	
 }
 
 function body3() {
@@ -94,7 +89,7 @@ function prefered_language ($available_languages,$http_accept_language="auto") {
 }
 
 function bottom1($lang) {
-	include("sql.php");
+	include("config.php");
 	if ($lang == "en") {
 ?>
 		<br>-&gt; <a href="news.php?lang=en">Blog</a><br>
@@ -108,24 +103,47 @@ function bottom1($lang) {
 		<p>
 		<img src="<? echo $xythobuzCMS_logo; ?>" alt="Me"><br>
 		<? echo $xythobuzCMS_author; ?><br>
-		Age: 
-<?
+		<? if (isset($xythobuzCMS_birth)) { ?>Age: <? }
 }
 
 function bottom2() {
-include("sql.php");
-$birth = $xythobuzCMS_birth;
-$now = time();
-$diff = $now - $birth;
-$age = 0;
-while ($diff > 31536000) {
-	$diff -= 31536000; // One year
-	$age += 1;
+include("config.php");
+$db2 = mysql_connect($sql_host, $sql_username, $sql_password);
+mysql_select_db($sql_database);
+if (mysql_errno()) {
+	die ('Konnte keine Verbindung zur Datenbank aufbauen');
 }
-echo $age;
+if (isset($xythobuzCMS_birth)) {
+	$birth = $xythobuzCMS_birth;
+	$now = time();
+	$diff = $now - $birth;
+	$age = 0;
+	while ($diff > 31536000) {
+		$diff -= 31536000; // One year
+		$age += 1;
+	}
+	echo $age;
+}
 ?>
 		</p><p>
-<? include("links.php"); ?>
+<? 
+	$sql = 'SELECT
+			url, title
+		FROM
+			cms_links
+		ORDER BY
+			ord ASC';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die ("Could not connect to database!");
+	}
+	while ($row = mysql_fetch_array($result)) {
+?>
+	<a href="<? echo $row['url']; ?>"><? echo $row['title']; ?></a><br>
+<?
+	}
+?>
+			<a href="mailto:<? echo $xythobuzCMS_authormail; ?>"><? echo $xythobuzCMS_authormail; ?></a><br>
 		</p><p style="font-size:xx-small">
 <?
 // Create String with Link to current site.
@@ -148,24 +166,31 @@ $url = str_replace("'", '&#39;', $url);
         <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="CSS ist valide!">
 		</a>
 		<a href="http://feed1.w3.org/check.cgi?url=<? echo str_replace(":", "%3A", $xythobuzCMS_root); ?>/rss.xml"><img src="img/valid_rss.png" alt="Valides RSS"></a><br>
+<?
+if (isset($xythobuzCMS_flattr)) {
+?>
 		<a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
 <?
-$curl_handle = curl_init();
-curl_setopt($curl_handle,CURLOPT_URL, $xythobuzCMS_root.'/piwik/index.php?module=API&method=VisitsSummary.getUniqueVisitors&idSite=1&period=day&date=today&format=xml&token_auth='.$xythobuzCMS_piwiktoken);
-curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
-curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
-$buffer = curl_exec($curl_handle);
-curl_close($curl_handle);
+}
+if (isset($xythobuzCMS_piwiktoken)) {
+	$curl_handle = curl_init();
+	curl_setopt($curl_handle,CURLOPT_URL, $xythobuzCMS_root.'/piwik/index.php?module=API&method=VisitsSummary.getUniqueVisitors&idSite=1&period=day&date=today&format=xml&token_auth='.$xythobuzCMS_piwiktoken);
+	curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
+	curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
+	$buffer = curl_exec($curl_handle);
+	curl_close($curl_handle);
 
-if (!empty($buffer)) {
-	$s_array = array("<result>", "</result>", "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
-	echo "<p style=\"font-size:x-small\">";
-	echo str_replace($s_array, "", $buffer);
-	echo " Besucher heute</p>\n";
+	if (!empty($buffer)) {
+		$s_array = array("<result>", "</result>", "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
+		echo "<p style=\"font-size:x-small\">";
+		echo str_replace($s_array, "", $buffer);
+		echo " Besucher heute</p>\n";
+	}
 }
 ?>
 	</nav>
 </div>
+<? if (isset($xythobuzCMS_piwiktoken)) { ?>
 <!-- Piwik --> 
  <script type="text/javascript">
 var pkBaseURL = (("https:" == document.location.protocol) ? "<? echo $xythobuzCMS_root; ?>/piwik/" : "<? echo $xythobuzCMS_root; ?>/piwik/");
@@ -178,9 +203,11 @@ var pkBaseURL = (("https:" == document.location.protocol) ? "<? echo $xythobuzCM
  } catch( err ) {}
  </script><noscript><p><img src="<? echo $xythobuzCMS_root; ?>/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
  <!-- End Piwik Tracking Code -->
+<? } ?>
 </body>
 </html>
 <?
+mysql_close();
 }
 
 function sort2d_asc(&$arr, $key){

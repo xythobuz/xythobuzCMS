@@ -1,16 +1,16 @@
 <?
-include('sql.php');
+include('config.php');
 include('func.php');
-header1();
-?>
-<link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="http://www.xythobuz.org/rss.xml" />
-<meta name="description" content="xythobuzs Blog">
-<?
 $db = mysql_connect($sql_host, $sql_username, $sql_password);
 mysql_select_db($sql_database);
 if (mysql_errno()) {
 	die ('Konnte keine Verbindung zur Datenbank aufbauen');
 }
+header1();
+?>
+<link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="http://www.xythobuz.org/rss.xml" />
+<meta name="description" content="xythobuzs Blog">
+<?
 body1();
 ?>
 	<p><a href="/rss.xml"><img src="/img/rss.png" alt="RSS Feed"></a></p>
@@ -188,14 +188,18 @@ while ($row = mysql_fetch_array($result)) {
 
 foreach ($rows as $i => $v) {
 	if ($v['kategorie'] == 0) {
-		if ($_GET['lang'] == "en") {
+		if ((isset($_GET['lang'])) && ($_GET['lang'] == "en")) {
 			printID($rows, $i, 0, "en");
 		} else {
 			printID($rows, $i, 0, "de");
 		}
 	}
 }
-bottom1($_GET['lang']);
+if (isset($_GET['lang'])) {
+	bottom1($_GET['lang']);
+} else {
+	bottom1("");
+}
 mysql_close();
 bottom2();
 ?>
