@@ -93,10 +93,10 @@ Tables created successfully!<br>
 		$sql = 'INSERT INTO
 				cms_links(url, title, ord)
 			VALUES
-				("'.mysql_real_escape_string("http://www.xythobuz.org").'", "powered by xythobuzCMS", 99)'
+				("'.mysql_real_escape_string("http://www.xythobuz.org").'", "powered by xythobuzCMS", 99)';
 
 		// Create first user
-		if ($_POST['pass1'] != $_POST['pass2']) {
+		if (strcmp($_POST['pass1'], $_POST['pass2']) != 0) {
 			die("Password not equal!");
 		}
 		$pass = md5($_POST['pass1']);
