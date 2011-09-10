@@ -7,8 +7,8 @@ function header1() {
 <html lang="<? echo $xythobuzCMS_lang; ?>">
 <head>
 <meta charset="utf-8" />
-<link rel="stylesheet" href="style.css" media="screen" type="text/css" />
-<link rel="stylesheet" href="print.css" media="print" type="text/css" />
+<link rel="stylesheet" href="<? echo $xythobuzCMS_root; ?>/style.css" media="screen" type="text/css" />
+<link rel="stylesheet" href="<? echo $xythobuzCMS_root; ?>/print.css" media="print" type="text/css" />
 <link rel="author" href="<? echo $xythobuzCMS_authormail; ?>" />
 <link rel="shortcut icon" href="<? echo $xythobuzCMS_root; ?>/favicon.ico" />
 <meta name="author" content="<? echo $xythobuzCMS_author; ?>">
@@ -143,7 +143,7 @@ if (isset($xythobuzCMS_birth)) {
 <?
 	}
 ?>
-			<a href="mailto:<? echo $xythobuzCMS_authormail; ?>"><? echo $xythobuzCMS_authormail; ?></a><br>
+			<br><a href="mailto:<? echo $xythobuzCMS_authormail; ?>"><? echo $xythobuzCMS_authormail; ?></a><br>
 		</p><p style="font-size:xx-small">
 <?
 // Create String with Link to current site.

@@ -5,7 +5,7 @@
 	$path = dirname($_SERVER['PHP_SELF']);
 
 	if (!isset($_SESSION['angemeldet']) || !$_SESSION['angemeldet']) {
-		header('Location: http://'.$hostname.($path == '/' ? '' : $path).'/pwd.php');
+		header('Location: '.$xythobuzCMS_root.'/pwd.php');
 		exit;
 	}
 ?>

@@ -1,10 +1,11 @@
 ﻿<!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
+<link rel="stylesheet" href="style.css" media="screen" type="text/css" />
 <title>xythobuz.org CMS Setup</title>
 </head>
-<body>
+<body><div class="admin">
 <h1>xythobuz.org CMS Setup</h1>
 
 <?
@@ -77,6 +78,17 @@ if (isset($_POST['Host'])) {
 Tables created successfully!<br>
 		<?
 		
+		// Create example blog entry
+		$sql = 'INSERT INTO
+				cms_news(id, datum, ueberschrift, inhalt)
+			VALUES
+				(1, FROM_UNIXTIME('.time().'), "Hello World", "Hello World!")';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Could not create example blog entry!");
+		}
+		echo "Created blog entry...<br>\n";
+
 		// Create example page
 		$sql = 'INSERT INTO
 				cms(id, kuerzel, beschreibung, linktext, kategorie, ord, inhalt)
@@ -94,6 +106,11 @@ Tables created successfully!<br>
 				cms_links(url, title, ord)
 			VALUES
 				("'.mysql_real_escape_string("http://www.xythobuz.org").'", "powered by xythobuzCMS", 99)';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Could not create example link!");	
+		}
+		echo "Created example link!<br>\n";
 
 		// Create first user
 		if (strcmp($_POST['pass1'], $_POST['pass2']) != 0) {
@@ -171,7 +188,7 @@ Tables created successfully!<br>
 		<label>CMS Password: <input type="password" name="pass1" /></label><br>
 		<label>CMS Pass again: <input type="password" name="pass2" /></label><br>
 		<legend>Misc. Infos:</legend>
-		<label>Root URL: <input type="text" name="root" /></label><br>
+		<label>Root URL (with http:// but without / at the end): <input type="text" name="root" /></label><br>
 		<label>Author Name: <input type="text" name="author" /></label><br>
 		<label>Author Mail: <input type="text" name="authormail" /></label><br>
 		<label>Language Code (de, en...) <input type="text" name="lang" /></label><br>
@@ -187,5 +204,5 @@ Tables created successfully!<br>
 <?
 }
 ?>
-</body>
+</div></body>
 </html>
