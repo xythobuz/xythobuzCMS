@@ -147,10 +147,18 @@ if (isset($xythobuzCMS_birth)) {
 		</p><p style="font-size:xx-small">
 <?
 // Create String with Link to current site.
-$url = 'http://' . $_SERVER['HTTP_HOST']; //. $_SERVER['PHP_SELF'];
-if ($_GET['p'] != '') {
-	$url = $url . $_SERVER['PHP_SELF'] . '?p=' . $_GET['p'];
+$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+if (strpos($_SERVER['PHP_SELF'], "news.php", 1) != FALSE) {
+	// we are in news.php
+	if ($_GET['beitrag'] != '') {
+		$url = $url.'?beitrag='.$_GET['beitrag'];
+	}
+} else {
+	if ($_GET['p'] != '') {
+		$url = $url.'?p='.$_GET['p'];
+	}
 }
+
 $url = str_replace('<', '&lt;', $url);
 $url = str_replace('>', '&gt;', $url);
 $url = str_replace('"', '&quot;', $url);
