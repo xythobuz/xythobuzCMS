@@ -100,6 +100,7 @@ function bottom1($lang) {
 <?
 	}
 ?>
+		-&gt; <a href="search.php">Suche</a><br>
 		<p>
 		<img src="<? echo $xythobuzCMS_logo; ?>" alt="Me"><br>
 		<? echo $xythobuzCMS_author; ?><br>
