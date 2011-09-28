@@ -284,7 +284,7 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 }
 
 function checkComment($comment) {
-	$filter = array("viagra", "penis", "rolex", "buy", "cheap");
+	$filter = file("spam.txt", FILE_IGNORE_NEW_LINES);
 	foreach ($filter as $key=>$val) {
 		if (stripos($comment, $val) !== false) {
 			return $val;
