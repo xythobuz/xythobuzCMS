@@ -16,85 +16,85 @@ body1();
 	<p><a href="/rss.xml"><img src="/img/rss.png" alt="RSS Feed"></a></p>
 <?
 
-if (isset($_GET['beitrag'])) {
-if (is_numeric($_GET['beitrag'])) {
-if (isset($_POST['inhalt'])) {
-	if (isset($_POST['autor'])) {
-		$res = checkComment($_POST['inhalt']);
-		if ($res != -1) {
-			echo "Bad Word: ".$res."\n";
-			exit;
-		} else {
-			$sql = 'INSERT INTO
-				cms_comments(datum, autor, inhalt, parent)
-			VALUES
-				(FROM_UNIXTIME('.time().'),
-				"'.mysql_real_escape_string($_POST['autor']).'",
-				"'.mysql_real_escape_string($_POST['inhalt']).'",
-				'.mysql_real_escape_string($_GET['beitrag']).')';
-			$result = mysql_query($sql);
-			if (!$result) {
-				echo mysql_error();
-				echo "Query Error!";
+if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
+	if (isset($_POST['inhalt'])) {
+		if (isset($_POST['autor'])) {
+			$res = checkComment($_POST['inhalt']);
+			if ($res != -1) {
+				echo "Bad Word: ".$res."\n";
 				exit;
-			}
-			echo "Comment added...";
-			$subject = "New Comment!";
-			$body = $_POST['autor']." posted the following comment on ".$xythobuzCMS_title.":\n".$_POST['inhalt']."\n\n<a href=\"".$xythobuzCMS_root."/news.php?beitrag=".$_GET['beitrag']."\">Link zum Artikel</a>\n";
-			if (!mail($xythobuzCMS_authormail, $subject, $body)) {
-				echo "Mail Error!";
+			} else {
+				$sql = 'INSERT INTO
+					cms_comments(datum, autor, inhalt, parent, frei)
+				VALUES
+					(FROM_UNIXTIME('.time().'),
+					"'.mysql_real_escape_string($_POST['autor']).'",
+					"'.mysql_real_escape_string($_POST['inhalt']).'",
+					'.mysql_real_escape_string($_GET['beitrag']).',
+					FALSE)';
+				$result = mysql_query($sql);
+				if (!$result) {
+					echo mysql_error();
+					echo "Query Error!";
+					exit;
+				}
+				echo "Comment added...";
+				$subject = "New Comment!";
+				$body = $_POST['autor']." posted the following comment on ".$xythobuzCMS_title.":\n".$_POST['inhalt']."\n\n<a href=\"".$xythobuzCMS_root."/news.php?beitrag=".$_GET['beitrag']."\">Link zum Artikel</a>\n";
+				if (!mail($xythobuzCMS_authormail, $subject, $body)) {
+					echo "Mail Error!";
+				}
 			}
 		}
-	}
-} else {
-	$sql = 'SELECT
-		inhalt,
-		ueberschrift,
-		datum
-	FROM
-		cms_news
-	WHERE
-		id = '.mysql_real_escape_string($_GET['beitrag']);
-	$result = mysql_query($sql);
-	if (!$result) {
-		echo "404 - Not Found!";
-		exit;
-	}
-	$row = mysql_fetch_array($result);
+	} else {
+		$sql = 'SELECT
+			inhalt,
+			ueberschrift,
+			datum
+		FROM
+			cms_news
+		WHERE
+			id = '.mysql_real_escape_string($_GET['beitrag']);
+		$result = mysql_query($sql);
+		if (!$result) {
+			echo "404 - Not Found!";
+			exit;
+		}
+		$row = mysql_fetch_array($result);
 ?>
 	<h2><? echo stripslashes($row['ueberschrift']); ?></h2>
 	<p style="font-size:xx-small"><? echo $row['datum']; ?></p>
 	<p><? echo stripslashes($row['inhalt']); ?></p>
 <?
-	$sql = 'SELECT
-		inhalt,
-		datum,
-		autor
-	FROM
-		cms_comments
-	WHERE
-		parent = '.mysql_real_escape_string($_GET['beitrag']).'
-	ORDER BY
-		datum ASC';
-	$result = mysql_query($sql);
-	if ($result) {
-		
-		$row = mysql_fetch_array($result);
-		if ($row == false) {
-			echo "<hr><p>No Comments!</p>\n";
-		} else {
-			do {
+		$sql = 'SELECT
+			inhalt,
+			datum,
+			autor
+		FROM
+			cms_comments
+		WHERE
+			parent = '.mysql_real_escape_string($_GET['beitrag']).' && frei = TRUE
+		ORDER BY
+			datum ASC';
+		$result = mysql_query($sql);
+		if ($result) {
+			
+			$row = mysql_fetch_array($result);
+			if ($row == false) {
+				echo "<hr><p>No Comments!</p>\n";
+			} else {
+				do {
 ?>
 		<hr>
 		<p><? echo stripslashes($row['autor']); ?> (<? echo $row['datum']; ?>)</p>
 		<p><? echo stripslashes($row['inhalt']); ?></p>
 <?
-			} while ($row = mysql_fetch_array($result));
+				} while ($row = mysql_fetch_array($result));
+			}
+		} else {
+			echo "Query Error!";
+			exit;
 		}
-	} else {
-		echo "Query Error!";
-		exit;
-	}
 ?>
 		<hr>
 		<form action="news.php?beitrag=<? echo $_GET['beitrag']; ?>" method="post">
@@ -105,8 +105,7 @@ if (isset($_POST['inhalt'])) {
 			<input type="submit" name="formaction" value="Add Comment!" />
 		</form>
 <?
-}
-}
+	}
 } else {
 
 	$sql = 'SELECT

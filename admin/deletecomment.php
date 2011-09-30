@@ -14,12 +14,13 @@ header1();
 <div class="admin">
 <?
 
-if (!isset($_GET['w'])) {
+if (!isset($_GET['w']) && !isset($_GET['t'])) {
 	$sql = 'SELECT
 		id,
 		autor,
 		inhalt,
-		parent
+		parent,
+		frei
 	FROM
 		cms_comments
 	ORDER BY
@@ -33,6 +34,7 @@ if (!isset($_GET['w'])) {
 <tr><th>Autor</th>
 <th>Inhalt</th>
 <th>Parent</th>
+<th>Freigegeben</th>
 <th>Löschen?</th></tr>
 <?
 	while ($row = mysql_fetch_array($result)) {
@@ -49,12 +51,13 @@ if (!isset($_GET['w'])) {
 		}
 		$row2 = mysql_fetch_array($result2);
 		echo "<td>".$row2['ueberschrift']."</td>\n";
+		echo '<td><a href="deletecomment.php?t='.$row['id'].'">'.$row['frei']."</a></td>\n";
 		echo '<td><a href="deletecomment.php?w='.$row['id'].'">Löschen</a></td></tr>'."\n";
 	}
 ?>
 </table>
 <?
-} else {
+} else if (isset($_GET['w'])) {
 	$sql = 'DELETE FROM cms_comments
 		WHERE id = '.mysql_real_escape_string($_GET['w']).'';
 	$result = mysql_query($sql);
@@ -63,6 +66,41 @@ if (!isset($_GET['w'])) {
 		exit;
 	}
 	print "Deleted Database Entry...<br>\n";
+} else {
+	$sql = 'SELECT
+		frei
+	FROM
+		cms_comments
+	WHERE id = '.mysql_real_escape_string($_GET['t']);
+	$result = mysql_query($sql);
+	if (!$result) {
+		die ("Error!");
+	}
+	$row = mysql_fetch_array($result);
+	$sql = 'UPDATE cms_news
+		SET
+			frei = "';
+	if ($row['frei'] == 0) {
+		$sql = 'UPDATE cms_comments
+		SET
+			frei = "1"
+		WHERE
+			id = '.mysql_real_escape_string($_GET['t']);
+		$tmp = "TRUE";
+	} else {
+		$sql = 'UPDATE cms_comments
+		SET
+			frei = "0"
+		WHERE
+			id = '.mysql_real_escape_string($_GET['t']);
+		$tmp = "FALSE";
+	}
+	$result = mysql_query($sql);
+	if (!$result) {
+		die ("Error");
+	} else {
+		echo $tmp."!\n";
+	}
 }
 
 mysql_close($db);

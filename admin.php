@@ -19,7 +19,7 @@ header1();
 <a href="admin/addnews.php">Add News</a><br>
 <a href="admin/editnews.php">Edit News</a><br>
 <a href="admin/deletenews.php">Delete News</a><br>
-<a href="admin/deletecomment.php">Delete Comment</a><br>
+<a href="admin/deletecomment.php">Manage Comments</a><br>
 <a href="admin/users.php">Manage Users</a><br>
 <a href="admin/addlink.php">Add Link</a><br>
 <a href="admin/editlink.php">Edit Links</a><br>

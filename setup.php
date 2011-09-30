@@ -69,7 +69,8 @@ if (isset($_POST['Host'])) {
 		datum DATETIME NOT NULL,
 		parent INT NOT NULL,
 		autor VARCHAR(100) NOT NULL,
-		inhalt TEXT NOT NULL )';
+		inhalt TEXT NOT NULL,
+		frei BOOL)';
 	$result = mysql_query($sql);
 	if ($result == NULL) {
 		die ("Could not create table cms_comments");
