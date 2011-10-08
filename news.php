@@ -7,8 +7,16 @@ if (mysql_errno()) {
 	die ('Konnte keine Verbindung zur Datenbank aufbauen');
 }
 header1();
+if (!isset($xythobuzCMS_customFeed)) {
 ?>
 <link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="http://www.xythobuz.org/rss.xml" />
+<?
+} else {
+?>
+<link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="<? echo $xythobuzCMS_customFeed; ?>" />
+<?
+}
+?>
 <meta name="description" content="xythobuzs Blog">
 <?
 body1();
