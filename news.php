@@ -12,9 +12,15 @@ header1();
 <meta name="description" content="xythobuzs Blog">
 <?
 body1();
+if (!isset($xythobuzCMS_customFeed)) {
 ?>
 	<p><a href="/rss.xml"><img src="/img/rss.png" alt="RSS Feed"></a></p>
 <?
+} else {
+?>
+	<p><a href="<? echo $xythobuzCMS_customFeed; ?>"><img src="/img/rss.png" alt="RSS Feed"></a></p>
+<?
+}
 
 if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 	if (isset($_POST['inhalt'])) {

@@ -148,7 +148,10 @@ Tables created successfully!<br>
 			$content = $content."\$xythobuzCMS_piwiktoken = '".$_POST['piwiktoken']."';\n";
 		}
 		if ($_POST['adcode'] != '') {
-			$content = $content."\$xythobuzCMS_adcode = '".str_replace("\n", '\n', str_replace('"', '\"', $_POST['adcode']))."';\n";
+			$content = $content."\$xythobuzCMS_adcode = \"".str_replace("\n", '\n', str_replace('"', '\"', $_POST['adcode']))."\";\n";
+		}
+		if ($_POST['feed'] != '') {
+			$content = $content."\$xythobuzCMS_customFeed = \"".$_POST['feed']."\";\n";
 		}
 		$content = $content."?>";
 
@@ -203,6 +206,7 @@ Tables created successfully!<br>
 		<label>Flattr URL: <input type="text" name="flattr" /></label><br>
 		<label>Piwik API Token: <input type="text" name="piwiktoken" /></label><br>
 		<label>Ad Code (AdSense etc.): <input type="text" name="adcode" /></label><br>
+		<label>Alternative RSS URL: <input type="text" name="feed" /></label><br>
 		<input type="submit" name="formaction" value="Save" />
 	</fieldset>
 </form>
