@@ -95,7 +95,7 @@ header1();
 
 		$rss = $rss."\t\t\t<link>http://www.xythobuz.org/news.php?beitrag=".$row['id']."</link>\n";
 
-		$rss = $rss."\t\t\t<description>".str_replace('>', '&gt;', str_replace('<', '&lt;', stripslashes($row['inhalt'])))."</description>\n";
+		$rss = $rss."\t\t\t<description>".str_replace("<img src=\"/", "<img src=\"".$xythobuzCMS_root."/", str_replace('>', '&gt;', str_replace('<', '&lt;', stripslashes($row['inhalt']))))."</description>\n";
 		$rss = $rss."\t\t\t<pubDate>".date(DATE_RSS, strtotime($row['datum']))."</pubDate>\n";
 		$rss = $rss."\t\t\t<guid>http://www.xythobuz.org/news.php?beitrag=".$row['id']."</guid>\n";
 		$rss = $rss."\t\t</item>\n";
