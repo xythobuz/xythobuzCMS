@@ -148,7 +148,7 @@ Tables created successfully!<br>
 			$content = $content."\$xythobuzCMS_piwiktoken = '".$_POST['piwiktoken']."';\n";
 		}
 		if ($_POST['adcode'] != '') {
-			$content = $content."\$xythobuzCMS_adcode = '".$_POST['adcode']."';\n";
+			$content = $content."\$xythobuzCMS_adcode = '".str_replace("\n", '\n', str_replace('"', '\"', $_POST['adcode']))."';\n";
 		}
 		$content = $content."?>";
 
