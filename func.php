@@ -181,6 +181,10 @@ if (isset($xythobuzCMS_flattr)) {
 		<a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
 <?
 }
+if (isset($xythobuzCMS_adcode)) {
+	echo $xythobuzCMS_adcode;
+	echo "\n";
+}
 if (isset($xythobuzCMS_piwiktoken)) {
 	$curl_handle = curl_init();
 	curl_setopt($curl_handle,CURLOPT_URL, $xythobuzCMS_root.'/piwik/index.php?module=API&method=VisitsSummary.getUniqueVisitors&idSite=1&period=day&date=today&format=xml&token_auth='.$xythobuzCMS_piwiktoken);

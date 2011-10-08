@@ -147,6 +147,9 @@ Tables created successfully!<br>
 		if ($_POST['piwiktoken'] != '') {
 			$content = $content."\$xythobuzCMS_piwiktoken = '".$_POST['piwiktoken']."';\n";
 		}
+		if ($_POST['adcode'] != '') {
+			$content = $content."\$xythobuzCMS_adcode = '".$_POST['adcode']."';\n";
+		}
 		$content = $content."?>";
 
 		if (!file_exists($configFile)) {
@@ -199,6 +202,7 @@ Tables created successfully!<br>
 		<label>Birthdate as Unix Timestamp: <input type="text" name="birth" /></label><br>
 		<label>Flattr URL: <input type="text" name="flattr" /></label><br>
 		<label>Piwik API Token: <input type="text" name="piwiktoken" /></label><br>
+		<label>Ad Code (AdSense etc.): <input type="text" name="adcode" /></label><br>
 		<input type="submit" name="formaction" value="Save" />
 	</fieldset>
 </form>
