@@ -83,8 +83,8 @@ header1();
 		die ("Error!!");
 	}
 	$rss = '<?xml version="1.0"?>'."\n";
-	$rss = $rss.'<rss version="2.0">'."\n";
-	$rss = $rss."\t<channel>\n\t\t<title>xythobuz.org Blog</title>\n";
+	$rss = $rss.'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">'."\n";
+	$rss = $rss."\t<channel>\n\t\t<atom:link href=\"".$xythobuzCMS_root."/rss.xml\" rel=\"self\" type=\"application/rss+xml\" />\n\t\t<title>xythobuz.org Blog</title>\n";
 	$rss = $rss."\t\t<link>http://www.xythobuz.org/news.php</link>\n";
 	$rss = $rss."\t\t<description>xythobuz.org - Artikel und Links von xythobuz</description>\n";
 	$rss = $rss."\t\t<language>de-de</language>\n";
@@ -95,7 +95,7 @@ header1();
 
 		$rss = $rss."\t\t\t<link>http://www.xythobuz.org/news.php?beitrag=".$row['id']."</link>\n";
 
-		$rss = $rss."\t\t\t<description>".str_replace("<img src=\"/", "<img src=\"".$xythobuzCMS_root."/", str_replace('>', '&gt;', str_replace('<', '&lt;', stripslashes($row['inhalt']))))."</description>\n";
+		$rss = $rss."\t\t\t<description>".str_replace("&lt;a href=\"img", "&lt;a href=\"".$xythobuzCMS_root."/img", str_replace("&lt;a href=\"/", "&lt;a href=\"".$xythobuzCMS_root."/", str_replace("&lt;img src=\"img", "&lt;img src=\"".$xythobuzCMS_root."/img", str_replace("&lt;img src=\"/", "&lt;img src=\"".$xythobuzCMS_root."/", str_replace('>', '&gt;', str_replace('<', '&lt;', stripslashes($row['inhalt'])))))))."</description>\n";
 		$rss = $rss."\t\t\t<pubDate>".date(DATE_RSS, strtotime($row['datum']))."</pubDate>\n";
 		$rss = $rss."\t\t\t<guid>http://www.xythobuz.org/news.php?beitrag=".$row['id']."</guid>\n";
 		$rss = $rss."\t\t</item>\n";
