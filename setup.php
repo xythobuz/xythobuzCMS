@@ -92,11 +92,11 @@ Tables created successfully!<br>
 
 		// Create example page
 		$sql = 'INSERT INTO
-				cms(id, kuerzel, beschreibung, linktext, kategorie, ord, inhalt)
+				cms(id, kuerzel, beschreibung, linktext, kategorie, ord, inhalt, inhalt_en)
 			VALUES
 				(1, "home", "xythobuz\\'."'".'s Elektronik und Software Projekte", "Home", 0, 0, "<h1>Herzlich Willkommen</h1>
 <p>Hier findest du (immer mehr) Informationen zu Projekten von mir. Gerne höre ich Feedback über E-Mail. Viel Spaß!
-</p>")';
+</p>", "No translation available!")';
 		$result = mysql_query($sql);
 		if (!$result) {
 			die("Could not create example page!");
@@ -136,6 +136,7 @@ Tables created successfully!<br>
 		$content = $content."\$xythobuzCMS_author = '".$_POST['author']."';\n";
 		$content = $content."\$xythobuzCMS_authormail = '".$_POST['authormail']."';\n";
 		$content = $content."\$xythobuzCMS_lang = '".$_POST['lang']."';\n";
+		$content = $content."\$xythobuzCMS_lang2 = '".$_POST['lang2']."';\n";
 		$content = $content."\$xythobuzCMS_title = '".$_POST['title']."';\n";
 		$content = $content."\$xythobuzCMS_logo = '".$_POST['logo']."';\n";
 		if ($_POST['birth'] != '') {
@@ -184,31 +185,35 @@ Tables created successfully!<br>
 	// Show form
 ?>
 <form action="setup.php" method="post">
-	<fieldset>
-		<legend>MySQL Credentials:</legend>
-		<label>Host: <input type="text" name="Host" /></label><br>
-		<label>Username: <input type="text" name="Username" /></label><br>
-		<label>Password: <input type="password" name="Password" /></label><br>
-		<label>Database: <input type="text" name="Database" /></label><br>
-		<legend>User Informations:</legend>
-		<label>CMS Username: <input type="text" name="user" /></label><br>
-		<label>CMS Password: <input type="password" name="pass1" /></label><br>
-		<label>CMS Pass again: <input type="password" name="pass2" /></label><br>
-		<legend>Misc. Infos:</legend>
-		<label>Root URL (with http:// but without / at the end): <input type="text" name="root" /></label><br>
-		<label>Author Name: <input type="text" name="author" /></label><br>
-		<label>Author Mail: <input type="text" name="authormail" /></label><br>
-		<label>Language Code (de, en...) <input type="text" name="lang" /></label><br>
-		<label>Page Title: <input type="text" name="title" /></label><br>
-		<label>Logo Path (relative): <input type="text" name="logo" /></label><br>
-		<legend>Optional:</legend>
-		<label>Birthdate as Unix Timestamp: <input type="text" name="birth" /></label><br>
-		<label>Flattr URL: <input type="text" name="flattr" /></label><br>
-		<label>Piwik API Token: <input type="text" name="piwiktoken" /></label><br>
-		<label>Ad Code (AdSense etc.): <input type="text" name="adcode" /></label><br>
-		<label>Alternative RSS URL: <input type="text" name="feed" /></label><br>
-		<input type="submit" name="formaction" value="Save" />
-	</fieldset>
+	<table>
+		<tr><th>MySQL Credentials:</th><th></th><th></th></tr>
+		<tr><td>Host</td><td><input type="text" name="Host" /></td><td></td></tr>
+		<tr><td>Username</td><td><input type="text" name="Username" /></td><td></td></tr>
+		<tr><td>Password</td><td><input type="password" name="Password" /></td><td></td></tr>
+		<tr><td>Database</td><td><input type="text" name="Database" /></td><td></td></tr>
+		
+		<tr><th>User Informations:</th><th></th><th></th></tr>
+		<tr><td>CMS Username</td><td><input type="text" name="user" /></td><td></td></tr>
+		<tr><td>CMS Password</td><td><input type="password" name="pass1" /></td><td></td></tr>
+		<tr><td>CMS Pass again</td><td><input type="password" name="pass2" /></td><td></td></tr>
+		
+		<tr><th>Misc. Infos:</th><th></th><th></th></tr>
+		<tr><td>Root URL</td><td><input type="text" name="root" /></td><td>with http:// but without / at the end!</td></tr>
+		<tr><td>Author Name</td><td><input type="text" name="author" /></td><td></td></tr>
+		<tr><td>Author Mail</td><td><input type="text" name="authormail" /></td><td></td></tr>
+		<tr><td>Language Code 1</td><td><input type="text" name="lang" /></td><td>de, en... For meta tag</td></tr>
+		<tr><td>Language Code 2</td><td><input type="text" name="lang2" /></td><td>Works with any language combination!</td></tr>
+		<tr><td>Page Title</td><td><input type="text" name="title" /></td><td></td></tr>
+		<tr><td>Logo URL</td><td><input type="text" name="logo" /></td><td></td></tr>
+		
+		<tr><th>Optional:</th><th></th><th></th></tr>
+		<tr><td>Birthdate</td><td><input type="text" name="birth" /></td><td>As Unix timestamp. Displays age.</td></tr>
+		<tr><td>Flattr URL</td><td><input type="text" name="flattr" /></td><td>Adds Flattr Button.</td></tr>
+		<tr><td>Piwik API Token</td><td><input type="text" name="piwiktoken" /></td><td>Shows visitor count, adds Piwik API Code</td></tr>
+		<tr><td>Ad Code (AdSense etc.)</td><td><input type="text" name="adcode" /></td><td>Gets in navbar</td></tr>
+		<tr><td>Alternative RSS URL</td><td><input type="text" name="feed" /></td><td>If you want to use Feedburner</td></tr>
+		<tr><td></td><td><input type="submit" name="formaction" value="Save" /></td><td></td></tr>
+	</table>
 </form>
 <?
 }

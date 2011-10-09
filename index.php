@@ -30,9 +30,9 @@ echo $row['beschreibung'];
 <?
 body2();
 if ($_GET['lang'] != "en") {
-	$langs = array( 'de', 'de-de', 'de-at', 'de-ch', 'en', 'en-us', 'en-uk' );
+	$langs = array( $xythobuzCMS_lang, $xythobuzCMS_lang2 );
 	$bestlang = prefered_language($langs);
-	if (($bestlang == "en") || ($bestlang == "en-us") || ($bestlang == "en-uk")) {
+	if ($bestlang == $xythobuzCMS_lang2) {
 		?><div class="bar"><?
 		echo "<a href=\"index.php";
 		if (isset($_GET['p'])) {
@@ -40,7 +40,7 @@ if ($_GET['lang'] != "en") {
 		} else {
 			echo "?lang=en";
 		}
-		echo "\">This page could also be available in english!</a>";
+		echo "\">This page could also be available in ".$xythobuzCMS_lang2."</a>";
 		?></div><?
 	}
 }
@@ -49,16 +49,16 @@ body3();
 if ($_GET['lang'] != "en") {
 	$temp = "inhalt";
 	if (isset($_GET['p'])) {
-		echo '<a href="index.php?p='.$_GET['p'].'&amp;lang=en">English</a>'."\n";
+		echo '<a href="index.php?p='.$_GET['p'].'&amp;lang=en">'.$xythobuzCMS_lang2.'</a>'."\n";
 	} else {
-		echo '<a href="index.php?lang=en">English</a>'."\n";
+		echo '<a href="index.php?lang=en">'.$xythobuzCMS_lang2.'</a>'."\n";
 	}
 } else {
 	$temp = "inhalt_en";
 	if (isset($_GET['p'])) {
-		echo '<a href="index.php?p='.$_GET['p'].'">Deutsch</a>'."\n";
+		echo '<a href="index.php?p='.$_GET['p'].'">'.$xythobuzCMS_lang.'</a>'."\n";
 	} else {
-		echo '<a href="index.php">Deutsch</a>'."\n";
+		echo '<a href="index.php">'.$xythobuzCMS_lang.'</a>'."\n";
 	}
 }
 
