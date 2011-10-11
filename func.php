@@ -181,6 +181,12 @@ if (isset($xythobuzCMS_flattr)) {
 		<a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
 <?
 }
+if (isset($xythobuzCMS_twitterNick)) {
+?>
+<a href="https://twitter.com/<? echo $xythobuzCMS_twitterNick; ?>" class="twitter-follow-button" data-button="grey" data-text-color="#FFFFFF" data-link-color="#00AEFF" data-show-count="false">Follow @<? echo $xythobuzCMS_twitterNick; ?></a>
+<script src="//platform.twitter.com/widgets.js" type="text/javascript"></script><br>
+<?
+}
 if (isset($xythobuzCMS_adcode)) {
 	echo $xythobuzCMS_adcode;
 	echo "\n";

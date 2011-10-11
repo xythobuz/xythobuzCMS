@@ -36,5 +36,6 @@ The setup.php script creates a config.php file and fills it with your credential
     $xythobuzCMS_piwiktoken = 'piwik api token';
     $xythobuzCMS_adcode = "your ad code (html, javascript...)";
     $xythobuzCMS_customFeed = "custom feed url, if you want to use feedburner etc.";
+	$xythobuzCMS_twitterNick = "Adds a follow button in sidebar, adds tweet button to posts."
 
 xythobuzCMS creates an rss feed for your blog entries. It is available in your root folder as "rss.xml". You can change the link to the rss feed if you enter an alternative url in your config / setup.

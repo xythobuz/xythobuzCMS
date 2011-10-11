@@ -80,6 +80,12 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 	<p style="font-size:xx-small"><? echo $row['datum']; ?></p>
 	<p><? echo stripslashes($row['inhalt']); ?></p>
 <?
+		if (isset($xythobuzCMS_twitterNick)) {
+?>
+<a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-via="<? echo $xythobuzCMS_twitterNick; ?>">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+<?
+		}
+
 		$sql = 'SELECT
 			inhalt,
 			datum,
@@ -167,7 +173,7 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 
 	if ($pagemarker == 1) {
 ?>
-	<a href="news.php?p=<? echo ($skip + 1); ?>">Ältere Beiträge</a>
+	Page: <? echo $skip; ?> <a href="news.php?p=<? echo ($skip + 1); ?>">Older entries</a>
 <?
 	}
 }

@@ -154,6 +154,9 @@ Tables created successfully!<br>
 		if ($_POST['feed'] != '') {
 			$content = $content."\$xythobuzCMS_customFeed = \"".$_POST['feed']."\";\n";
 		}
+		if ($_POST['nick'] != '') {
+			$content = $content."\$xythobuzCMS_twitterNick = \"".$_POST['nick']."\";\n";
+		}
 		$content = $content."?>";
 
 		if (!file_exists($configFile)) {
@@ -212,6 +215,7 @@ Tables created successfully!<br>
 		<tr><td>Piwik API Token</td><td><input type="text" name="piwiktoken" /></td><td>Shows visitor count, adds Piwik API Code</td></tr>
 		<tr><td>Ad Code (AdSense etc.)</td><td><input type="text" name="adcode" /></td><td>Gets in navbar</td></tr>
 		<tr><td>Alternative RSS URL</td><td><input type="text" name="feed" /></td><td>If you want to use Feedburner</td></tr>
+		<tr><td>Twitter nickname</td><td><input type="text" name="nick" /></td><td>Adds a follow button</td></tr>
 		<tr><td></td><td><input type="submit" name="formaction" value="Save" /></td><td></td></tr>
 	</table>
 </form>
