@@ -37,22 +37,30 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			if ($res != -1) {
 				echo "Bad Word: ".$res."\n";
 				exit;
-			} else {
-				$sql = 'INSERT INTO
-					cms_comments(datum, autor, inhalt, parent, frei)
-				VALUES
-					(FROM_UNIXTIME('.time().'),
-					"'.mysql_real_escape_string($_POST['autor']).'",
-					"'.mysql_real_escape_string($_POST['inhalt']).'",
-					'.mysql_real_escape_string($_GET['beitrag']).',
-					FALSE)';
-				$result = mysql_query($sql);
-				if (!$result) {
-					echo mysql_error();
-					echo "Query Error!";
-					exit;
+			}
+			if (isset($xythobuzCMS_captcha_priv)) {
+				require_once('recaptchalib.php');
+				$resp = recaptcha_check_answer($xythobuzCMS_captcha_priv, $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
+				if (!$resp->is_valid) {
+					die ("Captcha wrong!");
 				}
-				echo "Comment added...";
+			}
+			$sql = 'INSERT INTO
+				cms_comments(datum, autor, inhalt, parent, frei)
+			VALUES
+				(FROM_UNIXTIME('.time().'),
+				"'.mysql_real_escape_string($_POST['autor']).'",
+				"'.mysql_real_escape_string($_POST['inhalt']).'",
+				'.mysql_real_escape_string($_GET['beitrag']).',
+				'.$xythobuzCMS_com.')';
+			$result = mysql_query($sql);
+			if (!$result) {
+				echo mysql_error();
+				echo "Query Error!";
+				exit;
+			}
+			echo "Comment added...";
+			if ($xythobuzCMS_com == "FALSE") {
 				$subject = "New Comment!";
 				$body = $_POST['autor']." posted the following comment on ".$xythobuzCMS_title.":\n".$_POST['inhalt']."\n\n<a href=\"".$xythobuzCMS_root."/news.php?beitrag=".$_GET['beitrag']."\">Link zum Artikel</a>\n";
 				if (!mail($xythobuzCMS_authormail, $subject, $body)) {
@@ -122,6 +130,12 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 				<label>Name: <input type="text" name="autor" /></label>
 			</fieldset>
 			<textarea name="inhalt" rows="20" cols="68"></textarea>
+<?
+			if (isset($xythobuzCMS_captcha_pub)) {
+				require_once('recaptchalib.php');
+				echo recaptcha_get_html($xythobuzCMS_captcha_pub);
+			}
+?>
 			<input type="submit" name="formaction" value="Add Comment!" />
 		</form>
 <?

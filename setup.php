@@ -139,6 +139,7 @@ Tables created successfully!<br>
 		$content = $content."\$xythobuzCMS_lang2 = '".$_POST['lang2']."';\n";
 		$content = $content."\$xythobuzCMS_title = '".$_POST['title']."';\n";
 		$content = $content."\$xythobuzCMS_logo = '".$_POST['logo']."';\n";
+		$content = $content."\$xythobuzCMS_com = '".$_POST['com']."';\n";
 		if ($_POST['birth'] != '') {
 			$content = $content."\$xythobuzCMS_birth = ".$_POST['birth'].";\n";
 		}
@@ -156,6 +157,12 @@ Tables created successfully!<br>
 		}
 		if ($_POST['nick'] != '') {
 			$content = $content."\$xythobuzCMS_twitterNick = \"".$_POST['nick']."\";\n";
+		}
+		if ($_POST['capt_priv'] != '') {
+			if ($_POST['capt_pub'] != '') {
+				$content = $content."\$xythobuzCMS_captcha_pub = \"".$_POST['capt_pub']."\";\n";
+				$content = $content."\$xythobuzCMS_captcha_priv = \"".$_POST['capt_priv']."\";\n";
+			}
 		}
 		$content = $content."?>";
 
@@ -208,7 +215,8 @@ Tables created successfully!<br>
 		<tr><td>Language Code 2</td><td><input type="text" name="lang2" /></td><td>Works with any language combination!</td></tr>
 		<tr><td>Page Title</td><td><input type="text" name="title" /></td><td></td></tr>
 		<tr><td>Logo URL</td><td><input type="text" name="logo" /></td><td></td></tr>
-		
+		<tr><td>Comments visible?</td><td><input type="text" name="com" /></td><td>TRUE or FALSE</td></tr>
+
 		<tr><th>Optional:</th><th></th><th></th></tr>
 		<tr><td>Birthdate</td><td><input type="text" name="birth" /></td><td>As Unix timestamp. Displays age.</td></tr>
 		<tr><td>Flattr URL</td><td><input type="text" name="flattr" /></td><td>Adds Flattr Button.</td></tr>
@@ -216,6 +224,8 @@ Tables created successfully!<br>
 		<tr><td>Ad Code (AdSense etc.)</td><td><input type="text" name="adcode" /></td><td>Gets in navbar</td></tr>
 		<tr><td>Alternative RSS URL</td><td><input type="text" name="feed" /></td><td>If you want to use Feedburner</td></tr>
 		<tr><td>Twitter nickname</td><td><input type="text" name="nick" /></td><td>Adds a follow button</td></tr>
+		<tr><td>reCaptcha Public</td><td><input type="text" name="capt_pub" /></td><td>Put recaptchalib.php in same folder as index.php</td></tr>
+		<tr><td>reChaptcha Private</td><td><input type="text" name="capt_priv" /></td><td></td></tr>
 		<tr><td></td><td><input type="submit" name="formaction" value="Save" /></td><td></td></tr>
 	</table>
 </form>

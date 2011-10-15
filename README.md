@@ -29,13 +29,20 @@ The setup.php script creates a config.php file and fills it with your credential
     $xythobuzCMS_lang2 = 'alternative language code';
     $xythobuzCMS_title = 'page title';
     $xythobuzCMS_logo = 'logo url';
-    
+    $xythobuzCMS_com = 'comments visible?';
+	// TRUE or FALSE. Sets comment visibility after they are written.
+	// if FALSE, you get an email.
+
     // These are optional:
     $xythobuzCMS_birth = 759193200; // Birthdate as unix timestamp
     $xythobuzCMS_flattr = 'flattr link';
     $xythobuzCMS_piwiktoken = 'piwik api token';
     $xythobuzCMS_adcode = "your ad code (html, javascript...)";
     $xythobuzCMS_customFeed = "custom feed url, if you want to use feedburner etc.";
-	$xythobuzCMS_twitterNick = "Adds a follow button in sidebar, adds tweet button to posts."
+	$xythobuzCMS_twitterNick = "Adds a follow button in sidebar, adds tweet button to posts.";
+	$xythobuzCMS_captcha_priv = "private reCaptcha Key.";
+	$xythobuzCMS_captcha_pub = "public reCaptcha Key.";
+	// recaptchalib.php in this folder needed. Get here:
+	// http://code.google.com/p/recaptcha/downloads/list?q=label:phplib-Latest
 
 xythobuzCMS creates an rss feed for your blog entries. It is available in your root folder as "rss.xml". You can change the link to the rss feed if you enter an alternative url in your config / setup.
