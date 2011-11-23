@@ -164,6 +164,12 @@ Tables created successfully!<br>
 				$content = $content."\$xythobuzCMS_captcha_priv = \"".$_POST['capt_priv']."\";\n";
 			}
 		}
+		if ($_POST['UNname'] != '') {
+			if ($_POST['UNpass'] != '') {
+				$content = $content."\$xythobuzCMS_UNname = \"".$_POST['UNname']."\";\n";
+				$content = $content."\$xythobuzCMS_UNpass = \"".$_POST['UNpass']."\";\n";
+			}
+		}
 		$content = $content."?>";
 
 		if (!file_exists($configFile)) {
@@ -215,7 +221,7 @@ Tables created successfully!<br>
 		<tr><td>Language Code 2</td><td><input type="text" name="lang2" /></td><td>Works with any language combination!</td></tr>
 		<tr><td>Page Title</td><td><input type="text" name="title" /></td><td></td></tr>
 		<tr><td>Logo URL</td><td><input type="text" name="logo" /></td><td></td></tr>
-		<tr><td>Comments visible?</td><td><input type="text" name="com" /></td><td>TRUE or FALSE</td></tr>
+		<tr><td>Comments standard visible?</td><td><input type="text" name="com" /></td><td>TRUE or FALSE</td></tr>
 
 		<tr><th>Optional:</th><th></th><th></th></tr>
 		<tr><td>Birthdate</td><td><input type="text" name="birth" /></td><td>As Unix timestamp. Displays age.</td></tr>
@@ -226,6 +232,8 @@ Tables created successfully!<br>
 		<tr><td>Twitter nickname</td><td><input type="text" name="nick" /></td><td>Adds a follow button</td></tr>
 		<tr><td>reCaptcha Public</td><td><input type="text" name="capt_pub" /></td><td>Put recaptchalib.php in same folder as index.php</td></tr>
 		<tr><td>reChaptcha Private</td><td><input type="text" name="capt_priv" /></td><td></td></tr>
+		<tr><td>UltimateNotifier Username</td><td><input type="text" name="UNname" /></td><td>Sends notifications when comments are added</td></tr>
+		<tr><td>UltimateNotifier Password</td><td><input type="text" name="UNpass" /></td><td></td></tr>
 		<tr><td></td><td><input type="submit" name="formaction" value="Save" /></td><td></td></tr>
 	</table>
 </form>

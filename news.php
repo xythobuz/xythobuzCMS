@@ -59,7 +59,24 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 				echo "Query Error!";
 				exit;
 			}
-			echo "Comment added...";
+			echo "Comment added...<br>\n";
+			if (isset($xythobuzCMS_UNname)) {
+				$message = "New Comment on ".$xythobuzCMS_root."\nAuthor: ".$_POST['autor'];
+				$url = "https://".$xythobuzCMS_UNname.":".$xythobuzCMS_UNpass."@www.ultimatenotifier.com/items/User/send/".rawurlencode($xythobuzCMS_UNname)."/message=".rawurlencode($message);
+				$ch = curl_init($url);
+				if ($ch == false) {
+					echo "Error while sending notification. Comment added anyway...<br>\n";
+				}
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_HEADER, 0);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+				$return = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				curl_close($ch);
+				// Invalid username/password
+				echo "Notification sent (".$httpcode.")<br>\n";
+			}
 			if ($xythobuzCMS_com == "FALSE") {
 				$subject = "New Comment!";
 				$body = $_POST['autor']." posted the following comment on ".$xythobuzCMS_title.":\n".$_POST['inhalt']."\n\n<a href=\"".$xythobuzCMS_root."/news.php?beitrag=".$_GET['beitrag']."\">Link zum Artikel</a>\n";
