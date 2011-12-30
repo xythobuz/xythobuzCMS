@@ -40,7 +40,19 @@ if ($_GET['lang'] != "en") {
 		} else {
 			echo "?lang=en";
 		}
-		echo "\">This page could also be available in ".$xythobuzCMS_lang2."</a>";
+		echo "\">This could be available in ".$xythobuzCMS_lang2."!</a>";
+		?></div><?
+	}
+} else {
+	$langs = array( $xythobuzCMS_lang, $xythobuzCMS_lang2 );
+	$bestlang = prefered_language($langs);
+	if ($bestlang == $xythobuzCMS_lang) {
+		?><div class="bar"><?
+		echo "<a href=\"index.php";
+		if (isset($_GET['p'])) {
+			echo "?p=".$_GET['p'];
+		}
+		echo "\">This could be available in ".$xythobuzCMS_lang."!</a>";
 		?></div><?
 	}
 }
@@ -49,16 +61,16 @@ body3();
 if ($_GET['lang'] != "en") {
 	$temp = "inhalt";
 	if (isset($_GET['p'])) {
-		echo '<a href="index.php?p='.$_GET['p'].'&amp;lang=en">'.$xythobuzCMS_lang2.'</a>'."\n";
+		echo '<a href="index.php?p='.$_GET['p'].'&amp;lang=en"><img src="img/flags/'.$xythobuzCMS_lang2.".png\" alt=\"Change language\"></a>"."\n";
 	} else {
-		echo '<a href="index.php?lang=en">'.$xythobuzCMS_lang2.'</a>'."\n";
+		echo '<a href="index.php?lang=en"><img src="img/flags/'.$xythobuzCMS_lang2.".png\" alt=\"Change language\"></a>"."\n";
 	}
 } else {
 	$temp = "inhalt_en";
 	if (isset($_GET['p'])) {
-		echo '<a href="index.php?p='.$_GET['p'].'">'.$xythobuzCMS_lang.'</a>'."\n";
+		echo "<a href=\"index.php?p=".$_GET['p']."\"><img src=\"img/flags/".$xythobuzCMS_lang.".png\" alt=\"Change language\"></a>"."\n";
 	} else {
-		echo '<a href="index.php">'.$xythobuzCMS_lang.'</a>'."\n";
+		echo '<a href="index.php"><img src="img/flags/'.$xythobuzCMS_lang.".png\" alt=\"Change language\"></a>"."\n";
 	}
 }
 
