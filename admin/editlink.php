@@ -45,7 +45,7 @@ if (($_GET['w'] == "") && ($_GET['d'] == "")) {
 		echo "<td><input type=\"text\" name=\"titel\" value=\"".stripslashes($row['title'])."\"></td>";
 		echo "<td><input type\"text\" name=\"link\" value=\"".stripslashes($row['url'])."\"></td>";
 		echo "<td><input type=\"submit\" name=\"formaction\" value=\"Save\"></td>\n";
-		echo "<td><a href=\"editlink.php?d=".$row[id]."\">Delete</a></td>";
+		echo "<td><a href=\"editlink.php?d=".$row['id']."\">Delete</a></td>";
 		echo "</tr></form>";
 	}
 } else if ($_GET['w'] != "") {

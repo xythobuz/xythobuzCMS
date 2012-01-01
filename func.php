@@ -147,7 +147,7 @@ if (isset($xythobuzCMS_birth)) {
 	}
 	while ($row = mysql_fetch_array($result)) {
 ?>
-	<a href="<? echo $row['url']; ?>"><? echo $row['title']; ?></a><br>
+	<a href="<? echo htmlspecialchars($row['url']); ?>"><? echo $row['title']; ?></a><br>
 <?
 	}
 ?>
@@ -216,20 +216,22 @@ if (isset($xythobuzCMS_piwiktoken)) {
 ?>
 	</nav>
 </div>
-<? if (isset($xythobuzCMS_piwiktoken)) { ?>
-<!-- Piwik --> 
- <script type="text/javascript">
-var pkBaseURL = (("https:" == document.location.protocol) ? "<? echo $xythobuzCMS_root; ?>/piwik/" : "<? echo $xythobuzCMS_root; ?>/piwik/");
- document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
- </script><script type="text/javascript">
- try {
- var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
- piwikTracker.trackPageView();
- piwikTracker.enableLinkTracking();
- } catch( err ) {}
- </script><noscript><p><img src="<? echo $xythobuzCMS_root; ?>/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
- <!-- End Piwik Tracking Code -->
-<? } ?>
+<?
+// Print custom javascript code
+	$sql = 'SELECT
+		inhalt
+	FROM
+		cms_code
+	ORDER BY
+		id ASC';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die ("Error");
+	}
+	while ($row = mysql_fetch_array($result)) {
+		echo stripslashes($row['inhalt'])."\n";
+	}
+?>
 </body>
 </html>
 <?

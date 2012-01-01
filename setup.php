@@ -62,6 +62,14 @@ if (isset($_POST['Host'])) {
 	if (!$result) {
 		die ("Could not create table 'cms_links'");
 	}
+
+	$sql = 'CREATE TABLE cms_code (
+		id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+		inhalt TEXT NOT NULL)';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Could not create table 'cms_code'");
+	}
 	
 	// Create table for comments
 	$sql = 'CREATE TABLE cms_comments (

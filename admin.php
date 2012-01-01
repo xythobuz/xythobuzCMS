@@ -23,6 +23,8 @@ header1();
 <a href="admin/users.php">Manage Users</a><br>
 <a href="admin/addlink.php">Add Link</a><br>
 <a href="admin/editlink.php">Edit Links</a><br>
+<a href="admin/addcode.php">Add Code</a><br>
+<a href="admin/editcode.php">Edit Code</a><br>
 <hr>
 <? if (isset($xythobuzCMS_piwiktoken)) { ?>
 <a href="/piwik/">Piwik Statistics</a><br>
