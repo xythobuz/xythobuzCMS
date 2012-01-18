@@ -70,6 +70,14 @@ if (isset($_POST['Host'])) {
 	if (!$result) {
 		die("Could not create table 'cms_code'");
 	}
+
+	$sql = 'CREATE TABLE cms_codenav (
+		id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+		inhalt TEXT NOT NULL)';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Could not create table 'cms_codenav'");
+	}
 	
 	// Create table for comments
 	$sql = 'CREATE TABLE cms_comments (
@@ -97,6 +105,32 @@ Tables created successfully!<br>
 			die("Could not create example blog entry!");
 		}
 		echo "Created blog entry...<br>\n";
+
+		$sql = 'INSERT INTO
+				cms_codenav(id, inhalt)
+			VALUES
+				(1, "'.mysql_real_escape_string('<a href="http://validator.w3.org/check?uri=referer"><img src="img/valid_html5.png" alt="Valid HTML 4.01 Transitional"></a>').'")';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Could not add nav pics!");
+		}
+		$sql = 'INSERT INTO
+				cms_codenav(id, inhalt)
+			VALUES
+				(2, "'.mysql_real_escape_string('<a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="CSS ist valide!"></a>').'")';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Could not add nav pics!");
+		}
+		$sql = 'INSERT INTO
+				cms_codenav(id, inhalt)
+			VALUES
+				(3, "'.mysql_real_escape_string('<a href="http://feed1.w3.org/check.cgi?url='.$_POST['root'].'/rss.xml"><img src="img/valid_rss.png" alt="Valides RSS"></a>').'")';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Could not add nav pics!");
+		}
+		echo "Added nav pics<br>\n";
 
 		// Create example page
 		$sql = 'INSERT INTO

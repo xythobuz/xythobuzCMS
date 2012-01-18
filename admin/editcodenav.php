@@ -12,7 +12,7 @@ header1();
 </head>
 <body>
 <div class="admin">
-<h1>Edit Code</h1>
+<h1>Edit Code in &lt;nav&gt;</h1>
 <?
 
 if ($_GET['d'] == "") {
@@ -20,7 +20,7 @@ if ($_GET['d'] == "") {
 		inhalt,
 		id
 	FROM
-		cms_code';
+		cms_codenav';
 	$result = mysql_query($sql);
 	if (!$result) {
 		die ("Query Error");
@@ -33,11 +33,11 @@ if ($_GET['d'] == "") {
 	while ($row = mysql_fetch_array($result)) {
 		echo "<tr>";
 		echo "<td>".htmlspecialchars(stripslashes($row['inhalt']))."</td>";
-		echo "<td><a href=\"editlink.php?d=".$row['id']."\">Delete</a></td>";
+		echo "<td><a href=\"editcodenav.php?d=".$row['id']."\">Delete</a></td>";
 		echo "</tr>";
 	}
-} else if ($_GET['d'] != ""){
-	$sql = 'DELETE FROM cms_code
+} else {
+	$sql = 'DELETE FROM cms_codenav
 		WHERE id = '.mysql_real_escape_string($_GET['d']);
 	$result = mysql_query($sql);
 	if (!$result) {

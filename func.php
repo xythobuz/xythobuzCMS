@@ -175,14 +175,22 @@ $url = str_replace("'", '&#39;', $url);
 		Permalink: <a href="<? echo $url; ?>"><? echo $url; ?></a><br>
 		<a href="pwd.php">Admin</a><br>
 		</p>
-		<a href="http://validator.w3.org/check?uri=referer"><img
-        src="img/valid_html5.png"
-		alt="Valid HTML 4.01 Transitional"></a>
-		<a href="http://jigsaw.w3.org/css-validator/check/referer">
-        <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="CSS ist valide!">
-		</a>
-		<a href="http://feed1.w3.org/check.cgi?url=<? echo str_replace(":", "%3A", $xythobuzCMS_root); ?>/rss.xml"><img src="img/valid_rss.png" alt="Valides RSS"></a><br>
 <?
+
+$sql = 'SELECT
+	inhalt
+FROM
+	cms_codenav
+ORDER BY
+	id ASC';
+$result = mysql_query($sql);
+if (!$result) {
+	die ("Error");
+}
+while ($row = mysql_fetch_array($result)) {
+	echo stripslashes($row['inhalt'])."\n";
+}
+
 if (isset($xythobuzCMS_flattr)) {
 ?>
 		<a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
@@ -217,7 +225,7 @@ if (isset($xythobuzCMS_piwiktoken)) {
 	</nav>
 </div>
 <?
-// Print custom javascript code
+// Print custom code
 	$sql = 'SELECT
 		inhalt
 	FROM
