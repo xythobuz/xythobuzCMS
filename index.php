@@ -91,9 +91,8 @@ if ($temp == "inhalt") {
 	echo stripslashes($row['inhalt_en']);
 }
 ?>
-	</div>
-	<nav>
 
+</div><nav>
 <?
 $sql = 'SELECT
 	id,

@@ -31,15 +31,15 @@ function body2() {
 	include("config.php");
 ?>
 <title><? echo $xythobuzCMS_title; ?></title>
-</head>
-<body>
+</head><body>
 <?
 }
 
 function body3() {
 ?>
+
 <div class="container">
-	<div class="content">
+<div class="content">
 <?
 }
 
@@ -99,19 +99,19 @@ function bottom1($lang) {
 	include("config.php");
 	if ($lang == "en") {
 ?>
-		<br>-&gt; <a href="news.php?lang=en">Blog</a><br>
+<br>-&gt; <a href="news.php?lang=en">Blog</a><br>
 <?
 	} else {
 ?>
-		<br>-&gt; <a href="news.php">Blog</a><br>
+<br>-&gt; <a href="news.php">Blog</a><br>
 <?
 	}
 ?>
-		-&gt; <a href="search.php">Suche</a><br>
-		<p>
-		<img src="<? echo $xythobuzCMS_logo; ?>" alt="Me"><br>
-		<? echo $xythobuzCMS_author; ?><br>
-		<? if (isset($xythobuzCMS_birth)) { ?>Age: <? }
+-&gt; <a href="search.php">Suche</a><br>
+<p><? if (isset($xythobuzCMS_logo)) { ?><img src="<? echo $xythobuzCMS_logo; ?>" alt="Me"><br>
+<? } ?>
+<? echo $xythobuzCMS_author; ?><br>
+<? if (isset($xythobuzCMS_birth)) { ?>Age: <? }
 }
 
 function bottom2() {
@@ -133,7 +133,7 @@ if (isset($xythobuzCMS_birth)) {
 	echo $age;
 }
 ?>
-		</p><p>
+</p><p>
 <? 
 	$sql = 'SELECT
 			url, title
@@ -147,12 +147,12 @@ if (isset($xythobuzCMS_birth)) {
 	}
 	while ($row = mysql_fetch_array($result)) {
 ?>
-	<a href="<? echo htmlspecialchars($row['url']); ?>"><? echo $row['title']; ?></a><br>
+<a href="<? echo htmlspecialchars($row['url']); ?>"><? echo $row['title']; ?></a><br>
 <?
 	}
 ?>
-			<br><a href="mailto:<? echo $xythobuzCMS_authormail; ?>"><? echo $xythobuzCMS_authormail; ?></a><br>
-		</p><p style="font-size:xx-small">
+<br><a href="mailto:<? echo $xythobuzCMS_authormail; ?>"><? echo $xythobuzCMS_authormail; ?></a><br>
+</p><p style="font-size:xx-small">
 <?
 // Create String with Link to current site.
 $url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
@@ -172,9 +172,9 @@ $url = str_replace('>', '&gt;', $url);
 $url = str_replace('"', '&quot;', $url);
 $url = str_replace("'", '&#39;', $url);
 ?>
-		Permalink: <a href="<? echo $url; ?>"><? echo $url; ?></a><br>
-		<a href="pwd.php">Admin</a><br>
-		</p>
+Permalink: <a href="<? echo $url; ?>"><? echo $url; ?></a><br>
+<a href="pwd.php">Admin</a><br>
+</p>
 <?
 
 $sql = 'SELECT
@@ -193,7 +193,7 @@ while ($row = mysql_fetch_array($result)) {
 
 if (isset($xythobuzCMS_flattr)) {
 ?>
-		<a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
+<a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
 <?
 }
 if (isset($xythobuzCMS_twitterNick)) {
@@ -222,8 +222,7 @@ if (isset($xythobuzCMS_piwiktoken)) {
 	}
 }
 ?>
-	</nav>
-</div>
+</nav></div>
 <?
 // Print custom code
 	$sql = 'SELECT
@@ -240,8 +239,7 @@ if (isset($xythobuzCMS_piwiktoken)) {
 		echo stripslashes($row['inhalt'])."\n";
 	}
 ?>
-</body>
-</html>
+</body></html>
 <?
 mysql_close();
 }
