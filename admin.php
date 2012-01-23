@@ -49,6 +49,12 @@ header1();
 		$sitemap = $sitemap.$xythobuzCMS_root."/index.php?p=";
 		$sitemap = $sitemap.$row['kuerzel'];
 		$sitemap = $sitemap."</loc>\n</url>\n\n";
+
+		$sitemap = $sitemap."<url>\n\t<loc>";
+		$sitemap = $sitemap.$xythobuzCMS_root."/index.php?p=";
+		$sitemap = $sitemap.$row['kuerzel'];
+		$sitemap = $sitemap."&amp;lang=".$xythobuzCMS_lang2;
+		$sitemap = $sitemap."</loc>\n</url>\n\n";
 	}
 	$sitemap = $sitemap."</urlset>";
 	$path = 'sitemap.xml';
