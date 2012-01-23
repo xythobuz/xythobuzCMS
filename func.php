@@ -9,9 +9,14 @@ if (!isset($_GET['lang'])) {
 
 function header1() {
 	include("config.php");
+	if ($_GET['lang'] == $xythobuzCMS_lang2) {
+		$tmpstring = $xythobuzCMS_lang2;
+	} else {
+		$tmpstring = $xythobuzCMS_lang;
+	}
 ?>
 <!DOCTYPE HTML>
-<html lang="<? echo $xythobuzCMS_lang; ?>">
+<html lang="<? echo $tmpstring ?>">
 <head>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="<? echo $xythobuzCMS_root; ?>/style.css" media="screen" type="text/css" />
