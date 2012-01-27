@@ -13,7 +13,8 @@ if (!isset($_GET['p'])) {
 	$_GET['p'] = "home";
 }
 $sql = 'SELECT
-	beschreibung
+	beschreibung,
+	inhalt_en
 FROM
 	cms
 WHERE
@@ -29,7 +30,7 @@ echo $row['beschreibung'];
 ?>">
 <?
 body2();
-if ($_GET['lang'] != "en") {
+if (($_GET['lang'] != "en") && ($row['inhalt_en'] != "") && ($row['inhalt_en'] != "<p>No translation available...</p>")) {
 	$langs = array( $xythobuzCMS_lang, $xythobuzCMS_lang2 );
 	$bestlang = prefered_language($langs);
 	if ($bestlang == $xythobuzCMS_lang2) {
@@ -40,7 +41,7 @@ if ($_GET['lang'] != "en") {
 		} else {
 			echo "?lang=en";
 		}
-		echo "\">This could be available in ".$xythobuzCMS_lang2."!</a>";
+		echo "\">This is available in your language (".$xythobuzCMS_lang2.")!</a>";
 		?></div><?
 	}
 } else {
@@ -52,7 +53,7 @@ if ($_GET['lang'] != "en") {
 		if (isset($_GET['p'])) {
 			echo "?p=".$_GET['p'];
 		}
-		echo "\">This could be available in ".$xythobuzCMS_lang."!</a>";
+		echo "\">This is available in your language (".$xythobuzCMS_lang.")!</a>";
 		?></div><?
 	}
 }
