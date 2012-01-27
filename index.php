@@ -85,10 +85,14 @@ if (!$result) {
     die ('Etwas stimmte mit dem Query nicht');
 }
 $row = mysql_fetch_array($result);
-if ($temp == "inhalt") {
-	echo stripslashes($row['inhalt']);
+if (($row['inhalt'] != "") || ($row['inhalt_en'] != "")) {
+	if ($temp == "inhalt") {
+		echo stripslashes($row['inhalt']);
+	} else {
+		echo stripslashes($row['inhalt_en']);
+	}
 } else {
-	echo stripslashes($row['inhalt_en']);
+	echo "<h1>404 - Page not found</h1>\n<p>You followed an invalid link!</p>\n";
 }
 ?>
 
