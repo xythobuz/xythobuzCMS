@@ -1,16 +1,16 @@
 /*
- * background color: #999999
- * front color: #31363C
- * link color: #FFCC33
- * visited color: #CC9900
- * code block color: #C0C0C0
+ * background color: #000044
+ * front color: #4E2B00
+ * link color: #BBAA00
+ * visited color: #887700
+ * code block color: #000044
  * text color: #CCCCCC
- * code text color: #000000
+ * code text color: #FFFFFF
  */
 
 html, body { 
 	font-family: sans-serif;
-	background-color: #999999;
+	background-color: #000044;
 	/* background-image: url(img/logo.png); */
 	/* background-repeat: repeat; */
 	padding: 0;
@@ -23,16 +23,16 @@ h1 {
 }
 
 a:link {
-	color: #FFCC33;
+	color: #BBAA00;
 	text-decoration: underline;
 }
 a:visited {
-	color: #CC9900;
+	color: #887700;
 	text-decoration: none;
 }
 
 nav {
-	background-color: #31363C;
+	background-color: #4E2B00;
 	float: left;
 	width: 275px;
 	padding: 10px;
@@ -45,8 +45,8 @@ pre {
 	overflow: scroll;
 	border-radius: 10px;
 	padding: 10px;
-	background-color: #C0C0C0;
-	color: #000000;
+	background-color: #000044;
+	color: #FFFFFF;
 }
 
 .bar {
@@ -61,7 +61,7 @@ pre {
 
 .content {
 	width: 500px;
-	background-color: #31363C;
+	background-color: #4E2B00;
 	float: right;
 	padding-left: 10px;
 	padding-right: 10px;
@@ -73,14 +73,14 @@ pre {
 .container {
 	width: 820px;
 	margin: 0 auto;
-	background: #999999;
+	background: #000044;
 }
 
 .admin {
 	width: 50%;
 	margin-left: 25%;
 	text-align: center;
-	background-color: #31363C;
+	background-color: #4E2B00;
 	border-radius: 15px;
 	margin-top: 10px;
 	margin-bottom: 10px;
