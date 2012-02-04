@@ -42,6 +42,7 @@ The setup.php script creates a config.php file and fills it with your credential
     $xythobuzCMS_adcode = "your ad code (html, javascript...)";
     $xythobuzCMS_customFeed = "custom feed url, if you want to use feedburner etc.";
 	$xythobuzCMS_twitterNick = "Adds a follow button in sidebar, adds tweet button to posts.";
+    $xythobuzCMS_onload = "js code here"; // Put in custom body onload handler.
 	$xythobuzCMS_captcha_priv = "private reCaptcha Key.";
 	$xythobuzCMS_captcha_pub = "public reCaptcha Key.";
 	// recaptchalib.php in this folder needed. Get here:

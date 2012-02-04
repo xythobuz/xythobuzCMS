@@ -25,8 +25,10 @@ header1();
 <a href="admin/editlink.php">Edit Links</a><br>
 <a href="admin/addcodebody.php">Add Code Body</a><br>
 <a href="admin/addcodenav.php">Add Code Nav</a><br>
+<a href="admin/addcodehead.php">Add Code Head</a><br>
 <a href="admin/editcodebody.php">Edit Code Body</a><br>
 <a href="admin/editcodenav.php">Edit Code Nav</a><br>
+<a href="admin/editcodehead.php">Edit Code Head</a><br>
 <hr>
 <? if (isset($xythobuzCMS_piwiktoken)) { ?>
 <a href="/piwik/">Piwik Statistics</a><br>

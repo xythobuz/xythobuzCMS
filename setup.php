@@ -78,6 +78,14 @@ if (isset($_POST['Host'])) {
 	if (!$result) {
 		die("Could not create table 'cms_codenav'");
 	}
+
+	$sql = 'CREATE TABLE cms_codehead (
+		id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+		inhalt TEXT NOT NULL)';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Could not create table 'cms_codehead'");
+	}
 	
 	// Create table for comments
 	$sql = 'CREATE TABLE cms_comments (

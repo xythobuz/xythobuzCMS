@@ -36,8 +36,28 @@ function body2() {
 	include("config.php");
 ?>
 <title><? echo $xythobuzCMS_title; ?></title>
-</head><body>
 <?
+$sql = 'SELECT
+	inhalt
+FROM
+	cms_codehead
+ORDER BY
+	id ASC';
+$result = mysql_query($sql);
+if (!$result) {
+	die ("Error");
+}
+while ($row = mysql_fetch_array($result)) {
+	echo stripslashes($row['inhalt'])."\n";
+}
+?>
+</head>
+<?
+	if (isset($xythobuzCMS_onload)) {
+		echo "<body onload=\"".$xythobuzCMS_onload."\">\n";
+	} else {
+		echo "<body>\n";
+	}
 }
 
 function body3() {
