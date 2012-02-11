@@ -1,21 +1,9 @@
-/*
- * background color: #000044
- * front color: #4E2B00
- * link color: #BBAA00
- * visited color: #887700
- * code block color: #000044
- * text color: #CCCCCC
- * code text color: #FFFFFF
- */
-
 html, body { 
 	font-family: sans-serif;
-	background-color: #000044;
-	/* background-image: url(img/logo.png); */
-	/* background-repeat: repeat; */
+	background-color: #999999;
 	padding: 0;
 	margin: 0;
-	color: #CCCCCC;
+	color: #DCDCDC;
 }
 
 h1 {
@@ -23,18 +11,18 @@ h1 {
 }
 
 a:link {
-	color: #BBAA00;
+	color: #FFE200;
 	text-decoration: underline;
 }
 a:visited {
-	color: #887700;
+	color: #BFAF30;
 	text-decoration: none;
 }
 
 nav {
-	background-color: #4E2B00;
+	background-color: #31363C;
 	float: left;
-	width: 275px;
+	width: 30%;
 	padding: 10px;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -46,22 +34,22 @@ pre {
 	border-radius: 10px;
 	padding: 10px;
 	background-color: #000044;
-	color: #FFFFFF;
+	color: #DCDCDC;
 }
 
 .bar {
 	background-color: #660000;
 	border-radius: 15px;
 	text-align: center;
-	width: 820px;
+	width: 90%;
 	margin: 0 auto;
 	padding: 2px;
-	color: #FFFFFF;
+	color: #DCDCDC;
 }
 
 .content {
-	width: 500px;
-	background-color: #4E2B00;
+	width: 65%;
+	background-color: #31363C;
 	float: right;
 	padding-left: 10px;
 	padding-right: 10px;
@@ -71,7 +59,7 @@ pre {
 }
 
 .container {
-	width: 820px;
+	width: 90%;
 	margin: 0 auto;
 	background: #000044;
 }
@@ -80,7 +68,7 @@ pre {
 	width: 50%;
 	margin-left: 25%;
 	text-align: center;
-	background-color: #4E2B00;
+	background-color: #31363C;
 	border-radius: 15px;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -91,7 +79,7 @@ ul {
 	list-style-type: none;
 }
 
-li:before {
+ul li:before {
 	content: "- ";
 	line-height: 1.5em;
 }
