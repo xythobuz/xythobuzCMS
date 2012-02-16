@@ -9,7 +9,7 @@ if (!isset($_GET['lang'])) {
 
 function header1() {
 	include("config.php");
-	if ($_GET['lang'] == $xythobuzCMS_lang2) {
+	if ($_GET['lang'] == "en") {
 		$tmpstring = $xythobuzCMS_lang2;
 	} else {
 		$tmpstring = $xythobuzCMS_lang;
@@ -62,7 +62,6 @@ while ($row = mysql_fetch_array($result)) {
 
 function body3() {
 ?>
-
 <div class="container">
 <div class="content">
 <?
@@ -132,7 +131,8 @@ function bottom1($lang) {
 <?
 	}
 ?>
--&gt; <a href="search.php">Suche</a><br>
+<br><form action="search.php" method="get"><input type="text" name="term">
+<input type="submit" value="<? if ($_GET['lang'] == "en") { echo "Search"; } else { echo "Suche"; } ?>"></form>
 <p><? if (isset($xythobuzCMS_logo)) { ?><img src="<? echo $xythobuzCMS_logo; ?>" alt="Me"><br>
 <? } ?>
 <? echo $xythobuzCMS_author; ?><br>

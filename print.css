@@ -10,6 +10,10 @@ nav {
 	display: none;
 }
 
+.langswitch {
+	display: none;
+}
+
 a[href]:after {
 	content: " <"attr(href)">";
 	font-style: italic;

@@ -64,6 +64,9 @@ if ($_GET['lang'] != "en") {
 } else {
 	$temp = "inhalt_en";
 }
+?>
+<div class="langswitch">
+<?
 if (isset($_GET['p'])) {
 	echo "<br><a href=\"index.php?p=".$_GET['p']."\"><img src=\"img/flags/".$xythobuzCMS_lang.".png\" alt=\"Change language\"></a>"."\n";
 	echo '<a href="index.php?p='.$_GET['p'].'&amp;lang=en"><img src="img/flags/'.$xythobuzCMS_lang2.".png\" alt=\"Change language\"></a>"."\n";
@@ -71,7 +74,9 @@ if (isset($_GET['p'])) {
 	echo '<br><a href="index.php"><img src="img/flags/'.$xythobuzCMS_lang.".png\" alt=\"Change language\"></a>"."\n";
 	echo '<a href="index.php?lang=en"><img src="img/flags/'.$xythobuzCMS_lang2.".png\" alt=\"Change language\"></a>"."\n";
 }
-
+?>
+</div>
+<?
 $sql = 'SELECT
 	'.$temp.'
 FROM
