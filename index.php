@@ -7,8 +7,7 @@ mysql_select_db($sql_database);
 if (mysql_errno()) {
 	die ('Konnte keine Verbindung zur Datenbank aufbauen');
 }
-?>
-<meta name="description" content="<?
+?><meta name="description" content="<?
 if (!isset($_GET['p'])) {
 	$_GET['p'] = "home";
 }
@@ -21,7 +20,7 @@ WHERE
 	kuerzel = "'.$_GET['p'].'"';
 $result = mysql_query($sql);
 if (!$result) {
-    die ('Etwas stimmte mit dem Query nicht!');
+	die ('Etwas stimmte mit dem Query nicht!');
 }
 
 $row = mysql_fetch_array($result);
@@ -35,26 +34,28 @@ if (($_GET['lang'] != "en") && ($row['inhalt_en'] != "") && ($row['inhalt_en'] !
 	$bestlang = prefered_language($langs);
 	if ($bestlang == $xythobuzCMS_lang2) {
 		?><div class="bar"><?
-		echo "<a href=\"index.php";
+			echo "<a href=\"index.php";
 		if (isset($_GET['p'])) {
 			echo "?p=".$_GET['p']."&amp;lang=en";
 		} else {
 			echo "?lang=en";
 		}
 		echo "\">This is available in your language (".$xythobuzCMS_lang2.")!</a>";
-		?></div><?
+		?></div>
+<?
 	}
 } else {
 	$langs = array( $xythobuzCMS_lang, $xythobuzCMS_lang2 );
 	$bestlang = prefered_language($langs);
 	if ($bestlang == $xythobuzCMS_lang) {
 		?><div class="bar"><?
-		echo "<a href=\"index.php";
+			echo "<a href=\"index.php";
 		if (isset($_GET['p'])) {
 			echo "?p=".$_GET['p'];
 		}
 		echo "\">This is available in your language (".$xythobuzCMS_lang.")!</a>";
-		?></div><?
+		?></div>
+<?
 	}
 }
 body3();
@@ -64,8 +65,7 @@ if ($_GET['lang'] != "en") {
 } else {
 	$temp = "inhalt_en";
 }
-?>
-<div class="langswitch">
+?><div class="langswitch">
 <?
 if (isset($_GET['p'])) {
 	echo "<br><a href=\"index.php?p=".$_GET['p']."\"><img src=\"img/flags/".$xythobuzCMS_lang.".png\" alt=\"Change language\"></a>"."\n";
@@ -74,8 +74,7 @@ if (isset($_GET['p'])) {
 	echo '<br><a href="index.php"><img src="img/flags/'.$xythobuzCMS_lang.".png\" alt=\"Change language\"></a>"."\n";
 	echo '<a href="index.php?lang=en"><img src="img/flags/'.$xythobuzCMS_lang2.".png\" alt=\"Change language\"></a>"."\n";
 }
-?>
-</div>
+?></div>
 <?
 $sql = 'SELECT
 	'.$temp.'
@@ -85,7 +84,7 @@ WHERE
 	kuerzel = "'.mysql_real_escape_string($_GET['p']).'"';
 $result = mysql_query($sql);
 if (!$result) {
-    die ('Etwas stimmte mit dem Query nicht');
+	die ('Etwas stimmte mit dem Query nicht');
 }
 $row = mysql_fetch_array($result);
 if (($row['inhalt'] != "") || ($row['inhalt_en'] != "")) {
@@ -97,9 +96,7 @@ if (($row['inhalt'] != "") || ($row['inhalt_en'] != "")) {
 } else {
 	echo "<h1>404 - Page not found</h1>\n<p>You followed an invalid link!</p>\n";
 }
-?>
-
-</div><nav>
+?></div><nav>
 <?
 $sql = 'SELECT
 	id,

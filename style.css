@@ -81,5 +81,4 @@ ul {
 
 ul li:before {
 	content: "- ";
-	line-height: 1.5em;
 }

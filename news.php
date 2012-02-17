@@ -8,25 +8,20 @@ if (mysql_errno()) {
 }
 header1();
 if (!isset($xythobuzCMS_customFeed)) {
-?>
-<link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="http://www.xythobuz.org/rss.xml" />
+?><link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="http://www.xythobuz.org/rss.xml" />
 <?
 } else {
-?>
-<link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="<? echo $xythobuzCMS_customFeed; ?>" />
+?><link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="<? echo $xythobuzCMS_customFeed; ?>" />
 <?
 }
-?>
-<meta name="description" content="xythobuzs Blog">
+?><meta name="description" content="xythobuzs Blog">
 <?
 body1();
 if (!isset($xythobuzCMS_customFeed)) {
-?>
-	<p><a href="/rss.xml"><img src="/img/rss.png" alt="RSS Feed"></a></p>
+?><p><a href="/rss.xml"><img src="/img/rss.png" alt="RSS Feed"></a></p>
 <?
 } else {
-?>
-	<p><a href="<? echo $xythobuzCMS_customFeed; ?>"><img src="/img/rss.png" alt="RSS Feed"></a></p>
+?><p><a href="<? echo $xythobuzCMS_customFeed; ?>"><img src="/img/rss.png" alt="RSS Feed"></a></p>
 <?
 }
 
@@ -100,14 +95,12 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			exit;
 		}
 		$row = mysql_fetch_array($result);
-?>
-	<h2><? echo stripslashes($row['ueberschrift']); ?></h2>
-	<p style="font-size:xx-small"><? echo $row['datum']; ?></p>
-	<p><? echo stripslashes($row['inhalt']); ?></p>
+?><h2><? echo stripslashes($row['ueberschrift']); ?></h2>
+<p style="font-size:xx-small"><? echo $row['datum']; ?></p>
+<p><? echo stripslashes($row['inhalt']); ?></p>
 <?
 		if (isset($xythobuzCMS_twitterNick)) {
-?>
-<a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-via="<? echo $xythobuzCMS_twitterNick; ?>">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+?><a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-via="<? echo $xythobuzCMS_twitterNick; ?>">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 <?
 		}
 
@@ -123,16 +116,14 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			datum ASC';
 		$result = mysql_query($sql);
 		if ($result) {
-			
 			$row = mysql_fetch_array($result);
 			if ($row == false) {
 				echo "<hr><p>No Comments!</p>\n";
 			} else {
 				do {
-?>
-		<hr>
-		<p><? echo stripslashes($row['autor']); ?> (<? echo $row['datum']; ?>)</p>
-		<p><? echo stripslashes($row['inhalt']); ?></p>
+?><hr>
+<p><? echo stripslashes($row['autor']); ?> (<? echo $row['datum']; ?>)</p>
+<p><? echo stripslashes($row['inhalt']); ?></p>
 <?
 				} while ($row = mysql_fetch_array($result));
 			}
@@ -140,25 +131,22 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			echo "Query Error!";
 			exit;
 		}
-?>
-		<hr>
-		<form action="news.php?beitrag=<? echo $_GET['beitrag']; ?>" method="post">
-			<fieldset>
-				<label>Name: <input type="text" name="autor" /></label>
-			</fieldset>
-			<textarea name="inhalt" rows="20" cols="68"></textarea>
+?><hr>
+<form action="news.php?beitrag=<? echo $_GET['beitrag']; ?>" method="post">
+<fieldset>
+<label>Name: <input type="text" name="autor" /></label>
+</fieldset>
+<textarea name="inhalt" rows="20" cols="68"></textarea>
 <?
-			if (isset($xythobuzCMS_captcha_pub)) {
-				require_once('recaptchalib.php');
-				echo recaptcha_get_html($xythobuzCMS_captcha_pub);
-			}
-?>
-			<input type="submit" name="formaction" value="Add Comment!" />
-		</form>
+		if (isset($xythobuzCMS_captcha_pub)) {
+			require_once('recaptchalib.php');
+			echo recaptcha_get_html($xythobuzCMS_captcha_pub);
+		}
+?><input type="submit" name="formaction" value="Add Comment!" />
+</form>
 <?
 	}
 } else {
-
 	$sql = 'SELECT
 		inhalt,
 		ueberschrift,
@@ -170,7 +158,7 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 		datum DESC';
 	$result = mysql_query($sql);
 	if (!$result) {
-	    die ('Etwas stimmte mit dem Query nicht');
+		die ('Etwas stimmte mit dem Query nicht');
 	}
 	$i = 0;
 	$pagemarker = 0;
@@ -187,11 +175,10 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			$skip2--;
 			$i--;
 		} else {
-?>
-	<h2><a href="news.php?beitrag=<? echo $row['id']; ?>"><? echo stripslashes($row['ueberschrift']); ?></a></h2>
-	<p style="font-size:xx-small"><? echo $row['datum']; ?></p>
-	<p><? echo stripslashes($row['inhalt']); ?></p>
-	<hr>
+?><h2><a href="news.php?beitrag=<? echo $row['id']; ?>"><? echo stripslashes($row['ueberschrift']); ?></a></h2>
+<p style="font-size:xx-small"><? echo $row['datum']; ?></p>
+<p><? echo stripslashes($row['inhalt']); ?></p>
+<hr>
 <?
 		}
 		if ($i >= 5) {
@@ -203,17 +190,14 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 	}
 
 	if ($pagemarker == 1) {
-?>
-	Page: <? echo $skip; ?> <a href="news.php?p=<? echo ($skip + 1); ?>">Older entries</a>
+?>Page: <? echo $skip; ?> <a href="news.php?p=<? echo ($skip + 1); ?>">Older entries</a>
 <?
 	}
 }
-?>
-	</div>
+?></div>
 <?
 // #################################
-?>
-	<nav>
+?><nav>
 <?
 $sql = 'SELECT
 	id,
