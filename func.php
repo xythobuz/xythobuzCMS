@@ -302,6 +302,9 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 			$resPos++;
 		}
 	}
+	if (($found == true) && ($pos != 0)) {
+		echo "<br>\n";
+	}
 	for ($i = 0; $i < ($numOfInvocations+1); $i++) {
 		echo "-&gt; ";
 	}
@@ -320,6 +323,7 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 			printID($r, $newPosition[$resPos], ($numOfInvocations+1), $lang);
 			$resPos++;
 		}
+		echo "<br>\n";
 	}
 }
 
