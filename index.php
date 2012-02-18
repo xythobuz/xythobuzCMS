@@ -96,6 +96,10 @@ if (($row['inhalt'] != "") || ($row['inhalt_en'] != "")) {
 } else {
 	echo "<h1>404 - Page not found</h1>\n<p>You followed an invalid link!</p>\n";
 }
+if (isset($xythobuzCMS_flattr)) {
+?><p><a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a></p>
+<?
+}
 ?></div><nav>
 <?
 $sql = 'SELECT
