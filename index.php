@@ -77,7 +77,8 @@ if (isset($_GET['p'])) {
 ?></div>
 <?
 $sql = 'SELECT
-	'.$temp.'
+	'.$temp.',
+	linktext
 FROM
 	cms
 WHERE
@@ -93,12 +94,16 @@ if (($row['inhalt'] != "") || ($row['inhalt_en'] != "")) {
 	} else {
 		echo stripslashes($row['inhalt_en']);
 	}
-} else {
-	echo "<h1>404 - Page not found</h1>\n<p>You followed an invalid link!</p>\n";
-}
-if (isset($xythobuzCMS_flattr)) {
+	if ((isset($xythobuzCMS_flattrusername)) && (isset($_GET['p'])) && ($_GET['p'] != "home")) {
+	$link = "https://flattr.com/submit/auto?user_id=".$xythobuzCMS_flattrusername."&amp;url=".$xythobuzCMS_root."/index.php?p=".$_GET['p']."&amp;title=".htmlspecialchars($row['linktext']);
+?><p><a href="<? echo $link; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a></p>
+<?
+	} else if ((isset($xythobuzCMS_flattr)) && (isset($_GET['p'])) && ($_GET['p'] != "home")) {
 ?><p><a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a></p>
 <?
+	}
+} else {
+	echo "<h1>404 - Page not found</h1>\n<p>You followed an invalid link!</p>\n";
 }
 ?></div><nav>
 <?

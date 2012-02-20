@@ -37,7 +37,8 @@ The setup.php script creates a config.php file and fills it with your credential
 
     // These are optional:
     $xythobuzCMS_birth = 759193200; // Birthdate as unix timestamp
-    $xythobuzCMS_flattr = 'flattr link';
+    $xythobuzCMS_flattr = 'flattr button link'; // DEPRECATED
+    $xythobuzCMS_flattrusername = 'flattr username';
     $xythobuzCMS_piwiktoken = 'piwik api token';
     $xythobuzCMS_adcode = "your ad code (html, javascript...)";
     $xythobuzCMS_customFeed = "custom feed url, if you want to use feedburner etc.";

@@ -103,8 +103,11 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 ?><a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-via="<? echo $xythobuzCMS_twitterNick; ?>">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 <?
 		}
-		
-		if (isset($xythobuzCMS_flattr)) {
+		if (isset($xythobuzCMS_flattrusername)) {
+			$link = "https://flattr.com/submit/auto?user_id=".$xythobuzCMS_flattrusername."&amp;url=".$xythobuzCMS_root."/news.php?beitrag=".$_GET['beitrag']."&amp;title=".htmlspecialchars($row['ueberschrift']);
+?><p><a href="<? echo $link; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a></p>
+<?
+		} else if (isset($xythobuzCMS_flattr)) {
 ?><a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a>
 <?
 		}
