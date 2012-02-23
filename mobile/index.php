@@ -15,7 +15,6 @@ if (mysql_errno()) {
 <link href="css/style.css" rel="stylesheet" media="screen" type="text/css" />
 <link rel="apple-touch-icon" href="images/icon.png" />
 <link rel="apple-touch-startup-image" href="images/load.png" />
-<script src="javascript/functions.js" type="text/javascript"></script>
 <title><? echo $xythobuzCMS_title; ?></title>
 <?
 $sql = 'SELECT
@@ -32,19 +31,22 @@ while ($row = mysql_fetch_array($result)) {
 	echo stripslashes($row['inhalt'])."\n";
 }
 ?>
-</head>
-<?
-if (isset($xythobuzCMS_onload)) {
-	echo "<body onload=\"".$xythobuzCMS_onload."\">\n";
-} else {
-	echo "<body>\n";
+<script src="javascript/functions.js" type="text/javascript"></script>
+<? if (isset($xythobuzCMS_onload)) { ?>
+<script type="text/javascript">
+window.onDomReady(onReady);
+function onReady() {
+	<? echo $xythobuzCMS_onload; ?>
 }
-?>
+</script>
+<? } ?>
+</head>
+<body>
 <div id="topbar">
 <? if (isset($_GET['p']) || isset($_GET['search']) || isset($_GET['news'])) { ?>
 	<div id="leftnav"><a href="index.php"><img alt="Navigation" src="images/home.png" /></a></div>
 <? } else { ?>
-	<div id="leftnav"><a href="../index.php?desktop"><img alt="Desktop Version" src="images/pc.png" /></a></div>
+	<div id="leftnav"><a class="noeffect" href="../index.php?desktop"><img alt="Desktop Version" src="images/pc.png" /></a></div>
 <? } ?>
 	<div id="title"><? echo $xythobuzCMS_title; ?></div>
 	
