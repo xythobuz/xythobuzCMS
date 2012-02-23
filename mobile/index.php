@@ -5,19 +5,39 @@ mysql_select_db($sql_database);
 if (mysql_errno()) {
 	die ('Could not connect to database!');
 }
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta content="no" name="apple-mobile-web-app-capable" />
 <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
 <link href="css/style.css" rel="stylesheet" media="screen" type="text/css" />
 <script src="javascript/functions.js" type="text/javascript"></script>
 <title><? echo $xythobuzCMS_title; ?></title>
+<?
+$sql = 'SELECT
+	inhalt
+FROM
+	cms_codehead
+ORDER BY
+	id ASC';
+$result = mysql_query($sql);
+if (!$result) {
+	die ("Error");
+}
+while ($row = mysql_fetch_array($result)) {
+	echo stripslashes($row['inhalt'])."\n";
+}
+?>
 </head>
-<body>
-
+<?
+if (isset($xythobuzCMS_onload)) {
+	echo "<body onload=\"".$xythobuzCMS_onload."\">\n";
+} else {
+	echo "<body>\n";
+}
+?>
 <div id="topbar">
 <? if (isset($_GET['p']) || isset($_GET['search'])) { ?>
 	<div id="leftnav"><a href="index.php"><img alt="Navigation" src="images/home.png" /></a></div>
@@ -79,7 +99,21 @@ if (mysql_errno()) {
 <div id="footer">
 	<!-- Support iWebKit by sending us traffic; please keep this footer on your page, consider it a thank you for my work :-) -->
 	<a class="noeffect" href="http://snippetspace.com">iPhone site powered by iWebKit</a></div>
-
+<?
+$sql = 'SELECT
+	inhalt
+FROM
+	cms_code
+ORDER BY
+	id ASC';
+$result = mysql_query($sql);
+if (!$result) {
+	die ("Error");
+}
+while ($row = mysql_fetch_array($result)) {
+	echo stripslashes($row['inhalt'])."\n";
+}
+?>
 </body>
 
 <? mysql_close(); ?>
