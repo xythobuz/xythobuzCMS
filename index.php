@@ -1,5 +1,19 @@
 <?
 include('config.php');
+$iPod = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
+$iPhone = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
+$iPad = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
+if ($iPod || $iPhone || $iPad) {
+	if (!isset($_GET['desktop'])) {
+		header ("HTTP/1.1 303 See Other");
+		$loc = $xythobuzCMS_root."/mobile/index.php";
+		if (isset($_GET['p'])) {
+			$loc = $loc."?p=".$_GET['p'];
+		}
+		header ("Location: ".$loc); 
+		exit(); 
+	}
+}
 include('func.php');
 header1();
 $db = mysql_connect($sql_host, $sql_username, $sql_password);

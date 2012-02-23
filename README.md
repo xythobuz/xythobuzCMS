@@ -1,6 +1,7 @@
 # xythobuzCMS
 
 xythobuzCMS is a PHP CMS, dependent on MySQL, which is used on [this website](http://xythobuz.org).
+A special version is served if an iOS Device browses the site. This is using [iWebKit](http://snippetspace.com/).
 It supports a piwik installation in /piwik/ and can display the Usercount for today. Just add the tracking code as code in the administration menu.
 
 ## Installation
