@@ -10,9 +10,11 @@ if (mysql_errno()) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<meta content="no" name="apple-mobile-web-app-capable" />
+<meta content="yes" name="apple-mobile-web-app-capable" />
 <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
 <link href="css/style.css" rel="stylesheet" media="screen" type="text/css" />
+<link rel="apple-touch-icon" href="images/icon.png" />
+<link rel="apple-touch-startup-image" href="images/load.png" />
 <script src="javascript/functions.js" type="text/javascript"></script>
 <title><? echo $xythobuzCMS_title; ?></title>
 <?
@@ -39,10 +41,10 @@ if (isset($xythobuzCMS_onload)) {
 }
 ?>
 <div id="topbar">
-<? if (isset($_GET['p']) || isset($_GET['search'])) { ?>
+<? if (isset($_GET['p']) || isset($_GET['search']) || isset($_GET['news'])) { ?>
 	<div id="leftnav"><a href="index.php"><img alt="Navigation" src="images/home.png" /></a></div>
 <? } else { ?>
-	<div id="leftnav"><a href="../index.php?desktop"><img alt="Navigation" src="images/home.png" /></a></div>
+	<div id="leftnav"><a href="../index.php?desktop"><img alt="Desktop Version" src="images/pc.png" /></a></div>
 <? } ?>
 	<div id="title"><? echo $xythobuzCMS_title; ?></div>
 	
