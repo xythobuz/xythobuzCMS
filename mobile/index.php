@@ -98,7 +98,15 @@ function onReady() {
 		</li>
 	<? printPage(0, 0); ?>
 	</ul>
-<? } ?>
+	<? if (isset($xythobuzCMS_logo)) { ?>
+	<span class="graytitle">Logo</span>
+	<ul class="pageitem">
+		<li class="textbox">
+			<img src="../<? echo $xythobuzCMS_logo; ?>" alt="Logo">
+		</li>
+	</ul>
+<? 	}
+} ?>
 </div>
 <div id="footer">
 	<!-- Support iWebKit by sending us traffic; please keep this footer on your page, consider it a thank you for my work :-) -->
