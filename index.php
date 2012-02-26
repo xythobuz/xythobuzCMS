@@ -5,13 +5,19 @@ $iPhone = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
 $iPad = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
 if ($iPod || $iPhone || $iPad) {
 	if (!isset($_GET['desktop'])) {
-		header ("HTTP/1.1 303 See Other");
+		if ($_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.1') {
+			if (php_sapi_name() == 'cgi') {
+				header('Status: 303 See Other');
+			} else {
+				header('HTTP/1.1 303 See Other');
+			}
+		}
 		$loc = $xythobuzCMS_root."/mobile/index.php";
 		if (isset($_GET['p'])) {
 			$loc = $loc."?p=".$_GET['p'];
 		}
 		header ("Location: ".$loc); 
-		exit(); 
+		exit();
 	}
 }
 include('func.php');

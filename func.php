@@ -302,10 +302,12 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 			$resPos++;
 		}
 	}
-	if (($found == true) && ($pos != 0)) {
-		echo "<br>\n";
+	if ($numOfInvocations == 0) {
+		if ($pos != 0) {
+			echo "<br>";
+		}
 	}
-	for ($i = 0; $i < ($numOfInvocations+1); $i++) {
+	for ($i = 1; $i < ($numOfInvocations+1); $i++) {
 		echo "-&gt; ";
 	}
 	echo "<a href=\"index.php?p=";
@@ -323,7 +325,6 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 			printID($r, $newPosition[$resPos], ($numOfInvocations+1), $lang);
 			$resPos++;
 		}
-		echo "<br>\n";
 	}
 }
 

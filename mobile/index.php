@@ -43,19 +43,32 @@ function onReady() {
 </head>
 <body>
 <div id="topbar">
-<? if (isset($_GET['p']) || isset($_GET['search']) || isset($_GET['news'])) { ?>
-	<div id="leftnav"><a href="index.php"><img alt="Navigation" src="images/home.png" /></a></div>
+<? if (isset($_GET['p']) || isset($_GET['search'])) {
+	if (strpos($_SERVER['HTTP_REFERER'], $xythobuzCMS_root."/index.php") === 0) { ?>
+	<div id="leftnav"><a href="index.php"><img src="images/home.png" alt="Home" /></a></div>
+	<? } else { ?>
+	<div id="leftnav"><a href="javascript:history.back();">Back</a></div>
+	<? }
+} else if (isset($_GET['news'])) { ?>
+	<div id="leftnav"><a href="index.php"><img src="images/home.png" alt="Home" /></a></div>
 <? } else { ?>
 	<div id="leftnav"><a class="noeffect" href="../index.php?desktop"><img alt="Desktop Version" src="images/pc.png" /></a></div>
 <? } ?>
 	<div id="title"><? echo $xythobuzCMS_title; ?></div>
-	
+<? if (isset($_GET['p'])) {
+	if (isset($_GET['lang'])) { // Link to lang 1 ?>
+	<div id="rightnav"><a href="index.php?p=<? echo $_GET['p']; ?>"><img alt="Change language" src="../img/flags/<? echo $xythobuzCMS_lang; ?>.png"></a></div>
+<?	} else { // Link to lang 2 ?>
+	<div id="rightnav"><a href="index.php?p=<? echo $_GET['p']; ?>&amp;lang"><img alt="Change language" src="../img/flags/<? echo $xythobuzCMS_lang2; ?>.png"></a></div>
+<?	}
+} ?>
 </div>
 <? if (isset($_GET['lang'])) {
 	$inhaltLanguage = "inhalt_en";
 } else {
 	$inhaltLanguage = "inhalt";
 } ?>
+<? if ((!isset($_GET['search'])) && (!isset($_GET['news']))) { ?>
 <div class="searchbox">
 	<form action="index.php" method="get">
 		<fieldset>
@@ -64,6 +77,7 @@ function onReady() {
 		</fieldset>
 	</form>
 </div>
+<? } ?>
 <div id="content">
 <? if (isset($_GET['p'])) { // Page:
 	$sql = "SELECT inhalt, inhalt_en
@@ -105,8 +119,17 @@ function onReady() {
 			<img src="../<? echo $xythobuzCMS_logo; ?>" alt="Logo">
 		</li>
 	</ul>
-<? 	}
-} ?>
+<? 	} ?>
+	<span class="graytitle">Administration</span>
+	<ul class="pageitem">
+		<li class="menu">
+			<a href="../admin.php">
+				<span class="name">Login</span>
+				<span class="arrow"></span>
+			</a>
+		</li>
+	</ul>
+<? } ?>
 </div>
 <div id="footer">
 	<!-- Support iWebKit by sending us traffic; please keep this footer on your page, consider it a thank you for my work :-) -->
@@ -127,11 +150,9 @@ while ($row = mysql_fetch_array($result)) {
 }
 ?>
 </body>
-
 <? mysql_close(); ?>
 </html>
 <?
-
 function printPage($parent, $depth) {
 	$sql2 = "SELECT id, linktext, kuerzel FROM cms WHERE kategorie = ".mysql_real_escape_string($parent);
 		$sql2 = $sql2." ORDER BY ord ASC";

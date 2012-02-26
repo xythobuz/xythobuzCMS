@@ -100,10 +100,10 @@ if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 			echo $row['ord'];
 ?>"></label><br>
 		<textarea name="content" rows="20" cols="68"><?
-			echo stripslashes($row['inhalt']);
+			echo htmlspecialchars(stripslashes($row['inhalt']));
 ?></textarea><br>
 		<textarea name="content_en" rows="20" cols="68"><?
-			echo stripslashes($row['inhalt_en']);
+			echo htmlspecialchars(stripslashes($row['inhalt_en']));
 ?></textarea><br>
 		<input type="submit" name="formaction" value="Save" />
 	</fieldset>
