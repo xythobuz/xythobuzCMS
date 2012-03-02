@@ -12,7 +12,7 @@ if (mysql_errno()) {
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta content="yes" name="apple-mobile-web-app-capable" />
 <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
-<link href="css/style.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="style.css" rel="stylesheet" media="screen" type="text/css" />
 <link rel="apple-touch-icon" href="images/icon.png" />
 <link rel="apple-touch-startup-image" href="images/load.png" />
 <title><? echo $xythobuzCMS_title; ?></title>
@@ -49,8 +49,10 @@ function onReady() {
 	<? } else { ?>
 	<div id="leftnav"><a href="javascript:history.back();">Back</a></div>
 	<? }
-} else if (isset($_GET['news'])) { ?>
+} else if (isset($_GET['news']) && !is_numeric($_GET['news'])) { ?>
 	<div id="leftnav"><a href="index.php"><img src="images/home.png" alt="Home" /></a></div>
+<? } else if (isset($_GET['news'])) { ?>
+	<div id="leftnav"><a href="index.php?news">Back</a></div>
 <? } else { ?>
 	<div id="leftnav"><a class="noeffect" href="../index.php?desktop"><img alt="Desktop Version" src="images/pc.png" /></a></div>
 <? } ?>
@@ -80,7 +82,7 @@ function onReady() {
 <? } ?>
 <div id="content">
 <? if (isset($_GET['p'])) { // Page:
-	$sql = "SELECT inhalt, inhalt_en
+	$sql = "SELECT inhalt, inhalt_en, linktext
 	FROM cms
 	WHERE kuerzel = '".mysql_real_escape_string($_GET['p'])."'";
 	$result = mysql_query($sql);
@@ -88,7 +90,8 @@ function onReady() {
 		die("Database Error");
 	}
 	$row = mysql_fetch_array($result);
-?>	<ul class="pageitem">
+?>	<span class="graytitle"><? echo $row['linktext']; ?></span>
+	<ul class="pageitem">
 		<li class="textbox">
 <?
 	$content = stripslashes($row[$inhaltLanguage]);
@@ -98,9 +101,59 @@ function onReady() {
 	</ul>
 <?
 } else if (isset($_GET['search'])) {  // Search:
-	searchInCms($_GET['search']);
+?>	<span class="graytitle">Search</span>
+<?	searchInCms($_GET['search']);
 } else if (isset($_GET['news'])) {
-	include("php/rss.php");
+	if ($_GET['news'] == "") {
+		// List articles
+		listNews();
+	} else {
+		// Show article
+		$sql = 'SELECT inhalt, ueberschrift, datum
+		FROM cms_news
+		WHERE id = '.mysql_real_escape_string($_GET['news']);
+		$result = mysql_query($sql);
+		if (!$result) {
+			echo "404 - Page not found";
+			exit;
+		}
+		$row = mysql_fetch_array($result);
+?>	<span class="graytitle"><? echo $row['ueberschrift']." (".$row['datum'].")"; ?></span>
+	<ul class="pageitem">
+		<li class="textbox">
+<?		$content = stripslashes($row['inhalt']);
+		$content = preg_replace('#(href|src)="([^:"]*)(?:")#','$1="'.$xythobuzCMS_root.'/$2"',$content);
+		echo $content;
+?>		</li>
+	</ul>
+<?		$sql = 'SELECT inhalt, datum, autor
+		FROM cms_comments
+		WHERE parent = '.mysql_real_escape_string($_GET['news']).' && frei = TRUE
+		ORDER BY datum ASC';
+		$result = mysql_query($sql);
+		if ($result) {
+			$row = mysql_fetch_array($result);
+			if ($row == false) {
+?>	<ul class="pageitem">	
+		<li class="textbox">
+No Comments!
+		</li>
+	</ul>
+<?			} else {
+				do {
+?>	<span class="graytitle"><? echo $row['autor']." (".$row['datum'].")"; ?></span>
+	<ul class="pageitem">
+		<li class="textbox">
+<?					echo stripslashes($row['inhalt']); ?>
+		</li>
+	</ul>
+<?				} while($row = mysql_fetch_array($result));
+			}
+		} else {
+			echo "Query Error!";
+			exit;
+		}
+	}
 } else { // Navigation: ?>
 	<span class="graytitle">Navigation</span>
 	<ul class="pageitem">
@@ -133,7 +186,9 @@ function onReady() {
 </div>
 <div id="footer">
 	<!-- Support iWebKit by sending us traffic; please keep this footer on your page, consider it a thank you for my work :-) -->
-	<a class="noeffect" href="http://snippetspace.com">iPhone site powered by iWebKit</a></div>
+	<a class="noeffect" href="../admin.php">Admin Area</a>
+	<a class="noeffect" href="http://snippetspace.com">iPhone site powered by iWebKit</a>
+</div>
 <?
 $sql = 'SELECT
 	inhalt
@@ -153,6 +208,26 @@ while ($row = mysql_fetch_array($result)) {
 <? mysql_close(); ?>
 </html>
 <?
+function listNews() {
+	$sql = 'SELECT ueberschrift, datum, id
+	FROM cms_news
+	ORDER BY datum DESC';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Query Error");
+	}
+	while ($row = mysql_fetch_array($result)) {
+?>	<ul class="pageitem">
+		<li class="menu">
+			<a href="index.php?news=<? echo $row['id'] ?>">
+				<span class="name"><? echo $row['ueberschrift']." (".$row['datum'].")"; ?></span>
+				<span class="arrow"></span>
+			</a>
+		</li>
+	</ul>
+<?	}
+}
+
 function printPage($parent, $depth) {
 	$sql2 = "SELECT id, linktext, kuerzel FROM cms WHERE kategorie = ".mysql_real_escape_string($parent);
 		$sql2 = $sql2." ORDER BY ord ASC";

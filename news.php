@@ -74,7 +74,7 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			}
 			if ($xythobuzCMS_com == "FALSE") {
 				$subject = "New Comment!";
-				$body = $_POST['autor']." posted the following comment on ".$xythobuzCMS_title.":\n".$_POST['inhalt']."\n\n<a href=\"".$xythobuzCMS_root."/news.php?beitrag=".$_GET['beitrag']."\">Link zum Artikel</a>\n";
+				$body = $_POST['autor']." posted the following comment on ".$xythobuzCMS_title.":\n\n".$_POST['inhalt']."\n";
 				if (!mail($xythobuzCMS_authormail, $subject, $body)) {
 					echo "Mail Error!";
 				}
