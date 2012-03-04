@@ -25,19 +25,10 @@ if (!iWebkit) {
 				hideURLbar();
 			};
 			iWebkit.init();
+
 		};
 }
-
 window.onDomReady = initReady;
 function initReady(fn) {
-	if (document.addEventListener) {
-		document.addEventListener("DOMContentLoaded", fn, false);
-	} else {
-		document.onreadystatechange = function(){readyState(fn)} // IE
-	}
-}
-function readyState(func) {
-	if (document.readyState == "interactive" || document.readyState == "complete") {
-		func();
-	}
+	document.addEventListener("DOMContentLoaded", fn, false);
 }
