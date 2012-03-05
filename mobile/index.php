@@ -109,6 +109,41 @@ function onReady() {
 		// List articles
 		listNews();
 	} else {
+		if (isset($_POST['comment'])) {
+			// Add comment
+			$ok = 1;
+			if (isset($xythobuzCMS_captcha_priv)) {
+				require_once('../recaptchalib.php');
+				$resp = recaptcha_check_answer($xythobuzCMS_captcha_priv, $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
+				if (!$resp->is_valid) {
+					echo "<p>Captcha wrong!</p>";
+					$ok = 0;
+				}
+			}
+			if ($ok == 1) {
+				$sql = 'INSERT INTO
+					cms_comments(datum, autor, inhalt, parent, frei)
+				VALUES
+					(FROM_UNIXTIME('.time().'),
+					"'.mysql_real_escape_string($_POST['autor']).'",
+					"'.mysql_real_escape_string($_POST['comment']).'",
+					'.mysql_real_escape_string($_GET['news']).',
+					'.$xythobuzCMS_com.')';
+				$result = mysql_query($sql);
+				if (!$result) {
+					echo "<p>Could not add comment!</p>";
+				} else {
+					echo "<p>Comment added!</p>";
+					if ($xythobuzCMS_com == "FALSE") {
+						$subject = "New Comment!";
+						$body = $_POST['autor']." posted the following comment on ".$xythobuzCMS_title.":\n\n".$_POST['comment']."\n";
+						if (!mail($xythobuzCMS_authormail, $subject, $body)) {
+							echo "Mail Error!";
+						}
+					}
+				}
+			}
+		}
 		// Show article
 		$sql = 'SELECT inhalt, ueberschrift, datum
 		FROM cms_news
@@ -154,7 +189,28 @@ No Comments!
 			echo "Query Error!";
 			exit;
 		}
-	}
+?>	<form method="post"><fieldset>
+		<span class="graytitle">New Comment</span>
+		<ul class="pageitem">
+			<li class="bigfield">
+				<input placeholder="Nickname" type="text" name="autor" />
+			</li>
+			<li class="textbox">
+				<span class="header">Comment</span>
+				<textarea name="comment" rows="3"></textarea>
+			</li>
+<?		if (isset($xythobuzCMS_captcha_pub)) { 
+			require_once('../recaptchalib.php'); ?>
+			<li class="textbox">
+				<? echo recaptcha_get_html($xythobuzCMS_captcha_pub); ?>
+			</li>
+<?		} ?>
+			<li class="button">
+				<input type="submit" name="Submit comment" value="Submit comment" />
+			</li>
+		</ul>
+	</fieldset></form>
+<?	}
 } else { // Navigation: ?>
 	<span class="graytitle">Navigation</span>
 	<ul class="pageitem">
