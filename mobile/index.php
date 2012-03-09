@@ -222,6 +222,23 @@ No Comments!
 		</li>
 	<? printPage(0, 0); ?>
 	</ul>
+	<span class="graytitle">Links</span>
+	<ul class="pageitem">
+<?
+		$sql = 'SELECT url, title FROM cms_links ORDER BY ord ASC';
+		$result = mysql_query($sql);
+		if(!$result) {
+			die("Database error...");
+		}
+		while ($row = mysql_fetch_array($result)) {
+?>		<li class="menu">
+			<a class="noeffect" href="<? echo $row['url']; ?>">
+				<span class="name"><? echo $row['title']; ?></span>
+				<span class="arrow"></span>
+			</a>
+		</li>
+<?		}
+?>	</ul>
 	<? if (isset($xythobuzCMS_logo)) { ?>
 	<span class="graytitle">Logo</span>
 	<ul class="pageitem">
@@ -229,7 +246,7 @@ No Comments!
 			<img src="../<? echo $xythobuzCMS_logo; ?>" alt="Logo">
 		</li>
 	</ul>
-<? 	}
+<?	}
 } ?>
 </div>
 <div id="footer">
