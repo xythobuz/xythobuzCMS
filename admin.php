@@ -13,27 +13,29 @@ header1();
 <body>
 <div class="admin">
 <h1>xythobuz.org CMS Admin-Area</h1>
+<h2>Pages</h2>
 <a href="admin/addpage.php">Add Page</a><br>
 <a href="admin/editpage.php">Edit Page</a><br>
 <a href="admin/deletepage.php">Delete Page</a><br>
+<h2>Blog</h2>
 <a href="admin/addnews.php">Add News</a><br>
 <a href="admin/editnews.php">Edit News</a><br>
 <a href="admin/deletenews.php">Delete News</a><br>
 <a href="admin/deletecomment.php">Manage Comments</a><br>
-<a href="admin/users.php">Manage Users</a><br>
+<h2>Links</h2>
 <a href="admin/addlink.php">Add Link</a><br>
 <a href="admin/editlink.php">Edit Links</a><br>
+<h2>Misc</h2>
+<a href="admin/users.php">Manage Users</a><br>
+<h2>Code</h2>
 <a href="admin/addcodebody.php">Add Code Body</a><br>
-<a href="admin/addcodenav.php">Add Code Nav</a><br>
-<a href="admin/addcodehead.php">Add Code Head</a><br>
 <a href="admin/editcodebody.php">Edit Code Body</a><br>
+<a href="admin/addcodenav.php">Add Code Nav</a><br>
 <a href="admin/editcodenav.php">Edit Code Nav</a><br>
+<a href="admin/addcodehead.php">Add Code Head</a><br>
 <a href="admin/editcodehead.php">Edit Code Head</a><br>
 <hr>
-<? if (isset($xythobuzCMS_piwiktoken)) { ?>
-<a href="/piwik/">Piwik Statistics</a><br>
-<? }
-
+<?
 	// Update sitemap
 	$sitemap = "<?xml version='1.0' encoding='UTF-8'?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\nxmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\nxsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9\nhttp://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">\n\n<url>\n\t<loc>".$xythobuzCMS_root."/index.php</loc>\n</url>\n<url>\n\t<loc>".$xythobuzCMS_root."/news.php</loc>\n</url>\n\n";
 	$sql = 'SELECT

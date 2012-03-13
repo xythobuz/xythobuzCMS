@@ -9,6 +9,18 @@ html, body {
 h1 {
 	font-family: serif;
 }
+h2 {
+	font-family: serif;
+}
+h3 {
+	font-family: serif;
+}
+h4 {
+	font-family: serif;
+}
+h5 {
+	font-family: serif;
+}
 
 a:link {
 	color: #FFE200;
@@ -51,8 +63,29 @@ pre {
 	width: 65%;
 	background-color: #31363C;
 	float: right;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 15px;
+}
+
+.newscontent {
+	width: 65%;
+	float: right;
+	background-color: #999999;
+}
+
+.comments {
+	background-color: #31363C;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 15px;
+}
+
+.news {
+	background-color: #31363C;
+	padding: 10px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border-radius: 15px;
@@ -61,7 +94,6 @@ pre {
 .container {
 	width: 90%;
 	margin: 0 auto;
-	background: #000044;
 }
 
 .admin {

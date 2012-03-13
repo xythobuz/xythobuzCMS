@@ -21,7 +21,7 @@ if (!isset($_GET['w'])) {
 	FROM
 		cms_news
 	ORDER BY
-		id';
+		id DESC';
 	$result = mysql_query($sql);
 	if (!$result) {
 		die ('Query-Error!');

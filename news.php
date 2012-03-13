@@ -16,7 +16,13 @@ if (!isset($xythobuzCMS_customFeed)) {
 }
 ?><meta name="description" content="xythobuzs Blog">
 <?
-body1();
+if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag']) && (!isset($_POST['inhalt']))) {
+	body1("newscontent");
+?><div class="news">
+<?
+} else {
+	body1();
+}
 if (!isset($xythobuzCMS_customFeed)) {
 ?><p><a href="/rss.xml"><img src="/img/rss.png" alt="RSS Feed"></a></p>
 <?
@@ -27,6 +33,7 @@ if (!isset($xythobuzCMS_customFeed)) {
 
 if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 	if (isset($_POST['inhalt'])) {
+		// Add comment
 		if (isset($_POST['autor'])) {
 			$res = checkComment($_POST['inhalt']);
 			if ($res != -1) {
@@ -81,6 +88,7 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			}
 		}
 	} else {
+		// Show page & comments
 		$sql = 'SELECT
 			inhalt,
 			ueberschrift,
@@ -111,6 +119,8 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 ?><a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a>
 <?
 		}
+?></div><div class="comments">
+<?
 
 		$sql = 'SELECT
 			inhalt,
@@ -126,12 +136,12 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 		if ($result) {
 			$row = mysql_fetch_array($result);
 			if ($row == false) {
-				echo "<hr><p>No Comments!</p>\n";
+				echo "<p>No Comments!</p>\n";
 			} else {
 				do {
-?><hr>
+?>
 <p><? echo stripslashes($row['autor']); ?> (<? echo $row['datum']; ?>)</p>
-<p><? echo stripslashes($row['inhalt']); ?></p>
+<p><? echo stripslashes($row['inhalt']); ?></p><hr>
 <?
 				} while ($row = mysql_fetch_array($result));
 			}
@@ -139,7 +149,7 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			echo "Query Error!";
 			exit;
 		}
-?><hr>
+?>
 <form action="news.php?beitrag=<? echo $_GET['beitrag']; ?>" method="post">
 <fieldset>
 <label>Name: <input type="text" name="autor" /></label>
@@ -151,10 +161,11 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			echo recaptcha_get_html($xythobuzCMS_captcha_pub);
 		}
 ?><input type="submit" name="formaction" value="Add Comment!" />
-</form>
+</form></div>
 <?
 	}
 } else {
+	// Show all entries / pages
 	$sql = 'SELECT
 		inhalt,
 		ueberschrift,

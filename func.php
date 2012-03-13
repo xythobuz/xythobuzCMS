@@ -26,9 +26,9 @@ function header1() {
 <?
 }
 
-function body1() {
+function body1($s = "content") {
 	body2();
-	body3();
+	body3($s);
 }
 
 function body2() {
@@ -57,9 +57,9 @@ function body2() {
 	}
 }
 
-function body3() {
+function body3($s = "content") {
 ?><div class="container">
-<div class="content">
+<div class="<? echo $s; ?>">
 <?
 }
 
