@@ -193,7 +193,7 @@ function bottom2() {
 	$url = str_replace("'", '&#39;', $url);
 ?>Permalink: <a href="<? echo $url; ?>"><? echo $url; ?></a><br>
 <a href="pwd.php">Admin</a><br>
-</p>
+</p></nav><div class="footer">
 <?
 
 	$sql = 'SELECT
@@ -215,14 +215,13 @@ function bottom2() {
 <?
 	}
 	if (isset($xythobuzCMS_twitterNick)) {
-?><a href="https://twitter.com/<? echo $xythobuzCMS_twitterNick; ?>" class="twitter-follow-button" data-button="grey" data-text-color="#FFFFFF" data-link-color="#00AEFF" data-show-count="false">Follow @<? echo $xythobuzCMS_twitterNick; ?></a>
-<script src="//platform.twitter.com/widgets.js" type="text/javascript"></script><br>
+?><a href="https://twitter.com/<? echo $xythobuzCMS_twitterNick; ?>" class="twitter-follow-button" data-button="grey" data-text-color="#FFFFFF" data-link-color="#00AEFF" data-show-count="false">Follow @<? echo $xythobuzCMS_twitterNick; ?></a><br>
 <?
 	}
 	if (isset($xythobuzCMS_adcode)) {
 		echo $xythobuzCMS_adcode."\n";
 	}
-	if (isset($xythobuzCMS_piwiktoken)) {
+	/* if (isset($xythobuzCMS_piwiktoken)) {
 		$curl_handle = curl_init();
 		curl_setopt($curl_handle,CURLOPT_URL, $xythobuzCMS_root.'/piwik/index.php?module=API&method=VisitsSummary.getUniqueVisitors&idSite=1&period=day&date=today&format=xml&token_auth='.$xythobuzCMS_piwiktoken);
 		curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
@@ -234,10 +233,17 @@ function bottom2() {
 			$s_array = array("<result>", "</result>", "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
 			echo "<p style=\"font-size:x-small\">";
 			echo str_replace($s_array, "", $buffer);
-			echo " Besucher heute</p>\n";
+			echo " Visitors</p>\n";
+		} else {
+			echo "<p style=\"font-size:x-small\">No Visitor Data!</p>\n";
 		}
-	}
-?></nav></div>
+	} */
+
+	echo "<p style=\"font-size:x-small\">";
+	include("count.php");
+	echo " desktop visitor(s) today.</p>\n";
+
+?></div></div>
 <?
 	// Print custom code
 	$sql = 'SELECT

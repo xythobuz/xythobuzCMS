@@ -59,6 +59,18 @@ pre {
 	color: #DCDCDC;
 }
 
+.footer {
+	background-color: #31363C;
+	clear: right;
+	float: left;
+	width: 100%;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+	border-radius: 15px;
+}
+
 .content {
 	width: 65%;
 	background-color: #31363C;
