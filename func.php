@@ -241,7 +241,7 @@ function bottom2() {
 
 	echo "<p style=\"font-size:x-small\">";
 	include("count.php");
-	echo " desktop visitor(s) today.</p>\n";
+	echo " unique desktop visitor(s) today.</p>\n";
 
 ?></div></div>
 <?
