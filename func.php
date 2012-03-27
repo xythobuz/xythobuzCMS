@@ -18,7 +18,11 @@ function header1() {
 <html lang="<? echo $tmpstring ?>">
 <head>
 <meta charset="utf-8" />
+<? if (isset($_GET['css']) && !empty($_GET['css'])) { ?>
+<link rel="stylesheet" href="<? echo $xythobuzCMS_root; ?>/<? echo $_GET['css']; ?>.css" media="screen" type="text/css" />
+<? } else { ?>
 <link rel="stylesheet" href="<? echo $xythobuzCMS_root; ?>/style.css" media="screen" type="text/css" />
+<? } ?>
 <link rel="stylesheet" href="<? echo $xythobuzCMS_root; ?>/print.css" media="print" type="text/css" />
 <link rel="author" href="<? echo $xythobuzCMS_authormail; ?>" />
 <link rel="shortcut icon" href="<? echo $xythobuzCMS_root; ?>/favicon.ico" />
