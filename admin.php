@@ -42,6 +42,8 @@ header1();
 				kuerzel
 			FROM
 				cms
+			WHERE NOT
+				nolink = 1
 			ORDER BY
 				id';
 	$result = mysql_query($sql);

@@ -132,7 +132,8 @@ $sql = 'SELECT
 	kuerzel,
 	linktext,
 	kategorie,
-	ord
+	ord,
+	nolink
 FROM
 	cms
 ORDER BY

@@ -320,14 +320,20 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 	for ($i = 1; $i < ($numOfInvocations+1); $i++) {
 		echo "-&gt; ";
 	}
-	echo "<a href=\"index.php?p=";
-	echo $r[$pos]['kuerzel'];
-	if ($lang == "en") {
-		echo "&amp;lang=en";
-	}
-	echo "\">";
+	
+	if ($r[$pos]['nolink'] != 1) {
+		echo "<a href=\"index.php?p=";
+		echo $r[$pos]['kuerzel'];
+		if ($lang == "en") {
+			echo "&amp;lang=en";
+		}
+		echo "\">";
+	}	
 	echo $r[$pos]['linktext'];
-	echo "</a><br>\n";
+	if ($r[$pos]['nolink'] != 1) {
+		echo "</a>";
+	}
+	echo "<br>\n";
 	if ($found == true) {
 		sort2d_asc($results, 'id');
 		$resPos = 0;

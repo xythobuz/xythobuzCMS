@@ -26,7 +26,8 @@ if (isset($_POST['Host'])) {
 		linktext VARCHAR(50) NOT NULL,
 		beschreibung VARCHAR(100) NOT NULL,
 		inhalt TEXT NOT NULL,
-   		inhalt_en TEXT NOT NULL	)';
+   		inhalt_en TEXT NOT NULL,
+   		nolink BOOL DEFAULT 0 )';
 	$result = mysql_query($sql);
 	if ($result == NULL) {
 		die ("Could not create table 'cms'");
