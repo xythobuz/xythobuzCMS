@@ -176,6 +176,9 @@ function bottom2() {
 <?
 	}
 ?><br><a href="mailto:<? echo $xythobuzCMS_authormail; ?>"><? echo $xythobuzCMS_authormail; ?></a><br>
+<? if (isset($xythobuzCMS_twitterNick)) {
+?><a href="https://twitter.com/<? echo $xythobuzCMS_twitterNick; ?>" class="twitter-follow-button" data-button="grey" data-text-color="#FFFFFF" data-link-color="#00AEFF" data-show-count="false">Follow @<? echo $xythobuzCMS_twitterNick; ?></a><br>
+<? } ?>
 </p><p style="font-size:xx-small">
 <?
 	// Create String with Link to current site.
@@ -216,10 +219,6 @@ function bottom2() {
 
 	if (isset($xythobuzCMS_flattr)) {
 ?><a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a><br>
-<?
-	}
-	if (isset($xythobuzCMS_twitterNick)) {
-?><a href="https://twitter.com/<? echo $xythobuzCMS_twitterNick; ?>" class="twitter-follow-button" data-button="grey" data-text-color="#FFFFFF" data-link-color="#00AEFF" data-show-count="false">Follow @<? echo $xythobuzCMS_twitterNick; ?></a><br>
 <?
 	}
 	if (isset($xythobuzCMS_adcode)) {
