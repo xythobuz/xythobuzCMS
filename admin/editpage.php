@@ -52,7 +52,8 @@ if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 		beschreibung,
 		ord,
 		inhalt,
-		inhalt_en
+		inhalt_en,
+		nolink
 	FROM
 		cms
 	WHERE id = '.mysql_real_escape_string($_POST['id']);
@@ -75,6 +76,20 @@ if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 			<option value="0">0 -&gt; Root</option>
 			<?
 	$sql = 'SELECT
+		id, linktext, kategorie
+	FROM
+		cms
+	WHERE
+		id = '.mysql_real_escape_string($_POST['id']);
+	$result = mysql_query($sql);
+	if (!$result) {
+		echo "Query Error!";
+		exit;
+	}
+	$row2 = mysql_fetch_array($result);
+	$parentSelected = $row2['kategorie'];
+
+	$sql = 'SELECT
 		id, linktext
 	FROM
 		cms';
@@ -87,7 +102,11 @@ if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 		if ($row2['id'] != $_POST['id']) {
 			echo '<option value="';
 			echo $row2['id'];
-			echo '">';
+			echo '"';
+			if ($row2['id'] == $parentSelected) {
+				echo " selected";
+			}
+			echo '>';
 			// echo $row2['id'];
 			// echo " -&gt; ";
 			echo $row2['linktext'];
@@ -99,6 +118,11 @@ if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 		<label>Order: <input type="text" name="ord" value="<?
 			echo $row['ord'];
 ?>"></label><br>
+		<? if ($row['nolink'] == 0) { ?>
+		<label>Unclickable: <input type="checkbox" name="click" value="true"></label><br>
+		<? } else { ?>
+		<label>Unclickable: <input type="checkbox" name="click" value="true" checked="checked"></label><br>
+		<? } ?>
 		<textarea name="content" rows="20" cols="68"><?
 			echo htmlspecialchars(stripslashes($row['inhalt']));
 ?></textarea><br>
@@ -121,6 +145,11 @@ if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 	$content = mysql_real_escape_string($_POST['content']);
 	$content_en = mysql_real_escape_string($_POST['content_en']);
 	$id = mysql_real_escape_string($_GET['id']);
+	if ($_POST['click'] == "true") {
+		$click = "1";
+	} else {
+		$click = "0";
+	}
 
 	$sql = 'UPDATE
 		cms
@@ -130,7 +159,8 @@ if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 		kategorie = '.$kat.',
 		ord = '.$ord.',
 		inhalt = "'.$content.'",
-		inhalt_en = "'.$content_en.'"
+		inhalt_en = "'.$content_en.'",
+		nolink = '.$click.'
 	WHERE
 		id = '.mysql_real_escape_string($_GET['id']);
 	$result = mysql_query($sql);

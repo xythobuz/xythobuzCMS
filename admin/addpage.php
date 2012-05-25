@@ -48,6 +48,7 @@ if(!isset($_POST['content'])) {
 		<label>Description: *<input type="text" name="desc" /></label>
 		<label>Link Text: *<input type="text" name="link" /></label>
 		<label>Order: <input type="text" name="order" /></label>
+		<label>Unclickable: <input type="checkbox" name="click" value="true"></label>
 	</fieldset>
 	<textarea name="content" rows="20" cols="68">Hier Inhalt eingeben</textarea>
 	<textarea name="content_en" rows="20" cols="68">No translation available...</textarea>
@@ -116,9 +117,15 @@ if(!isset($_POST['content'])) {
 		print "No Content!";
 		exit;
 	}
-			
+
+	if ($_POST['click'] == "true") {
+		$click = "1";
+	} else {
+		$click = "0";
+	}
+
 	$sql = 'INSERT INTO
-			cms(kuerzel, beschreibung, linktext, kategorie, ord, inhalt, inhalt_en)
+			cms(kuerzel, beschreibung, linktext, kategorie, ord, inhalt, inhalt_en, nolink)
 		VALUES
 			("'.mysql_real_escape_string($_POST['short']).'",
 			"'.mysql_real_escape_string($_POST['desc']).'",
@@ -126,7 +133,8 @@ if(!isset($_POST['content'])) {
 			"'.$Pparent.'",
 			"'.$Porder.'",
 			"'.$conte.'",
-			"'.$conte2.'" )';
+			"'.$conte2.'",
+			'.$click.' )';
 	$result = mysql_query($sql);
 	if (!$result) {
 		echo "Query Error(6)!";
