@@ -20,29 +20,36 @@ function listNews() {
 }
 
 function printPage($parent, $depth) {
-	$sql2 = "SELECT id, linktext, kuerzel FROM cms WHERE kategorie = ".mysql_real_escape_string($parent);
+	$sql2 = "SELECT id, linktext, kuerzel, nolink FROM cms WHERE kategorie = ".mysql_real_escape_string($parent);
 		$sql2 = $sql2." ORDER BY ord ASC";
 		$result2 = mysql_query($sql2);
 		if (!$result2) {
 			die ("Database Error");
 		}
 		while ($row2 = mysql_fetch_array($result2)) {
-			echo "<li class=\"menu\">";
-			echo "<a href=\"index.php?p=".$row2['kuerzel'];
-			if (isset($_GET['lang'])) {
-				echo "&amp;lang=en";
+			if ($row2['nolink'] == 1) {
+				echo "</ul>\n";
+				echo "<span class=\"graytitle\">".$row2['linktext']."</span>\n";
+				echo "<ul class=\"pageitem\">\n";
+				printPage($row2['id'], $depth + 1);
+			} else {
+				echo "<li class=\"menu\">";
+				echo "<a href=\"index.php?p=".$row2['kuerzel'];
+				if (isset($_GET['lang'])) {
+					echo "&amp;lang=en";
+				}
+				echo "\">";
+				echo "<span class=\"name\">";
+				for ($i = 0; $i < $depth; $i++) {
+					echo "--&gt; ";
+				}
+				echo $row2['linktext'];
+				echo "</span>";
+				echo "<span class=\"arrow\"></span>";
+				echo "</a>";
+				echo "</li>\n";
+				printPage($row2['id'], $depth + 1);
 			}
-			echo "\">";
-			echo "<span class=\"name\">";
-			for ($i = 0; $i < $depth; $i++) {
-				echo "--&gt; ";
-			}
-			echo $row2['linktext'];
-			echo "</span>";
-			echo "<span class=\"arrow\"></span>";
-			echo "</a>";
-			echo "</li>\n";
-			printPage($row2['id'], $depth + 1);
 		}
 }
 

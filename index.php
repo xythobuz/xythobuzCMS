@@ -49,7 +49,7 @@ echo $row['beschreibung'];
 ?>">
 <?
 body2();
-if (($_GET['lang'] != "en") && ($row['inhalt_en'] != "") && ($row['inhalt_en'] != "<p>No translation available...</p>")) {
+if (($_GET['lang'] != "en") && ($row['inhalt_en'] != "") && (!(($row['inhalt_en'] == "<p>No translation available...</p>") || ($row['inhalt_en'] == "No translation available...")))) {
 	$langs = array( $xythobuzCMS_lang, $xythobuzCMS_lang2 );
 	$bestlang = prefered_language($langs);
 	if ($bestlang == $xythobuzCMS_lang2) {
