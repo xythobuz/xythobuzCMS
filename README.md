@@ -49,6 +49,7 @@ The setup.php script creates a config.php file and fills it with your credential
 	$xythobuzCMS_captcha_pub = "public reCaptcha Key.";
 	// recaptchalib.php in this folder needed. Get here:
 	// http://code.google.com/p/recaptcha/downloads/list?q=label:phplib-Latest
+    $xythobuzCMS_logoLink = "http://www.example.com"; // Link on logo. Root if unset
 
 xythobuzCMS creates an rss feed for your blog entries. It is available in your root folder as "rss.xml". You can change the link to the rss feed if you enter an alternative url in your config / setup.
 If you use languages other than 'de' and 'en', put images of their flags into img/flags/ as code.png, so e.g. put ch.png in there, if one of your languages is swiss(ch)...

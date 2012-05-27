@@ -222,6 +222,9 @@ Tables created successfully!<br>
 			}
 		}
 		$content = $content."?>";
+		if ($_POST['logolink'] != '') {
+			$content = $content."\$xythobuzCMS_logoLink = \"".$_POST['logolink']."\";\n";
+		}
 
 		if (!file_exists($configFile)) {
 			if (touch($configFile)) {
@@ -285,6 +288,7 @@ Tables created successfully!<br>
 		<tr><td>reChaptcha Private</td><td><input type="text" name="capt_priv" /></td><td></td></tr>
 		<tr><td>UltimateNotifier Username</td><td><input type="text" name="UNname" /></td><td>Sends notifications when comments are added</td></tr>
 		<tr><td>UltimateNotifier Password</td><td><input type="text" name="UNpass" /></td><td></td></tr>
+		<tr><td>Alternative Logo Link URL</td><td><input type="test" name="logolink" /></td><td></td></tr>
 		<tr><td></td><td><input type="submit" name="formaction" value="Save" /></td><td></td></tr>
 	</table>
 </form>

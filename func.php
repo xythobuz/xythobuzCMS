@@ -1,10 +1,17 @@
 <?
+clearstatcache();
+if (file_exists("setup.php")) {
+	die("Please setup xythobuzCMS Installation first!");
+}
 
 if (!isset($_GET['beitrag'])) {
 	$_GET['beitrag'] = "";
 }
 if (!isset($_GET['lang'])) {
 	$_GET['lang'] = "";
+}
+if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+	$_SERVER['HTTP_ACCEPT_LANGUAGE'] = "";
 }
 
 function header1() {
@@ -63,17 +70,11 @@ function body2() {
 
 function body3($s = "content") {
 ?><div class="container">
+
 <div class="<? echo $s; ?>">
 <?
 }
 
-/*
-   determine which language out of an available set the user prefers most
-
-   $available_languages        array with language-tag-strings (must be lowercase) that are available
-   $http_accept_language    a HTTP_ACCEPT_LANGUAGE string (read from $_SERVER['HTTP_ACCEPT_LANGUAGE'] if left out)
-By: anonymous on http://www.php.net/manual/en/function.http-negotiate-language.php
- */
 function prefered_language ($available_languages,$http_accept_language="auto") {
 	// if $http_accept_language was left out, read it from the HTTP-Header
 	if ($http_accept_language == "auto") $http_accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
@@ -132,7 +133,12 @@ function bottom1($lang) {
 <input type="submit" value="<? if ($_GET['lang'] == "en") { echo "Search"; } else { echo "Suche"; } ?>"></form>
 <p><?
 	if (isset($xythobuzCMS_logo)) {
-?><a href="<? echo $xythobuzCMS_root; ?>"><img src="<? echo $xythobuzCMS_logo; ?>" alt="Logo"></a><br>
+		if (!isset($xythobuzCMS_logoLink)) {
+			$tmp = $xythobuzCMS_root;
+		} else {
+			$tmp = $xythobuzCMS_logoLink;
+		}
+?><a href="<? echo $tmp; ?>"><img src="<? echo $xythobuzCMS_logo; ?>" alt="Logo"></a><br>
 <?
 	}
 	echo $xythobuzCMS_author."<br>";
@@ -200,7 +206,9 @@ function bottom2() {
 	$url = str_replace("'", '&#39;', $url);
 ?>Permalink: <a href="<? echo $url; ?>"><? echo $url; ?></a><br>
 <a href="pwd.php">Admin</a><br>
-</p></nav><div class="footer">
+</p></nav>
+
+<div class="footer">
 <?
 
 	$sql = 'SELECT
@@ -262,7 +270,9 @@ function bottom2() {
 	while ($row = mysql_fetch_array($result)) {
 		echo stripslashes($row['inhalt'])."\n";
 	}
-?></body></html>
+?>
+</body>
+</html>
 <?
 	mysql_close();
 }

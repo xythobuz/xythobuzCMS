@@ -24,6 +24,7 @@ if (!isset($_GET['term'])) {
 	$resultLink = array();
 	$resultDesc = array();
 	$resultVal = array();
+	$resultBlog = array();
 	$i = 0;
 	$sql = 'SELECT
 		inhalt, kuerzel, linktext, beschreibung
@@ -34,15 +35,36 @@ if (!isset($_GET['term'])) {
 		die("Database Error");
 	}
 	while ($row = mysql_fetch_array($result)) {
-		$res = substr_count($row['inhalt'], $_GET['term']);
+		$res = substr_count($row['inhalt']." ".$row['beschreibung'], $_GET['term']);
 		if ($res != 0) {
 			$resultVal[$i] = $res;
+			$resultBlog[$i] = 0;
 			$resultKuerzel[$i] = $row['kuerzel'];
 			$resultLink[$i] = $row['linktext'];
 			$resultDesc[$i] = $row['beschreibung'];
 			$i++;
 		}
 	}
+	$sql = 'SELECT
+		inhalt, id, ueberschrift, datum
+	FROM
+		cms_news';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Database Error");
+	}
+	while ($row = mysql_fetch_array($result)) {
+		$res = substr_count($row['inhalt']." ".$row['ueberschrift'], $_GET['term']);
+		if ($res != 0) {
+			$resultVal[$i] = $res;
+			$resultBlog[$i] = 1;
+			$resultKuerzel[$i] = $row['id'];
+			$resultLink[$i] = $row['ueberschrift'];
+			$resultDesc[$i] = $row['datum'];
+			$i++;
+		}
+	}
+
 	if ($i != 0) {
 		if ($i != 1) {
 ?>
@@ -50,7 +72,7 @@ if (!isset($_GET['term'])) {
 <?
 		} else {
 ?>
-		<p><? echo $i; ?> Ergebniss gefunden.</p>
+		<p><? echo $i; ?> Ergebnis gefunden.</p>
 <?
 			
 }
@@ -72,11 +94,19 @@ if (!isset($_GET['term'])) {
 			$max--;
 		}
 		for($j = 0; $j < $i; $j++) {
+			if ($resultBlog[$resultOrder[$j]] == 0) {
 ?>
 		<h2><a href="index.php?p=<? echo $resultKuerzel[$resultOrder[$j]]; ?>"><? echo $resultLink[$resultOrder[$j]]; ?></a></h2>
 		<p><? echo $resultDesc[$resultOrder[$j]]; ?></p>
 		<hr>
 <?
+			} else {
+?>
+		<h2><a href="news.php?beitrag=<? echo $resultKuerzel[$resultOrder[$j]]; ?>"><? echo $resultLink[$resultOrder[$j]]; ?></a></h2>
+		<p><? echo $resultDesc[$resultOrder[$j]]; ?></p>
+		<hr>
+<?
+			}
 		}
 	} else {
 ?>

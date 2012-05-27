@@ -45,7 +45,6 @@ if (!$result) {
 
 $row = mysql_fetch_array($result);
 echo $row['beschreibung'];
-
 ?>">
 <?
 body2();
@@ -125,7 +124,9 @@ if (($row['inhalt'] != "") || ($row['inhalt_en'] != "")) {
 } else {
 	echo "<h1>404 - Page not found</h1>\n<p>You followed an invalid link!</p>\n";
 }
-?></div><nav>
+?></div>
+
+<nav>
 <?
 $sql = 'SELECT
 	id,

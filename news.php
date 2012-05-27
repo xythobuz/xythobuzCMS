@@ -119,7 +119,9 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 ?><a href="<? echo $xythobuzCMS_flattr; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a>
 <?
 		}
-?></div><div class="comments">
+?></div>
+
+<div class="comments">
 <?
 
 		$sql = 'SELECT
@@ -216,7 +218,9 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 ?></div>
 <?
 // #################################
-?><nav>
+?>
+
+<nav>
 <?
 $sql = 'SELECT
 	id,
