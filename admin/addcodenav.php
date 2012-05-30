@@ -12,7 +12,7 @@ header1();
 </head>
 <body>
 <div class="admin">
-<h1>Add Code in &lt;nav&gt;</h1>
+<h1>Add Code in Footer</h1>
 <?
 
 if ($_REQUEST['content'] == "") {

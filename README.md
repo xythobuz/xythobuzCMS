@@ -2,7 +2,6 @@
 
 xythobuzCMS is a PHP CMS, dependent on MySQL, which is used on [this website](http://xythobuz.org).
 A special version is served if an iOS Device browses the site. This is using [iWebKit](http://snippetspace.com/).
-It supports a piwik installation in /piwik/ and can display the Usercount for today. Just add the tracking code as code in the administration menu.
 
 ## Installation
 
@@ -12,8 +11,8 @@ It supports a piwik installation in /piwik/ and can display the Usercount for to
 
 ## License
 
-xythobuzCMS is in the Public Domain!
-If you like it, or are using it, you could drop a [mail](mailto:taucher.bodensee@gmail.com) (taucher.bodensee@gmail.com).
+xythobuzCMS is now licensed as [Creative Commons 3.0 CC-BY-SA](http://creativecommons.org/licenses/by-sa/3.0).
+If you like it, or are using it, you could drop a [mail](mailto:xythobuz@xythobuz.org) (xythobuz@xythobuz.org).
 The flag icons are licensed as CC-BY-SA and come from [flags.blogpotato.de](http://flags.blogpotato.de)
 
 ## Example Config
@@ -32,7 +31,7 @@ The setup.php script creates a config.php file and fills it with your credential
     $xythobuzCMS_lang2 = 'alternative language code';
     $xythobuzCMS_title = 'page title';
     $xythobuzCMS_logo = 'logo url';
-    $xythobuzCMS_com = 'comments visible?';
+    $xythobuzCMS_com = 'FALSE';
 	// TRUE or FALSE. Sets comment visibility after they are written.
 	// if FALSE, you get an email.
 
@@ -40,7 +39,6 @@ The setup.php script creates a config.php file and fills it with your credential
     $xythobuzCMS_birth = 759193200; // Birthdate as unix timestamp
     $xythobuzCMS_flattr = 'flattr button link'; // DEPRECATED
     $xythobuzCMS_flattrusername = 'flattr username';
-    $xythobuzCMS_piwiktoken = 'piwik api token';
     $xythobuzCMS_adcode = "your ad code (html, javascript...)";
     $xythobuzCMS_customFeed = "custom feed url, if you want to use feedburner etc.";
 	$xythobuzCMS_twitterNick = "Adds a follow button in sidebar, adds tweet button to posts.";

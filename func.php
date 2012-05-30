@@ -248,23 +248,6 @@ function bottom2() {
 	if (isset($xythobuzCMS_adcode)) {
 		echo $xythobuzCMS_adcode."\n";
 	}
-	/* if (isset($xythobuzCMS_piwiktoken)) {
-		$curl_handle = curl_init();
-		curl_setopt($curl_handle,CURLOPT_URL, $xythobuzCMS_root.'/piwik/index.php?module=API&method=VisitsSummary.getUniqueVisitors&idSite=1&period=day&date=today&format=xml&token_auth='.$xythobuzCMS_piwiktoken);
-		curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
-		curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
-		$buffer = curl_exec($curl_handle);
-		curl_close($curl_handle);
-
-		if (!empty($buffer)) {
-			$s_array = array("<result>", "</result>", "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
-			echo "<p style=\"font-size:x-small\">";
-			echo str_replace($s_array, "", $buffer);
-			echo " Visitors</p>\n";
-		} else {
-			echo "<p style=\"font-size:x-small\">No Visitor Data!</p>\n";
-		}
-	} */
 
 	echo "<p style=\"font-size:x-small\">";
 	include("count.php");

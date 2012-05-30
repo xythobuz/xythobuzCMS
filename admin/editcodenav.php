@@ -12,7 +12,7 @@ header1();
 </head>
 <body>
 <div class="admin">
-<h1>Edit Code in &lt;nav&gt;</h1>
+<h1>Edit Code in Footer</h1>
 <?
 
 if ($_GET['d'] == "") {
@@ -36,6 +36,7 @@ if ($_GET['d'] == "") {
 		echo "<td><a href=\"editcodenav.php?d=".$row['id']."\">Delete</a></td>";
 		echo "</tr>";
 	}
+	echo "</table>";
 } else {
 	$sql = 'DELETE FROM cms_codenav
 		WHERE id = '.mysql_real_escape_string($_GET['d']);

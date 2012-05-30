@@ -149,6 +149,22 @@ Tables created successfully!<br>
 		if (!$result) {
 			die("Could not add nav pics!");
 		}
+		$sql = 'INSERT INTO
+				cms_codenav(id, inhalt)
+			VALUES
+				(4, "'.mysql_real_escape_string('<a href="http://www.validome.org/google/validate?url='.$_POST['root'].'&amp;googleTyp=SITEMAP"><img src="img/valid_sitemap.png" alt="Valid Sitemap"></a>').'")';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Could not add nav pics!");
+		}
+		$sql = 'INSERT INTO
+				cms_codenav(id, inhalt)
+			VALUES
+				(5, "'.mysql_real_escape_string('<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/de/"><img alt="Creative Commons License BY-SA 3.0" src="http://i.creativecommons.org/l/by-sa/3.0/de/88x31.png" /></a>').'")';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Could not add nav pics!");
+		}
 		echo "Added nav pics<br>\n";
 
 		// Create example page
@@ -206,9 +222,6 @@ Tables created successfully!<br>
 		}
 		if ($_POST['flattr'] != '') {
 			$content = $content."\$xythobuzCMS_flattr = '".$_POST['flattr']."';\n";
-		}
-		if ($_POST['piwiktoken'] != '') {
-			$content = $content."\$xythobuzCMS_piwiktoken = '".$_POST['piwiktoken']."';\n";
 		}
 		if ($_POST['adcode'] != '') {
 			$content = $content."\$xythobuzCMS_adcode = \"".str_replace("\n", '\n', str_replace('"', '\"', $_POST['adcode']))."\";\n";
@@ -290,7 +303,6 @@ Tables created successfully!<br>
 		<tr><th>Optional:</th><th></th><th></th></tr>
 		<tr><td>Birthdate</td><td><input type="text" name="birth" /></td><td>As Unix timestamp. Displays age.</td></tr>
 		<tr><td>Flattr URL</td><td><input type="text" name="flattr" /></td><td>Adds Flattr Button.</td></tr>
-		<tr><td>Piwik API Token</td><td><input type="text" name="piwiktoken" /></td><td>Shows visitor count, adds Piwik API Code</td></tr>
 		<tr><td>Ad Code (AdSense etc.)</td><td><input type="text" name="adcode" /></td><td>Gets in navbar</td></tr>
 		<tr><td>Alternative RSS URL</td><td><input type="text" name="feed" /></td><td>If you want to use Feedburner</td></tr>
 		<tr><td>Twitter nickname</td><td><input type="text" name="nick" /></td><td>Adds a follow button</td></tr>

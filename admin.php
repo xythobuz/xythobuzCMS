@@ -30,8 +30,8 @@ header1();
 <h2>Code</h2>
 <a href="admin/addcodebody.php">Add Code Body</a><br>
 <a href="admin/editcodebody.php">Edit Code Body</a><br>
-<a href="admin/addcodenav.php">Add Code Nav</a><br>
-<a href="admin/editcodenav.php">Edit Code Nav</a><br>
+<a href="admin/addcodenav.php">Add Code Footer</a><br>
+<a href="admin/editcodenav.php">Edit Code Footer</a><br>
 <a href="admin/addcodehead.php">Add Code Head</a><br>
 <a href="admin/editcodehead.php">Edit Code Head</a><br>
 <hr>
