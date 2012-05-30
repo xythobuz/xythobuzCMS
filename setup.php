@@ -87,6 +87,16 @@ if (isset($_POST['Host'])) {
 	if (!$result) {
 		die("Could not create table 'cms_codehead'");
 	}
+
+	$sql = 'CREATE TABLE cms_referer (
+		id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+		referer TEXT NOT NULL,
+		ziel TEXT NOT NULL,
+		datum DATETIME NOT NULL)';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Could not create table 'cms_referer'");
+	}
 	
 	// Create table for comments
 	$sql = 'CREATE TABLE cms_comments (

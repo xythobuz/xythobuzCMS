@@ -1,11 +1,11 @@
 <?
 include('config.php');
-include('func.php');
 $db = mysql_connect($sql_host, $sql_username, $sql_password);
 mysql_select_db($sql_database);
 if (mysql_errno()) {
 	die ('Konnte keine Verbindung zur Datenbank aufbauen');
 }
+include('func.php');
 header1();
 if (!isset($xythobuzCMS_customFeed)) {
 ?><link rel="alternate" type="application/rss+xml" title="xythobuz.org RSS-Feed" href="http://www.xythobuz.org/rss.xml" />

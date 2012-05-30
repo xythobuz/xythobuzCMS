@@ -143,8 +143,62 @@ header1();
 	}
 	fclose($handle);
 	print "Saved $path...<br>\n";
+?>
+<hr>
+<?
+if (!isset($_GET['clean'])) {
+	// Get referers
+	$sql = 'SELECT
+		datum, referer, ziel
+	FROM
+		cms_referer
+	ORDER BY
+		datum DESC';
+	$result = mysql_query($sql);
+	if ($result) {
+		// Top google abfragen => Tabelle
+		// Andere referers
+		// Löschen button => admin.php?clean
 
-mysql_close($db);
+		$i = 0;
+		while ($row = mysql_fetch_array($result)) {
+			if ($i == 0) {
+				echo '<table border="1">';
+				echo "<tr><th>Referer</th><th>Date</th><th>Target</th></tr>";
+			}
+			$i++;
+			$ref = stripslashes($row['referer']);
+			if (strlen($ref) > 40) {
+				$refText = substr($ref, 0, 40)."...";
+			} else {
+				$refText = $ref;
+			}
+			echo "<tr><td><a href=\"".$ref."\">".$refText."</a></td>";
+			echo "<td>".$row['datum']."</td>";
+			echo "<td><a href=\"".$xythobuzCMS_root.$row['ziel']."\">".$row['ziel']."</a></td></tr>";
+		}
+		if ($i == 0) {
+			echo "There are no recorded referes!";
+		} else {
+			echo "</table>";
+			echo '<br><form action="admin.php" method="get">';
+			echo '<input type="submit" name="clean" value="Clear" />';
+			echo '</form>';
+		}
+	} else {
+		echo "Could not get referers (".mysql_error($result).")!";
+	}
+} else {
+	// Delete old referers
+	$sql = 'DELETE FROM cms_referer';
+	$result = mysql_query($sql);
+	if (!$result) {
+		echo "Could not delete referers (".mysql_error($result).")!";
+	} else {
+		echo "Cleared referers!";
+		echo "<br><a href=\"admin.php\">OK!</a>";
+	}
+}
 ?>
 <hr>
 <a href="logout.php">Logout</a><br>
@@ -153,3 +207,4 @@ mysql_close($db);
 </div>
 </body>
 </html>
+<? mysql_close($db); ?>
