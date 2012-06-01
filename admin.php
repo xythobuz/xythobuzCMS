@@ -145,6 +145,7 @@ header1();
 	print "Saved $path...<br>\n";
 ?>
 <hr>
+<h2>Referer Statistics</h2>
 <?
 if (!isset($_GET['clean'])) {
 	// Get referers
@@ -156,34 +157,74 @@ if (!isset($_GET['clean'])) {
 		datum DESC';
 	$result = mysql_query($sql);
 	if ($result) {
-		// Top google abfragen => Tabelle
-		// Andere referers
-		// Löschen button => admin.php?clean
-
-		$i = 0;
+		$i = 0; // Count to see if there are any referes
+		$g = 0; // Index for googleTerm
+		$googleTerm = array(); // Store google search terms
+		$googleLink = array(); // Store full google link
+		$int = 0; // Index for internalLinks
+		$internalLinks = array();
+		$o = 0; // Index for otherLinks
+		$otherLinks = array(); // Store other links (index: o)
 		while ($row = mysql_fetch_array($result)) {
-			if ($i == 0) {
-				echo '<table border="1">';
-				echo "<tr><th>Referer</th><th>Date</th><th>Target</th></tr>";
+			$ref = $row['referer'];
+			if (eregi('google\.', $ref)) {
+				// Google visitor
+				$googleLink[$g] = $ref;
+				$ref = $ref.'&';
+				preg_match('/q=(.*)&/UiS', $ref, $googleTerm[$g]); // Store search term
+				$googleTerm[$g] = $googleTerm[$g][1]; // Thats the search term
+				$g++;
+			} else if (eregi(str_ireplace('www.', '', parse_url($xythobuzCMS_root, PHP_URL_HOST)), $ref)) {
+				// Internal link
+				$internalLinks[$int++] = $ref;
+			} else {
+				// Other link. Save it
+				$otherLinks[$o++] = $ref;
 			}
 			$i++;
-			$ref = stripslashes($row['referer']);
-			if (strlen($ref) > 40) {
-				$refText = substr($ref, 0, 40)."...";
-			} else {
-				$refText = $ref;
-			}
-			echo "<tr><td><a href=\"".$ref."\">".$refText."</a></td>";
-			echo "<td>".$row['datum']."</td>";
-			echo "<td><a href=\"".$xythobuzCMS_root.$row['ziel']."\">".$row['ziel']."</a></td></tr>";
 		}
 		if ($i == 0) {
 			echo "There are no recorded referes!";
 		} else {
-			echo "</table>";
-			echo '<br><form action="admin.php" method="get">';
+			// Show stats
+			if (count($googleTerm) > 0) {
+				// We have google referers. Show them
+				echo "<div style=\"float: left; width: 33%;\">";
+				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Google search term</th></tr>";
+				foreach ($googleTerm as $key => $term) {
+					echo "<tr><td><a href=\"".$googleLink[$key]."\">".urldecode($term)."</a></td></tr>";
+				}
+				echo "</table></div>\n";
+			}
+			if (count($otherLinks) > 0) {
+				// We got other links. Show them
+				echo "<div style=\"float: left; width: 33%;\">";
+				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>External link</th></tr>";
+				foreach ($otherLinks as $link) {
+					echo "<tr><td>";
+					echo '<a href="'.$link.'">'.str_ireplace('www.', '', parse_url($link, PHP_URL_HOST)).'</a>';
+					echo "</td></tr>";
+				}
+				echo "</table></div>\n";
+			}
+			if (count($internalLinks) > 0) {
+				// We got internal links. Show them
+				echo "<div style=\"float: left; width: 33%; align: center;\">";
+				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Internal link</th></tr>";
+				foreach ($internalLinks as $link) {
+					echo "<tr><td>";
+					echo '<a href="'.$link.'">'.str_ireplace($xythobuzCMS_root, '', str_ireplace("www.", "", $link)).'</a>';
+					echo "</td></tr>";
+				}
+				echo "</table></div>\n";
+			}
+
+			// Clear Button
+			echo '<div style="clear: left;">';
+			echo '<form action="admin.php" method="get">';
 			echo '<input type="submit" name="clean" value="Clear" />';
 			echo '</form>';
+			echo "</div>";
 		}
 	} else {
 		echo "Could not get referers (".mysql_error($result).")!";
@@ -199,8 +240,7 @@ if (!isset($_GET['clean'])) {
 		echo "<br><a href=\"admin.php\">OK!</a>";
 	}
 }
-?>
-<hr>
+?><hr>
 <a href="logout.php">Logout</a><br>
 <a href="index.php">Home</a><br>
 <a href="admin.php">Admin</a><br>
