@@ -14,7 +14,7 @@ if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 	$_SERVER['HTTP_ACCEPT_LANGUAGE'] = "";
 }
 $tmp = basename($_SERVER['PHP_SELF']);
-if (($tmp == "news.php") || ($tmp == "index.php")) { 
+if (($tmp == "news.php") || ($tmp == "index.php")) {
 	if ($_SERVER['HTTP_REFERER'] != "") {
 		$target = $_SERVER['PHP_SELF'];
 		if ($_SERVER['QUERY_STRING'] != "") {

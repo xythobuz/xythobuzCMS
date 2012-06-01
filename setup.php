@@ -183,12 +183,20 @@ Tables created successfully!<br>
 		$sql = 'INSERT INTO
 				cms_links(url, title, ord)
 			VALUES
-				("'.mysql_real_escape_string("http://www.xythobuz.org").'", "powered by xythobuzCMS", 99)';
+				("'.mysql_real_escape_string($_POST['root']."/stats.php").'", "Statistics", 1)';
 		$result = mysql_query($sql);
 		if (!$result) {
 			die("Could not create example link!");	
 		}
-		echo "Created example link!<br>\n";
+		$sql = 'INSERT INTO
+				cms_links(url, title, ord)
+			VALUES
+				("'.mysql_real_escape_string("http://www.xythobuz.org").'", "Powered by xythobuzCMS", 99)';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Could not create example link!");	
+		}
+		echo "Created example links!<br>\n";
 
 		// Create first user
 		if (strcmp($_POST['pass1'], $_POST['pass2']) != 0) {
