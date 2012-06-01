@@ -8,7 +8,6 @@
 		}
 	}
 
-	// Just echo the number of hits today
 	$sql = 'SELECT day, visitors
 		FROM cms_visitors
 		WHERE day = "'.date('Y-m-d').'"';
@@ -30,7 +29,7 @@
 		if (!$result) {
 			die("Database Error");
 		}
-		echo $count;
+		$pageViews = $count;
 	} else {
 		// Create new record
 		$sql = 'INSERT INTO cms_visitors(day, visitors)
@@ -40,6 +39,46 @@
 			echo mysql_error();
 			die("Database Error.");
 		}
-		echo "1";
+		$pageViews = 1;
+	}
+
+	// Insert day and ip into cms_visit
+	$sql = 'SELECT day, ip
+		FROM cms_visit
+		WHERE day = "'.date('Y-m-d').'"';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Database Error!!");
+	}
+	$exists = 0;
+	while($row = mysql_fetch_array($result)) {
+		if (stripslashes($row['ip']) == $_SERVER['REMOTE_ADDR']) {
+			$exists = 1;
+			break;
+		}
+	}
+	if ((!$exists) && ($_SERVER['REMOTE_ADDR'] != "")) {
+		$sql = 'INSERT INTO cms_visit(day, ip)
+			VALUES ( "'.date('Y-m-d').'", "'.mysql_real_escape_string($_SERVER['REMOTE_ADDR']).'" )';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Query Error!");
+		}
+	}
+
+	$sql = 'SELECT count(ip) AS count, day
+		FROM cms_visit
+		GROUP BY day
+		HAVING day = "'.date('Y-m-d').'"';
+	$result = mysql_query($sql);
+	if ($result) {
+		$row = mysql_fetch_array($result);
+		if ($row) {
+			echo $row['count']."/".$pageViews;
+		} else {
+			echo "0/".$pageViews;
+		}
+	} else {
+		echo "DBError";
 	}
 ?>

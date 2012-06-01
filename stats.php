@@ -11,6 +11,9 @@ if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 	if (isset($_GET['img'])) {
 		include("render.php");
 		exit;
+	} else if (isset($_GET['imgB'])) {
+		$renderVisitors = 1;
+		include("render.php");
 	}
 	
 	include('func.php');
@@ -27,9 +30,101 @@ You can also clear the data, after logging in.</p>
 <?
 }
 ?>
-<h2>Pageviews</h2>
-<a href="stats.php?img&amp;w=600"><img src="stats.php?img" alt="Pageviews this Month"></a>
-<hr>
+<h2>Visitors</h2>
+<div style="float: left; width: 50%;">
+<a href="stats.php?img&amp;w=600"><img src="stats.php?img&amp;w=300" alt="Pageviews this Month"></a>
+<?
+	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m');
+	$result = mysql_query($sql);
+	if ($result) {
+		$viewsThisMonth = 0;
+		while($row = mysql_fetch_array($result)) {
+			$viewsThisMonth += $row['visitors'];
+		}
+	} else {
+		$viewsThisMonth = 0;
+	}
+	echo "<p>".$viewsThisMonth." Pageviews this month</p>";
+
+	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m')-1;
+	$result = mysql_query($sql);
+	if ($result) {
+		$viewsLastMonth = 0;
+		while($row = mysql_fetch_array($result)) {
+			$viewsLastMonth += $row['visitors'];
+		}
+	} else {
+		$viewsLastMonth = 0;
+	}
+	echo "<p>".$viewsLastMonth." Pageviews last month</p>";
+
+	$sql = 'SELECT day, visitors FROM cms_visitors';
+	$result = mysql_query($sql);
+	if ($result) {
+		$views = 0;
+		while($row = mysql_fetch_array($result)) {
+			$views += $row['visitors'];
+		}
+	} else {
+		$views = 0;
+	}
+	echo "<p>".$views." Pageviews overall</p>";
+?>
+</div>
+
+<div style="float: left; width: 50%;">
+<a href="stats.php?imgB&amp;w=600"><img src="stats.php?imgB&amp;w=300" alt="Visitors this Month"></a>
+<?
+	$sql = 'SELECT count(ip) AS count, day
+		FROM cms_visit
+		GROUP BY day
+		HAVING MONTH(day) = '.date('m').'
+		ORDER BY day ASC';
+	$result = mysql_query($sql);
+	if ($result) {
+		$viewsThisMonth = 0;
+		while($row = mysql_fetch_array($result)) {
+			$viewsThisMonth += $row['count'];
+		}
+	} else {
+		$viewsThisMonth = 0;
+	}
+	echo "<p>".$viewsThisMonth." Visitors this month</p>";
+
+	
+
+	$sql = 'SELECT count(ip) AS count, day
+		FROM cms_visit
+		GROUP BY day
+		HAVING MONTH(day) = '.date('m') - 1;
+	$result = mysql_query($sql);
+	if ($result) {
+		$viewsLastMonth = 0;
+		while($row = mysql_fetch_array($result)) {
+			$viewsLastMonth += $row['count'];
+		}
+	} else {
+		$viewsLastMonth = 0;
+	}
+	echo "<p>".$viewsLastMonth." Visitors last month</p>";
+
+	$sql = 'SELECT count(ip) AS count, day
+		FROM cms_visit
+		GROUP BY day';
+	$result = mysql_query($sql);
+	if ($result) {
+		$views = 0;
+		while($row = mysql_fetch_array($result)) {
+			$views += $row['count'];
+		}
+	} else {
+		$views = 0;
+	}
+	echo "<p>".$views." Visitors overall</p>";
+?>
+</div>
+
+<div style="clear: left;"><hr></div>
 <h2>Referers</h2>
 <?
 if (!isset($_GET['clean'])) {

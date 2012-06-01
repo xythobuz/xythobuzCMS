@@ -38,40 +38,75 @@
 	imagefilledrectangle($img, 0, 0, 1, HEIGHT-1, $black); // Line left
 	imagefilledrectangle($img, WIDTH-1, 0, WIDTH-2, HEIGHT-1, $black); // Line right
 	imagefilledrectangle($img, WIDTH-1, HEIGHT-1, 0, HEIGHT-2, $black); // Line bottom
-	imagestring($img, 4, 3, 3, "Pageviews ".date('m.Y')." ".$xythobuzCMS_title, $black);
+	if ($renderVisitors) {
+		imagestring($img, 4, 3, 3, "Visitors ".date('m.Y')." ".$xythobuzCMS_title, $black);
+	} else {
+		imagestring($img, 4, 3, 3, "Pageviews ".date('m.Y')." ".$xythobuzCMS_title, $black);
+	}
 
 	imagefilledrectangle($img, 50, 30, 52, (HEIGHT - 15), $black); // Y-Axis
 	imagefilledrectangle($img, 40, (HEIGHT - 25), (WIDTH - 15), (HEIGHT - 27), $black); // X-Axis
 
+	if ($renderVisitors) {
+		$max = maxThisMonthB();
+	} else {
+		$max = maxThisMonth();
+	}
 	imagefilledrectangle($img, 42, 50, 60, 52, $black); // Max mark on y axis
-	$max = maxThisMonth();
 	imagefilledrectangle($img, 42, ((diff(YSTART, YEND) / 2) + YEND - 2), 60, ((diff(YSTART, YEND) / 2) + YEND), $black); // Half mark on y axis
 	imagestring($img, 3, 15, 45, $max, $black); // Max Number
 	imagestring($img, 3, 15, ((diff(YSTART, YEND) / 2) + YEND - 8), floor($max / 2), $black);
 
 	$day = date('d'); // For maximum x value
 
-	$sql = 'SELECT day, visitors
-		FROM cms_visitors
-		WHERE MONTH(day) = '.date('m').'
+	if ($renderVisitors) {
+		$sql = 'SELECT count(ip) AS count, day
+		FROM cms_visit
+		GROUP BY day
+		HAVING MONTH(day) = '.date('m').'
 		ORDER BY day ASC';
-	$result = mysql_query($sql);
-	if (!$result) {
-		// Show error, exit
-		imagestring($img, 5, (WIDTH / 2), (HEIGHT / 2), "Database Error!", $blue);
-		imagestring($img, 2, (WIDTH - 145), (HEIGHT - 20), "rendered by xythobuzCMS", $grey);
-		imagepng($img);
-		exit;
-	}
+		$result = mysql_query($sql);
+		if (!$result) {
+			// Show error, exit
+			imagestring($img, 5, (WIDTH / 2), (HEIGHT / 2), "Database Error!", $blue);
+			imagestring($img, 2, (WIDTH - 145), (HEIGHT - 20), "rendered by xythobuzCMS", $grey);
+			imagepng($img);
+			exit;
+		}
 
-	// Display data points
-	$oldPoint = 0;
-	while ($row = mysql_fetch_array($result)) {
-		$date = str_replace(date('Y-m-'), "", $row['day']); // Strip month and year
-		if ($oldPoint == 0) {
-			$oldPoint = drawPoint($date, $row['visitors'], $max, $day, $img, $blue, $black);
-		} else {
-			$oldPoint = drawPoint($date, $row['visitors'], $max, $day, $img, $blue, $black, $oldPoint);
+		// Display data points
+		$oldPoint = 0;
+		while ($row = mysql_fetch_array($result)) {
+			$date = str_replace(date('Y-m-'), "", $row['day']); // Strip month and year
+			if ($oldPoint == 0) {
+				$oldPoint = drawPoint($date, $row['count'], $max, $day, $img, $blue, $black);
+			} else {
+				$oldPoint = drawPoint($date, $row['count'], $max, $day, $img, $blue, $black, $oldPoint);
+			}
+		}
+	} else {
+		$sql = 'SELECT day, visitors
+			FROM cms_visitors
+			WHERE MONTH(day) = '.date('m').'
+			ORDER BY day ASC';
+		$result = mysql_query($sql);
+		if (!$result) {
+			// Show error, exit
+			imagestring($img, 5, (WIDTH / 2), (HEIGHT / 2), "Database Error!", $blue);
+			imagestring($img, 2, (WIDTH - 145), (HEIGHT - 20), "rendered by xythobuzCMS", $grey);
+			imagepng($img);
+			exit;
+		}
+
+		// Display data points
+		$oldPoint = 0;
+		while ($row = mysql_fetch_array($result)) {
+			$date = str_replace(date('Y-m-'), "", $row['day']); // Strip month and year
+			if ($oldPoint == 0) {
+				$oldPoint = drawPoint($date, $row['visitors'], $max, $day, $img, $blue, $black);
+			} else {
+				$oldPoint = drawPoint($date, $row['visitors'], $max, $day, $img, $blue, $black, $oldPoint);
+			}
 		}
 	}
 
@@ -123,6 +158,22 @@
 			while ($row = mysql_fetch_array($result)) {
 				if ($row['visitors'] > $maxVisitors) {
 					$maxVisitors = $row['visitors'];
+				}
+			}
+			return $maxVisitors;
+		} else {
+			return 0;
+		}
+	}
+
+	function maxThisMonthB() {
+		$sql = 'SELECT count(ip) AS count FROM cms_visit GROUP BY day HAVING MONTH(day) = '.date('m');
+		$result = mysql_query($sql);
+		if ($result) {
+			$maxVisitors = 0;
+			while ($row = mysql_fetch_array($result)) {
+				if ($row['count'] > $maxVisitors) {
+					$maxVisitors = $row['count'];
 				}
 			}
 			return $maxVisitors;

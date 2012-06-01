@@ -103,7 +103,16 @@ if (isset($_POST['Host'])) {
 		visitors INT )';
 	$result = mysql_query($sql);
 	if (!$result) {
-		die("Could not create table 'cms_referer'");
+		die("Could not create table 'cms_visitors'");
+	}
+
+	$sql = 'CREATE TABLE cms_visit (
+		id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+		day DATE NOT NULL,
+		ip TEXT NOT NULL )';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Could not create table 'cms_visit'");
 	}
 	
 	// Create table for comments
