@@ -111,11 +111,12 @@ header1();
 	$rss = $rss."\t\t<language>de-de</language>\n";
 	$rss = $rss."\t\t<generator>xythobuz.org CMS</generator>\n";
 	$rss = $rss."\t\t<ttl>60</ttl>\n";
-	// $count = 0;
+	
+	$count = 0;
 	while ($row = mysql_fetch_array($result)) {
-		/* if ($count >= 5) {
+		if ($count >= 20) {
 			break;
-		} */
+		}
 		$rss = $rss."\t\t<item>\n";
 		$rss = $rss."\t\t\t<title>".str_replace('>', '&gt;', str_replace('<', '&lt;', stripslashes($row['ueberschrift'])))."</title>\n";
 
@@ -125,7 +126,7 @@ header1();
 		$rss = $rss."\t\t\t<pubDate>".date(DATE_RSS, strtotime($row['datum']))."</pubDate>\n";
 		$rss = $rss."\t\t\t<guid>".$xythobuzCMS_root."/news.php?beitrag=".$row['id']."</guid>\n";
 		$rss = $rss."\t\t</item>\n";
-		// $count++;
+		$count++;
 	}
 	$rss = $rss."\t</channel>\n</rss>";
 
