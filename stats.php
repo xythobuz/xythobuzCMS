@@ -30,8 +30,8 @@ You can also clear the data, after logging in.</p>
 <?
 }
 ?>
-<h2>Visitors</h2>
 <div style="float: left; width: 50%;">
+<h3>Pageviews</h3>
 <a href="stats.php?img&amp;w=600"><img src="stats.php?img&amp;w=300" alt="Pageviews this Month"></a>
 <?
 	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m');
@@ -44,7 +44,8 @@ You can also clear the data, after logging in.</p>
 	} else {
 		$viewsThisMonth = 0;
 	}
-	echo "<p>".$viewsThisMonth." Pageviews this month</p>";
+	if ($viewsThisMonth != 0)
+		echo "<p>".$viewsThisMonth." Pageviews this month</p>";
 
 	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m')-1;
 	$result = mysql_query($sql);
@@ -56,7 +57,8 @@ You can also clear the data, after logging in.</p>
 	} else {
 		$viewsLastMonth = 0;
 	}
-	echo "<p>".$viewsLastMonth." Pageviews last month</p>";
+	if ($viewsLastMonth != 0)
+		echo "<p>".$viewsLastMonth." Pageviews last month</p>";
 
 	$sql = 'SELECT day, visitors FROM cms_visitors';
 	$result = mysql_query($sql);
@@ -68,11 +70,13 @@ You can also clear the data, after logging in.</p>
 	} else {
 		$views = 0;
 	}
+	if ($views != 0)
 	echo "<p>".$views." Pageviews overall</p>";
 ?>
 </div>
 
 <div style="float: left; width: 50%;">
+<h3>Visitors</h3>
 <a href="stats.php?imgB&amp;w=600"><img src="stats.php?imgB&amp;w=300" alt="Visitors this Month"></a>
 <?
 	$sql = 'SELECT count(ip) AS count, day
@@ -82,14 +86,15 @@ You can also clear the data, after logging in.</p>
 		ORDER BY day ASC';
 	$result = mysql_query($sql);
 	if ($result) {
-		$viewsThisMonth = 0;
+		$visitsThisMonth = 0;
 		while($row = mysql_fetch_array($result)) {
-			$viewsThisMonth += $row['count'];
+			$visitsThisMonth += $row['count'];
 		}
 	} else {
-		$viewsThisMonth = 0;
+		$visitsThisMonth = 0;
 	}
-	echo "<p>".$viewsThisMonth." Visitors this month</p>";
+	if ($visitsThisMonth != 0)
+		echo "<p>".$visitsThisMonth." Visitors this month</p>";
 
 	
 
@@ -99,32 +104,44 @@ You can also clear the data, after logging in.</p>
 		HAVING MONTH(day) = '.date('m') - 1;
 	$result = mysql_query($sql);
 	if ($result) {
-		$viewsLastMonth = 0;
+		$visitsLastMonth = 0;
 		while($row = mysql_fetch_array($result)) {
-			$viewsLastMonth += $row['count'];
+			$visitsLastMonth += $row['count'];
 		}
 	} else {
-		$viewsLastMonth = 0;
+		$visitsLastMonth = 0;
 	}
-	echo "<p>".$viewsLastMonth." Visitors last month</p>";
+	if ($visitsLastMonth != 0)
+		echo "<p>".$visitsLastMonth." Visitors last month</p>";
 
 	$sql = 'SELECT count(ip) AS count, day
 		FROM cms_visit
 		GROUP BY day';
 	$result = mysql_query($sql);
 	if ($result) {
-		$views = 0;
+		$visits = 0;
 		while($row = mysql_fetch_array($result)) {
-			$views += $row['count'];
+			$visits += $row['count'];
 		}
 	} else {
-		$views = 0;
+		$visits = 0;
 	}
-	echo "<p>".$views." Visitors overall</p>";
+	if ($visits != 0)
+		echo "<p>".$visits." Visitors overall</p>";
 ?>
 </div>
-
-<div style="clear: left;"><hr></div>
+<?
+	if (($viewsThisMonth != 0) && ($visitsThisMonth != 0))
+		echo "<p>~".floor($viewsThisMonth / $visitsThisMonth)." Views / Visitor this month</p>";
+	if (($viewsLastMonth != 0) && ($visitsLastMonth != 0))
+		echo "<p>~".floor($viewsLastMonth / $visitsLastMonth)." Views / Visitor last month</p>";
+	if (($views != 0) && ($visits != 0))
+		echo "<p>~".floor($views / $visits)." Views / Visitor overall</p>";
+?>
+<div style="clear: left;">
+<p>
+</div>
+<hr>
 <h2>Referers</h2>
 <?
 if (!isset($_GET['clean'])) {
@@ -172,7 +189,11 @@ if (!isset($_GET['clean'])) {
 				echo "<div style=\"float: left; width: 33%;\">";
 				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Google search term</th></tr>";
 				foreach ($googleTerm as $key => $term) {
-					echo "<tr><td><a href=\"".$googleLink[$key]."\">".urldecode($term)."</a></td></tr>";
+					$link = $googleLink[$key];
+					if (eregi('url?', $link)) {
+						$link = str_replace("url?", "#", $link);
+					}
+					echo "<tr><td><a href=\"".$link."\">".urldecode($term)."</a></td></tr>";
 				}
 				echo "</table></div>\n";
 			}

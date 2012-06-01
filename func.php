@@ -251,7 +251,7 @@ function bottom2() {
 
 	echo "<p style=\"font-size:x-small\">";
 	include("count.php");
-	echo " visitors/pageviews today.</p>\n";
+	echo " visitors / pageviews today.</p>\n";
 
 ?></div></div>
 <?
