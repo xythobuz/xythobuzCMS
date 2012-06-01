@@ -252,7 +252,7 @@ No Comments!
 <div id="footer">
 	<a class="noeffect" href="../admin.php">Admin Area</a><br>
 	<a class="noeffect" href="http://snippetspace.com">iPowered by iWebKit</a><br>
-	<a href="#"><? include("../count.php"); ?> iOS visitor(s) today.</a>
+	<a href="#"><? include("../count.php"); ?> page views today.</a>
 </div>
 <?
 $sql = 'SELECT

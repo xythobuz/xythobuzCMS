@@ -1,4 +1,8 @@
 <? include('auth.php');
+if (isset($_GET['info'])) {
+	phpinfo();
+	exit;
+}
 include('config.php');
 include('func.php');
 $db = mysql_connect($sql_host, $sql_username, $sql_password);

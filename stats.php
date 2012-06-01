@@ -2,12 +2,18 @@
 if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 	// Script is called on its own, establish connection and print html head
 	include('config.php');
-	include('func.php');
 	$db = mysql_connect($sql_host, $sql_username, $sql_password);
 	mysql_select_db($sql_database);
 	if (mysql_errno()) {
 		die ('Konnte keine Verbindung zur Datenbank aufbauen');
 	}
+
+	if (isset($_GET['img'])) {
+		include("render.php");
+		exit;
+	}
+	
+	include('func.php');
 	header1();
 ?>
 <title>xythobuzCMS Statistics</title>
@@ -15,13 +21,16 @@ if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 <body>
 <div class="admin">
 <h1>xythobuzCMS Statistics</h1>
-<p>This page shows you the referer statistics, if available.
-After logging in, you can also clear them.
-Data on Google search terms and other stuff is only shown when available.</p>
+<p>If available, this page gives you various informations about your visitors.
+You can also clear the data, after logging in.</p>
+<hr>
 <?
 }
 ?>
-<h2>Referer Statistics</h2>
+<h2>Pageviews</h2>
+<a href="stats.php?img&amp;w=600"><img src="stats.php?img" alt="Pageviews this Month"></a>
+<hr>
+<h2>Referers</h2>
 <?
 if (!isset($_GET['clean'])) {
 	// Get referers

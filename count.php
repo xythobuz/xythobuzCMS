@@ -1,40 +1,45 @@
 <?
-	$countFile = "counter.txt";
-	$currentDay = date("j");
-	$currentIp = $_SERVER['REMOTE_ADDR'];
-	$addIp = 1;
-
-	if (file_exists($countFile)) {
-		$hits = file($countFile, FILE_IGNORE_NEW_LINES);
-		if ($hits[0] == $currentDay) {
-			// Still same day
-			for ($i = 2; $i < count($hits); $i++) {
-				if ($_SERVER['REMOTE_ADDR'] == $hits[$i]) {
-					$addIp = 0;
-					break;
-				}
-			}
-			if ($addIp == 1) {
-				$visitCount = $hits[1] + 1;
-			} else {
-				$visitCount = $hits[1];
-			}
-		} else {
-			// New day
-			$visitCount = 1;
+	if (basename($_SERVER['PHP_SELF']) == "count.php") {
+		include('config.php');
+		$db = mysql_connect($sql_host, $sql_username, $sql_password);
+		mysql_select_db($sql_database);
+		if (mysql_errno()) {
+			die ('Konnte keine Verbindung zur Datenbank aufbauen');
 		}
-	} else {
-		$visitCount = 1;
 	}
 
-	$fp = fopen($countFile, "w");
-	fputs($fp, $currentDay."\n".$visitCount);
-	for ($i = 2; $i < count($hits); $i++) {
-		fputs($fp, "\n".$hits[$i]);
+	// Just echo the number of hits today
+	$sql = 'SELECT day, visitors
+		FROM cms_visitors
+		WHERE day = "'.date('Y-m-d').'"';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Database Error!");
 	}
-	if ($addIp == 1) {
-		fputs($fp, "\n".$_SERVER['REMOTE_ADDR']);
+	$row = mysql_fetch_array($result);
+	if ($row) {
+		// Theres a record for this day
+		$count = $row['visitors'];
+		$count++;
+		$sql = 'UPDATE cms_visitors
+		SET
+			visitors = '.$count.'
+		WHERE
+			day = "'.date('Y-m-d').'"';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Database Error");
+		}
+		echo $count;
+	} else {
+		// Create new record
+		$sql = 'INSERT INTO cms_visitors(day, visitors)
+			VALUES ( "'.date('Y-m-d').'", 1 )';
+		$result = mysql_query($sql);
+		if (!$result) {
+			echo mysql_error();
+			die("Database Error.");
+		}
+		echo "1";
 	}
-	fclose($fp);
-	echo $visitCount;
 ?>

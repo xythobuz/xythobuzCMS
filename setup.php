@@ -97,6 +97,14 @@ if (isset($_POST['Host'])) {
 	if (!$result) {
 		die("Could not create table 'cms_referer'");
 	}
+
+	$sql = 'CREATE TABLE cms_visitors (
+		day DATE PRIMARY KEY NOT NULL,
+		visitors INT )';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Could not create table 'cms_referer'");
+	}
 	
 	// Create table for comments
 	$sql = 'CREATE TABLE cms_comments (
@@ -171,9 +179,8 @@ Tables created successfully!<br>
 		$sql = 'INSERT INTO
 				cms(id, kuerzel, beschreibung, linktext, kategorie, ord, inhalt, inhalt_en)
 			VALUES
-				(1, "home", "xythobuz\\'."'".'s Elektronik und Software Projekte", "Home", 0, 0, "<h1>Herzlich Willkommen</h1>
-<p>Hier findest du (immer mehr) Informationen zu Projekten von mir. Gerne höre ich Feedback über E-Mail. Viel Spaß!
-</p>", "No translation available!")';
+				(1, "home", "xythobuzCMS Startseite", "Home", 0, 0, "<h1>Herzlichen Glückwunsch</h1><p>
+xythobuzCMS wurde erfolgreich Installiert! xythobuzCMS was installed successfully!</p>, "No translation available!")';
 		$result = mysql_query($sql);
 		if (!$result) {
 			die("Could not create example page!");
