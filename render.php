@@ -52,61 +52,70 @@
 	} else {
 		$max = maxThisMonth();
 	}
+
 	imagefilledrectangle($img, 42, 50, 60, 52, $black); // Max mark on y axis
-	imagefilledrectangle($img, 42, ((diff(YSTART, YEND) / 2) + YEND - 2), 60, ((diff(YSTART, YEND) / 2) + YEND), $black); // Half mark on y axis
+	imagefilledrectangle($img, 42, ((diff(YSTART, YEND) / 2) + YEND - 2),
+					60, ((diff(YSTART, YEND) / 2) + YEND), $black); // Half mark on y axis
+
 	imagestring($img, 3, 15, 45, $max, $black); // Max Number
-	imagestring($img, 3, 15, ((diff(YSTART, YEND) / 2) + YEND - 8), floor($max / 2), $black);
+	imagestring($img, 3, 15, ((diff(YSTART, YEND) / 2) + YEND - 8),
+					floor($max / 2), $black); // Half number
+
+	if (WIDTH > 250) {
+		// Large enough that we want to render quarter marks
+		imagefilledrectangle($img, 42, ((diff(YSTART, YEND) / 4) + YEND - 2),
+					60, ((diff(YSTART, YEND) / 4) + YEND), $black); // 3 Quarter mark on y axis
+		imagefilledrectangle($img, 42, ((diff(YSTART, YEND) * 3 / 4) + YEND - 2),
+					60, ((diff(YSTART, YEND) * 3 / 4) + YEND), $black); // Quarter mark on y axis
+
+		imagefilledrectangle($img, 42, ((diff(YSTART, YEND) / 8) + YEND),
+					60, ((diff(YSTART, YEND) / 8) + YEND), $black); // 7/8 mark on y axis
+		imagefilledrectangle($img, 42, ((diff(YSTART, YEND) * 7 / 8) + YEND),
+					60, ((diff(YSTART, YEND) * 7 / 8) + YEND), $black); // 1/8 mark on y axis
+		imagefilledrectangle($img, 42, ((diff(YSTART, YEND) * 3 / 8) + YEND),
+					60, ((diff(YSTART, YEND) *3 / 8) + YEND), $black); // 5/8 mark on y axis
+		imagefilledrectangle($img, 42, ((diff(YSTART, YEND) * 5 / 8) + YEND),
+					60, ((diff(YSTART, YEND) * 5 / 8) + YEND), $black); // 3/8 mark on y axis
+		
+		imagestring($img, 3, 15, ((diff(YSTART, YEND) * 3 / 4) + YEND - 8),
+					floor($max / 4), $black); // Quarter number
+		imagestring($img, 3, 15, ((diff(YSTART, YEND) / 4) + YEND - 8),
+					floor($max * 3 / 4), $black); // 3 Quarter number
+	}
 
 	$day = date('d'); // For maximum x value
 
+	// Render datapoints
 	if ($renderVisitors) {
-		$sql = 'SELECT count(ip) AS count, day
+		$sql = 'SELECT count(ip) AS visitors, day
 		FROM cms_visit
 		GROUP BY day
 		HAVING MONTH(day) = '.date('m').'
 		ORDER BY day ASC';
-		$result = mysql_query($sql);
-		if (!$result) {
-			// Show error, exit
-			imagestring($img, 5, (WIDTH / 2), (HEIGHT / 2), "Database Error!", $blue);
-			imagestring($img, 2, (WIDTH - 145), (HEIGHT - 20), "rendered by xythobuzCMS", $grey);
-			imagepng($img);
-			exit;
-		}
-
-		// Display data points
-		$oldPoint = 0;
-		while ($row = mysql_fetch_array($result)) {
-			$date = str_replace(date('Y-m-'), "", $row['day']); // Strip month and year
-			if ($oldPoint == 0) {
-				$oldPoint = drawPoint($date, $row['count'], $max, $day, $img, $blue, $black);
-			} else {
-				$oldPoint = drawPoint($date, $row['count'], $max, $day, $img, $blue, $black, $oldPoint);
-			}
-		}
 	} else {
 		$sql = 'SELECT day, visitors
-			FROM cms_visitors
-			WHERE MONTH(day) = '.date('m').'
-			ORDER BY day ASC';
-		$result = mysql_query($sql);
-		if (!$result) {
-			// Show error, exit
-			imagestring($img, 5, (WIDTH / 2), (HEIGHT / 2), "Database Error!", $blue);
-			imagestring($img, 2, (WIDTH - 145), (HEIGHT - 20), "rendered by xythobuzCMS", $grey);
-			imagepng($img);
-			exit;
-		}
+		FROM cms_visitors
+		WHERE MONTH(day) = '.date('m').'
+		ORDER BY day ASC';
+	}
 
-		// Display data points
-		$oldPoint = 0;
-		while ($row = mysql_fetch_array($result)) {
-			$date = str_replace(date('Y-m-'), "", $row['day']); // Strip month and year
-			if ($oldPoint == 0) {
-				$oldPoint = drawPoint($date, $row['visitors'], $max, $day, $img, $blue, $black);
-			} else {
-				$oldPoint = drawPoint($date, $row['visitors'], $max, $day, $img, $blue, $black, $oldPoint);
-			}
+	$result = mysql_query($sql);
+	if (!$result) {
+		// Show error, exit
+		imagestring($img, 5, (WIDTH / 2), (HEIGHT / 2), "Database Error!", $blue);
+		imagestring($img, 2, (WIDTH - 145), (HEIGHT - 20), "rendered by xythobuzCMS", $grey);
+		imagepng($img);
+		exit;
+	}
+
+	// Display data points
+	$oldPoint = 0;
+	while ($row = mysql_fetch_array($result)) {
+		$date = str_replace(date('Y-m-'), "", $row['day']); // Strip month and year
+		if ($oldPoint == 0) {
+			$oldPoint = drawPoint($date, $row['visitors'], $max, $day, $img, $blue, $black);
+		} else {
+			$oldPoint = drawPoint($date, $row['visitors'], $max, $day, $img, $blue, $black, $oldPoint);
 		}
 	}
 
