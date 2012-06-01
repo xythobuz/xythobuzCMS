@@ -60,7 +60,7 @@ if (!isset($_GET['clean'])) {
 			$i++;
 		}
 		if ($i == 0) {
-			echo "There are no recorded referes!";
+			echo "There are no recorded referers. Maybe the list was cleared not long ago?";
 		} else {
 			// Show stats
 			if (count($googleTerm) > 0) {
@@ -120,7 +120,8 @@ if (!isset($_GET['clean'])) {
 
 if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 ?>
-<a href="index.php">Home</a><br>
+<hr>
+<a href="index.php">Home</a>
 </div>
 </body>
 </html>
