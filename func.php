@@ -4,6 +4,7 @@ if (file_exists("setup.php")) {
 	die("Please setup xythobuzCMS Installation first!");
 }
 
+// Patch for bloated log warnings
 if (!isset($_GET['beitrag'])) {
 	$_GET['beitrag'] = "";
 }
@@ -12,22 +13,6 @@ if (!isset($_GET['lang'])) {
 }
 if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 	$_SERVER['HTTP_ACCEPT_LANGUAGE'] = "";
-}
-$tmp = basename($_SERVER['PHP_SELF']);
-if (($tmp == "news.php") || ($tmp == "index.php")) {
-	if ($_SERVER['HTTP_REFERER'] != "") {
-		$target = $_SERVER['PHP_SELF'];
-		if ($_SERVER['QUERY_STRING'] != "") {
-			$target = $target.'?'.$_SERVER['QUERY_STRING'];
-		}
-		$sql = 'INSERT INTO
-			cms_referer(datum, referer, ziel)
-		VALUES
-			(FROM_UNIXTIME('.time().'),
-			"'.mysql_real_escape_string($_SERVER['HTTP_REFERER']).'",
-			"'.mysql_real_escape_string($target).'")';
-		$result = mysql_query($sql);
-	}
 }
 
 function header1() {

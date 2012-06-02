@@ -8,12 +8,19 @@ if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 		die ('Konnte keine Verbindung zur Datenbank aufbauen');
 	}
 
+	$renderVisitors = 0;
+	$renderBots = 0;
 	if (isset($_GET['img'])) {
 		include("render.php");
 		exit;
 	} else if (isset($_GET['imgB'])) {
 		$renderVisitors = 1;
 		include("render.php");
+		exit;
+	} else if (isset($_GET['imgC'])) {
+		$renderBots = 1;
+		include("render.php");
+		exit;
 	}
 	
 	include('func.php');
@@ -24,15 +31,17 @@ if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 <body>
 <div class="admin">
 <h1>xythobuzCMS Statistics</h1>
-<p>If available, this page gives you various informations about your visitors.
-You can also clear the data, after logging in.</p>
+<p>The left diagram shows the Pageviews this month,
+the right diagram shows the Visitors this month.
+Below, you see the referers of the visitors.
+Google search terms are listed separately, as are internal and external links.</p>
 <hr>
 <?
 }
 ?>
-<div style="float: left; width: 50%;">
+<div style="float: left; width: 33%;">
 <h3>Pageviews</h3>
-<a href="stats.php?img&amp;w=600"><img src="stats.php?img&amp;w=300" alt="Pageviews this Month"></a>
+<a href="stats.php?img&amp;w=600"><img src="stats.php?img&amp;w=200" alt="Pageviews this Month"></a>
 <?
 	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m');
 	$result = mysql_query($sql);
@@ -45,7 +54,7 @@ You can also clear the data, after logging in.</p>
 		$viewsThisMonth = 0;
 	}
 	if ($viewsThisMonth != 0)
-		echo "<p>".$viewsThisMonth." Pageviews this month</p>";
+		echo "<p>".$viewsThisMonth." this month</p>";
 
 	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m')-1;
 	$result = mysql_query($sql);
@@ -58,7 +67,7 @@ You can also clear the data, after logging in.</p>
 		$viewsLastMonth = 0;
 	}
 	if ($viewsLastMonth != 0)
-		echo "<p>".$viewsLastMonth." Pageviews last month</p>";
+		echo "<p>".$viewsLastMonth." last month</p>";
 
 	$sql = 'SELECT day, visitors FROM cms_visitors';
 	$result = mysql_query($sql);
@@ -71,13 +80,13 @@ You can also clear the data, after logging in.</p>
 		$views = 0;
 	}
 	if ($views != 0)
-	echo "<p>".$views." Pageviews overall</p>";
+	echo "<p>".$views." overall</p>";
 ?>
 </div>
 
-<div style="float: left; width: 50%;">
+<div style="float: left; width: 33%;">
 <h3>Visitors</h3>
-<a href="stats.php?imgB&amp;w=600"><img src="stats.php?imgB&amp;w=300" alt="Visitors this Month"></a>
+<a href="stats.php?imgB&amp;w=600"><img src="stats.php?imgB&amp;w=200" alt="Visitors this Month"></a>
 <?
 	$sql = 'SELECT count(ip) AS count, day
 		FROM cms_visit
@@ -94,9 +103,7 @@ You can also clear the data, after logging in.</p>
 		$visitsThisMonth = 0;
 	}
 	if ($visitsThisMonth != 0)
-		echo "<p>".$visitsThisMonth." Visitors this month</p>";
-
-	
+		echo "<p>".$visitsThisMonth." this month</p>";
 
 	$sql = 'SELECT count(ip) AS count, day
 		FROM cms_visit
@@ -112,7 +119,7 @@ You can also clear the data, after logging in.</p>
 		$visitsLastMonth = 0;
 	}
 	if ($visitsLastMonth != 0)
-		echo "<p>".$visitsLastMonth." Visitors last month</p>";
+		echo "<p>".$visitsLastMonth." last month</p>";
 
 	$sql = 'SELECT count(ip) AS count, day
 		FROM cms_visit
@@ -127,7 +134,61 @@ You can also clear the data, after logging in.</p>
 		$visits = 0;
 	}
 	if ($visits != 0)
-		echo "<p>".$visits." Visitors overall</p>";
+		echo "<p>".$visits." overall</p>";
+?>
+</div>
+
+<div style="float: left; width: 33%;">
+<h3>Bots</h3>
+<a href="stats.php?imgC&amp;w=600"><img src="stats.php?imgC&amp;w=200" alt="Bots this Month"></a>
+<?
+	$sql = 'SELECT bots AS count, day
+		FROM cms_bots
+		GROUP BY day
+		HAVING MONTH(day) = '.date('m').'
+		ORDER BY day ASC';
+	$result = mysql_query($sql);
+	if ($result) {
+		$visitsThisMonth = 0;
+		while($row = mysql_fetch_array($result)) {
+			$visitsThisMonth += $row['count'];
+		}
+	} else {
+		$visitsThisMonth = 0;
+	}
+	if ($visitsThisMonth != 0)
+		echo "<p>".$visitsThisMonth." this month</p>";
+
+	$sql = 'SELECT bots AS count, day
+		FROM cms_bots
+		GROUP BY day
+		HAVING MONTH(day) = '.date('m') - 1;
+	$result = mysql_query($sql);
+	if ($result) {
+		$visitsLastMonth = 0;
+		while($row = mysql_fetch_array($result)) {
+			$visitsLastMonth += $row['count'];
+		}
+	} else {
+		$visitsLastMonth = 0;
+	}
+	if ($visitsLastMonth != 0)
+		echo "<p>".$visitsLastMonth." last month</p>";
+
+	$sql = 'SELECT bots AS count, day
+		FROM cms_bots
+		GROUP BY day';
+	$result = mysql_query($sql);
+	if ($result) {
+		$visits = 0;
+		while($row = mysql_fetch_array($result)) {
+			$visits += $row['count'];
+		}
+	} else {
+		$visits = 0;
+	}
+	if ($visits != 0)
+		echo "<p>".$visits." overall</p>";
 ?>
 </div>
 <?
@@ -222,9 +283,11 @@ if (!isset($_GET['clean'])) {
 
 			// Clear Button
 			echo '<div style="clear: left;">';
-			echo '<form action="admin.php" method="get">';
-			echo '<input type="submit" name="clean" value="Clear" />';
-			echo '</form>';
+			if (basename($_SERVER['PHP_SELF']) == "admin.php") {
+				echo '<form action="admin.php" method="get">';
+				echo '<input type="submit" name="clean" value="Clear" />';
+				echo '</form>';
+			}
 			echo "</div>";
 		}
 	} else {

@@ -114,6 +114,14 @@ if (isset($_POST['Host'])) {
 	if (!$result) {
 		die("Could not create table 'cms_visit'");
 	}
+
+	$sql = 'CREATE TABLE cms_bots (
+		day DATE PRIMARY KEY NOT NULL,
+		bots INT )';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Could not create table 'cms_bots'");
+	}
 	
 	// Create table for comments
 	$sql = 'CREATE TABLE cms_comments (

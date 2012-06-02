@@ -40,6 +40,8 @@
 	imagefilledrectangle($img, WIDTH-1, HEIGHT-1, 0, HEIGHT-2, $black); // Line bottom
 	if ($renderVisitors) {
 		imagestring($img, 4, 3, 3, "Visitors ".date('m.Y')." ".$xythobuzCMS_title, $black);
+	} else if ($renderBots) {
+		imagestring($img, 4, 3, 3, "Bots ".date('m.Y')." ".$xythobuzCMS_title, $black);
 	} else {
 		imagestring($img, 4, 3, 3, "Pageviews ".date('m.Y')." ".$xythobuzCMS_title, $black);
 	}
@@ -49,6 +51,8 @@
 
 	if ($renderVisitors) {
 		$max = maxThisMonthB();
+	} else if ($renderBots) {
+		$max = maxThisMonthC();
 	} else {
 		$max = maxThisMonth();
 	}
@@ -57,9 +61,15 @@
 	imagefilledrectangle($img, 42, ((diff(YSTART, YEND) / 2) + YEND - 2),
 					60, ((diff(YSTART, YEND) / 2) + YEND), $black); // Half mark on y axis
 
-	imagestring($img, 3, 15, 45, $max, $black); // Max Number
-	imagestring($img, 3, 15, ((diff(YSTART, YEND) / 2) + YEND - 8),
-					floor($max / 2), $black); // Half number
+	imagestring($img, 3, 5, 45, $max, $black); // Max Number
+	
+	if (($max / 2) < 1000) {
+		$str = number_format($max / 2, 1, ".", "");
+	} else {
+		$str = number_format($max / 2, 0, ".", "");
+	}
+	imagestring($img, 3, 5, ((diff(YSTART, YEND) / 2) + YEND - 8),
+					$str, $black); // Half number
 
 	if (WIDTH > 250) {
 		// Large enough that we want to render quarter marks
@@ -76,11 +86,19 @@
 					60, ((diff(YSTART, YEND) *3 / 8) + YEND), $black); // 5/8 mark on y axis
 		imagefilledrectangle($img, 42, ((diff(YSTART, YEND) * 5 / 8) + YEND),
 					60, ((diff(YSTART, YEND) * 5 / 8) + YEND), $black); // 3/8 mark on y axis
-		
-		imagestring($img, 3, 15, ((diff(YSTART, YEND) * 3 / 4) + YEND - 8),
-					floor($max / 4), $black); // Quarter number
-		imagestring($img, 3, 15, ((diff(YSTART, YEND) / 4) + YEND - 8),
-					floor($max * 3 / 4), $black); // 3 Quarter number
+
+		if (($max / 2) < 1000) {
+			$str = number_format($max / 4, 1, ".", "");
+		} else {
+			$str = number_format($max / 4, 0, ".", "");
+		}
+		imagestring($img, 3, 5, ((diff(YSTART, YEND) * 3 / 4) + YEND - 8), $str, $black); // Quarter number
+		if (($max * 3 / 4) < 1000) {
+			$str = number_format($max * 3 / 4, 1, ".", "");
+		} else {
+			$str = number_format($max * 3 / 4, 0, ".", "");
+		}
+		imagestring($img, 3, 5, ((diff(YSTART, YEND) / 4) + YEND - 8), $str, $black); // 3 Quarter number
 	}
 
 	$day = date('d'); // For maximum x value
@@ -91,6 +109,11 @@
 		FROM cms_visit
 		GROUP BY day
 		HAVING MONTH(day) = '.date('m').'
+		ORDER BY day ASC';
+	} else if ($renderBots) {
+		$sql = 'SELECT day, bots AS visitors
+		FROM cms_bots
+		WHERE MONTH(day) = '.date('m').'
 		ORDER BY day ASC';
 	} else {
 		$sql = 'SELECT day, visitors
@@ -183,6 +206,22 @@
 			while ($row = mysql_fetch_array($result)) {
 				if ($row['count'] > $maxVisitors) {
 					$maxVisitors = $row['count'];
+				}
+			}
+			return $maxVisitors;
+		} else {
+			return 0;
+		}
+	}
+
+	function maxThisMonthC() {
+		$sql = 'SELECT day, bots FROM cms_bots WHERE MONTH(day) = '.date('m');
+		$result = mysql_query($sql);
+		if ($result) {
+			$maxVisitors = 0;
+			while ($row = mysql_fetch_array($result)) {
+				if ($row['bots'] > $maxVisitors) {
+					$maxVisitors = $row['bots'];
 				}
 			}
 			return $maxVisitors;
