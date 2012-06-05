@@ -25,7 +25,7 @@
 	define("XEND", (WIDTH - 25));
 	define("YSTART", (HEIGHT - 30));
 	define("YEND", 50);
-	define("RADIUS", 12);
+	define("RADIUS", 8);
 
 	$img = @imagecreate(WIDTH, HEIGHT)
 			or die ("Can't create GD Stream!");

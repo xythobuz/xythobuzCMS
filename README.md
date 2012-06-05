@@ -11,9 +11,9 @@ A special version is served if an iOS Device browses the site. This is using [iW
 
 ## License
 
-xythobuzCMS is now licensed as [Creative Commons 3.0 CC-BY-SA](http://creativecommons.org/licenses/by-sa/3.0).
+xythobuzCMS is now licensed as [Creative Commons 3.0 CC-BY](http://creativecommons.org/licenses/by/3.0).
 If you like it, or are using it, you could drop a [mail](mailto:xythobuz@xythobuz.org) (xythobuz@xythobuz.org).
-The flag icons are licensed as CC-BY-SA and come from [flags.blogpotato.de](http://flags.blogpotato.de)
+The flag icons are licensed as CC-BY-SA and come from [flags.blogpotato.de](http://flags.blogpotato.de). If you want flags for other countries, get them there :)
 
 ## Example Config
 

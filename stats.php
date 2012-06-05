@@ -254,7 +254,9 @@ if (!isset($_GET['clean'])) {
 					if (eregi('url?', $link)) {
 						$link = str_replace("url?", "#", $link);
 					}
-					echo "<tr><td><a href=\"".$link."\">".urldecode($term)."</a></td></tr>";
+					if (urldecode($term) != "") {
+						echo "<tr><td><a href=\"".$link."\">".urldecode($term)."</a></td></tr>";
+					}
 				}
 				echo "</table></div>\n";
 			}
