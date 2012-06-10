@@ -219,8 +219,7 @@ if (!isset($_GET['clean'])) {
 		$g = 0; // Index for googleTerm
 		$googleTerm = array(); // Store google search terms
 		$googleLink = array(); // Store full google link
-		$int = 0; // Index for internalLinks
-		$internalLinks = array();
+		$internalLinks = 0; // Count internal links
 		$o = 0; // Index for otherLinks
 		$otherLinks = array(); // Store other links (index: o)
 		while ($row = mysql_fetch_array($result)) {
@@ -234,7 +233,7 @@ if (!isset($_GET['clean'])) {
 				$g++;
 			} else if (eregi(str_ireplace('www.', '', parse_url($xythobuzCMS_root, PHP_URL_HOST)), $ref)) {
 				// Internal link
-				$internalLinks[$int++] = $ref;
+				$internalLinks++;
 			} else {
 				// Other link. Save it
 				$otherLinks[$o++] = $ref;
@@ -245,10 +244,9 @@ if (!isset($_GET['clean'])) {
 			echo "There are no recorded referers. Maybe the list was cleared not long ago?";
 		} else {
 			// Show stats
+			echo "<div style=\"float: left; width: 33%;\">";
 			if (count($googleTerm) > 0) {
-				// We have google referers. Show them
-				echo "<div style=\"float: left; width: 33%;\">";
-				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Google search term</th></tr>";
+				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Google search terms</th></tr>";
 				foreach ($googleTerm as $key => $term) {
 					$link = $googleLink[$key];
 					if (eregi('url?', $link)) {
@@ -258,53 +256,101 @@ if (!isset($_GET['clean'])) {
 						echo "<tr><td><a href=\"".$link."\">".urldecode($term)."</a></td></tr>";
 					}
 				}
-				echo "</table></div>\n";
+				echo "</table>";
+			} else {
+				echo "<p>No google search terms detected.</p>";
 			}
+			echo "</div>\n";
+
+			// Other links
+			echo "<div style=\"float: left; width: 33%;\">";
 			if (count($otherLinks) > 0) {
-				// We got other links. Show them
-				echo "<div style=\"float: left; width: 33%;\">";
 				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>External link</th></tr>";
 				foreach ($otherLinks as $link) {
 					echo "<tr><td>";
 					echo '<a href="'.$link.'">'.str_ireplace('www.', '', parse_url($link, PHP_URL_HOST)).'</a>';
 					echo "</td></tr>";
 				}
-				echo "</table></div>\n";
+				echo "</table>";
+			} else {
+				echo "<p>No external links to this website detected.</p>";
 			}
-			if (count($internalLinks) > 0) {
-				// We got internal links. Show them
-				echo "<div style=\"float: left; width: 33%; align: center;\">";
-				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Internal link</th></tr>";
-				foreach ($internalLinks as $link) {
-					echo "<tr><td>";
-					echo '<a href="'.$link.'">'.str_ireplace($xythobuzCMS_root, '', str_ireplace("www.", "", $link)).'</a>';
-					echo "</td></tr>";
-				}
-				echo "</table></div>\n";
-			}
+			echo "</div>\n";
 
-			// Clear Button
+			// Internal Links
+			echo "<div style=\"float: left; width: 33%; align: center;\">";
+			if ($internalLinks > 0) {
+				echo "<p>Counted ".$internalLinks." internal page hops.</p>";
+			} else {
+				echo "<p>No internal page hops recorded.</p>";
+			}
+			echo "</div>\n";
+
+			// Clear Buttons
 			echo '<div style="clear: left;">';
 			if (basename($_SERVER['PHP_SELF']) == "admin.php") {
 				echo '<form action="admin.php" method="get">';
-				echo '<input type="submit" name="clean" value="Clear" />';
-				echo '</form>';
+				echo '<input type="submit" name="clean" value="Clear Google"';
+				if (!(count($googleTerm) > 0)) {
+					echo " disabled";
+				}
+				echo '><input type="submit" name="clean" value="Clear External"';
+				if (!(count($otherLinks) > 0)) {
+					echo " disabled";
+				}
+				echo '><input type="submit" name="clean" value="Clear Internal"';
+				if (!($internalLinks > 0)) {
+					echo " disabled";
+				}
+				echo '><br><input type="submit" name="clean" value="Clear All" /></form>';
 			}
-			echo "</div>";
+			echo "</div>\n";
 		}
 	} else {
 		echo "Could not get referers (".mysql_error($result).")!";
 	}
-} else {
-	// Delete old referers
+} else { // $_GET['clean'] is set!
 	include("auth.php"); // Requires authentication!
-	$sql = 'DELETE FROM cms_referer';
-	$result = mysql_query($sql);
-	if (!$result) {
-		echo "Could not delete referers (".mysql_error($result).")!";
+	if ($_GET['clean'] == "Clear All") {
+		$sql = 'DELETE FROM cms_referer';
+		$result = mysql_query($sql);
+		if (!$result) {
+			echo "Could not delete referers (".mysql_error($result).")!";
+		} else {
+			echo "Cleared referers!";
+			echo "<br><a href=\"admin.php\">OK!</a>";
+		}
+	} else if ($_GET['clean'] == "Clear Google") {
+		$sql = 'DELETE FROM cms_referer WHERE referer REGEXP "google\."';
+		$result = mysql_query($sql);
+		if (!$result) {
+			echo "Could not delete Google search terms (".mysql_error($result).")!";
+		} else {
+			echo "Cleared Google search terms!";
+			echo "<br><a href=\"admin.php\">OK!</a>";
+		}
+	} else if ($_GET['clean'] == "Clear Internal") {
+		$sql = 'DELETE FROM cms_referer	WHERE referer REGEXP "'.str_ireplace('www.', '', parse_url($xythobuzCMS_root, PHP_URL_HOST)).'"';
+		$result = mysql_query($sql);
+		if (!$result) {
+			echo "Could not delete Internal links (".mysql_error($result).")!";
+		} else {
+			echo "Cleared Internal links!";
+			echo "<br><a href=\"admin.php\">OK!</a>";
+		}
+	} else if ($_GET['clean'] == "Clear External") {
+		$sql = 'DELETE FROM cms_referer
+		WHERE (NOT referer REGEXP "'.str_ireplace('www.', '', parse_url($xythobuzCMS_root, PHP_URL_HOST)).'")
+		AND (NOT referer REGEXP "google\.")';
+		$result = mysql_query($sql);
+		if (!$result) {
+			echo "Could not delete External links (".mysql_error($result).")!";
+		} else {
+			echo "Cleared External links!";
+			echo "<br><a href=\"admin.php\">OK!</a>";
+		}
 	} else {
-		echo "Cleared referers!";
-		echo "<br><a href=\"admin.php\">OK!</a>";
+		echo "Invalid clean argument!";
 	}
 }
 

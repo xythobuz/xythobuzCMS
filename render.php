@@ -25,7 +25,11 @@
 	define("XEND", (WIDTH - 25));
 	define("YSTART", (HEIGHT - 30));
 	define("YEND", 50);
-	define("RADIUS", 8);
+	if (WIDTH <= 300) {
+		define("RADIUS", 6);
+	} else {
+		define("RADIUS", 8);
+	}
 
 	$img = @imagecreate(WIDTH, HEIGHT)
 			or die ("Can't create GD Stream!");
@@ -71,7 +75,7 @@
 	imagestring($img, 3, 5, ((diff(YSTART, YEND) / 2) + YEND - 8),
 					$str, $black); // Half number
 
-	if (WIDTH > 250) {
+	if (HEIGHT >= 200) {
 		// Large enough that we want to render quarter marks
 		imagefilledrectangle($img, 42, ((diff(YSTART, YEND) / 4) + YEND - 2),
 					60, ((diff(YSTART, YEND) / 4) + YEND), $black); // 3 Quarter mark on y axis
@@ -102,6 +106,14 @@
 	}
 
 	$day = date('d'); // For maximum x value
+
+	if (WIDTH >= 200) {
+		// Large enough that we want to render arrows at the axis tops
+		imageline($img, 51, 30, 41, 40, $black); // Y-Axis, to the left
+		imageline($img, 51, 30, 61, 40, $black); // Y-Axis, to the right
+		imageline($img, (WIDTH - 15), (HEIGHT - 26), (WIDTH - 20), (HEIGHT - 34), $black); // X-Axis, to the top
+		imageline($img, (WIDTH - 15), (HEIGHT - 26), (WIDTH - 20), (HEIGHT - 18), $black); // X-Axis, to the bottom
+	}
 
 	// Render datapoints
 	if ($renderVisitors) {
@@ -166,7 +178,7 @@
 		imagefilledellipse($img, $a, $b, RADIUS, RADIUS, $color1); // Point
 		imagefilledrectangle($img, $a-1, HEIGHT-20, $a, HEIGHT-32, $color2); // Line on x-Axis
 		if (($x == $maxDay) || ($x == ($maxDay / 2))) {
-			imagestring($img, 3, $a-17, HEIGHT-17, $x.".".date('m'), $color2);
+			imagestring($img, 3, $a-7, HEIGHT-17, $x, $color2); // Day
 		}
 
 		// Draw line to last point
