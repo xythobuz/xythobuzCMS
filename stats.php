@@ -12,7 +12,7 @@ if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 	$renderBots = 0;
 	if (isset($_GET['img'])) {
 		include("render.php");
-		exit;
+		exit; // We are a png, so no text following!
 	} else if (isset($_GET['imgB'])) {
 		$renderVisitors = 1;
 		include("render.php");
@@ -55,6 +55,7 @@ Google search terms are listed separately, as are internal and external links.</
 	}
 	if ($viewsThisMonth != 0)
 		echo "<p>".$viewsThisMonth." this month</p>";
+	$viewsThisMonthA = $viewsThisMonth;
 
 	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m')-1;
 	$result = mysql_query($sql);
@@ -68,6 +69,7 @@ Google search terms are listed separately, as are internal and external links.</
 	}
 	if ($viewsLastMonth != 0)
 		echo "<p>".$viewsLastMonth." last month</p>";
+	$viewsLastMonthA = $viewsLastMonth;
 
 	$sql = 'SELECT day, visitors FROM cms_visitors';
 	$result = mysql_query($sql);
@@ -80,7 +82,8 @@ Google search terms are listed separately, as are internal and external links.</
 		$views = 0;
 	}
 	if ($views != 0)
-	echo "<p>".$views." overall</p>";
+		echo "<p>".$views." overall</p>";
+	$viewsA = $views;
 ?>
 </div>
 
@@ -102,6 +105,7 @@ Google search terms are listed separately, as are internal and external links.</
 	} else {
 		$visitsThisMonth = 0;
 	}
+	$visitsThisMonthA = $visitsThisMonth;
 	if ($visitsThisMonth != 0)
 		echo "<p>".$visitsThisMonth." this month</p>";
 
@@ -120,6 +124,7 @@ Google search terms are listed separately, as are internal and external links.</
 	}
 	if ($visitsLastMonth != 0)
 		echo "<p>".$visitsLastMonth." last month</p>";
+	$visitsLastMonthA = $visitsLastMonth;
 
 	$sql = 'SELECT count(ip) AS count, day
 		FROM cms_visit
@@ -135,6 +140,7 @@ Google search terms are listed separately, as are internal and external links.</
 	}
 	if ($visits != 0)
 		echo "<p>".$visits." overall</p>";
+	$visitsA = $visits;
 ?>
 </div>
 
@@ -192,12 +198,12 @@ Google search terms are listed separately, as are internal and external links.</
 ?>
 </div>
 <?
-	if (($viewsThisMonth != 0) && ($visitsThisMonth != 0))
-		echo "<p>~".floor($viewsThisMonth / $visitsThisMonth)." Views / Visitor this month</p>";
+	if (($viewsThisMonthA != 0) && ($visitsThisMonthA != 0))
+		echo "<p>~".floor($viewsThisMonthA / $visitsThisMonthA)." Views / Visitor this month</p>";
 	if (($viewsLastMonth != 0) && ($visitsLastMonth != 0))
-		echo "<p>~".floor($viewsLastMonth / $visitsLastMonth)." Views / Visitor last month</p>";
-	if (($views != 0) && ($visits != 0))
-		echo "<p>~".floor($views / $visits)." Views / Visitor overall</p>";
+		echo "<p>~".floor($viewsLastMonthA / $visitsLastMonthA)." Views / Visitor last month</p>";
+	if (($viewsA != 0) && ($visitsA != 0))
+		echo "<p>~".floor($viewsA / $visitsA)." Views / Visitor overall</p>";
 ?>
 <div style="clear: left;">
 <p>
@@ -262,13 +268,13 @@ if (!isset($_GET['clean'])) {
 			}
 			echo "</div>\n";
 
-			// Other links
+			// External links
 			echo "<div style=\"float: left; width: 33%;\">";
 			if (count($otherLinks) > 0) {
 				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>External link</th></tr>";
 				foreach ($otherLinks as $link) {
 					echo "<tr><td>";
-					echo '<a href="'.$link.'">'.str_ireplace('www.', '', parse_url($link, PHP_URL_HOST)).'</a>';
+					echo '<a href="'.$link.'">'.getPageTitle($link).'</a>';
 					echo "</td></tr>";
 				}
 				echo "</table>";
@@ -363,4 +369,15 @@ if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 </html>
 <?
 	mysql_close($db);
+}
+
+// From http://www.cafewebmaster.com/php-get-page-title-function
+function getPageTitle($url){
+	if (!($data = file_get_contents($url)))
+		return false;
+	if (preg_match("#<title>(.+)<\/title>#iU", $data, $t)) {
+		return trim($t[1]);
+	} else {
+		return false;
+	}
 }
