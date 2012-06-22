@@ -373,11 +373,14 @@ if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 
 // From http://www.cafewebmaster.com/php-get-page-title-function
 function getPageTitle($url){
-	if (!($data = file_get_contents($url)))
+	$parse = parse_url($url);
+	return $parse['host'];
+	// This works, but is of course slow, as it loads every referer page, so we are simpler...
+	/* if (!($data = file_get_contents($url)))
 		return false;
 	if (preg_match("#<title>(.+)<\/title>#iU", $data, $t)) {
 		return trim($t[1]);
 	} else {
 		return false;
-	}
+	} */
 }
