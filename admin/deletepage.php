@@ -25,8 +25,10 @@ if (!isset($_GET['w'])) {
 		ord
 	FROM
 		cms
+	WHERE
+		kategorie = 0
 	ORDER BY
-		id';
+		ord';
 	$result = mysql_query($sql);
 	if (!$result) {
 		die ('Query-Error!');
@@ -50,6 +52,44 @@ if (!isset($_GET['w'])) {
 		echo "<td>".$row['kategorie']."</td>\n";
 		echo "<td>".$row['ord']."</td>\n";
 		echo '<td><a href="deletepage.php?w='.$row['kuerzel'].'">Löschen</a></td></tr>'."\n";
+
+		$sql2 = 'SELECT id, kuerzel, linktext, beschreibung, kategorie, ord
+		FROM cms
+		WHERE kategorie = '.$row['id'].'
+		ORDER BY ord';
+		$result2 = mysql_query($sql2);
+		if (!$result2) {
+			die("Query Error!");
+		}
+		while ($row2 = mysql_fetch_array($result2)) {
+			echo "<tr>";
+			echo "<td>".$row2['id']."</td>\n";
+			echo "<td>".$row2['kuerzel']."</td>\n";
+			echo "<td>".$row2['linktext']."</td>\n";
+			echo "<td>".$row2['beschreibung']."</td>\n";
+			echo "<td>".$row2['kategorie']."</td>\n";
+			echo "<td>".$row2['ord']."</td>\n";
+			echo '<td><a href="deletepage.php?w='.$row2['kuerzel'].'">Löschen</a></td></tr>'."\n";
+			$sql3 = 'SELECT id, kuerzel, linktext, beschreibung, kategorie, ord
+			FROM cms
+			WHERE kategorie = '.$row2['id'].'
+			ORDER BY ord';
+			$result3 = mysql_query($sql3);
+			if (!$result3) {
+				die("Query Error!");
+			}
+
+			while ($row3 = mysql_fetch_array($result3)) {
+				echo "<tr>";
+				echo "<td>".$row3['id']."</td>\n";
+				echo "<td>".$row3['kuerzel']."</td>\n";
+				echo "<td>".$row3['linktext']."</td>\n";
+				echo "<td>".$row3['beschreibung']."</td>\n";
+				echo "<td>".$row3['kategorie']."</td>\n";
+				echo "<td>".$row3['ord']."</td>\n";
+				echo '<td><a href="deletepage.php?w='.$row3['kuerzel'].'">Löschen</a></td></tr>'."\n";
+			}
+		}
 	}
 ?>
 </table>
