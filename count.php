@@ -28,41 +28,6 @@
 		}
 	}
 
-	// Increment pageview count
-	$sql = 'SELECT day, visitors
-		FROM cms_visitors
-		WHERE day = "'.date('Y-m-d').'"';
-	$result = mysql_query($sql);
-	if (!$result) {
-		die("Database Error!");
-	}
-	$row = mysql_fetch_array($result);
-	if ($row) {
-		// Theres a record for this day
-		$count = $row['visitors'];
-		$count++;
-		$sql = 'UPDATE cms_visitors
-		SET
-			visitors = '.$count.'
-		WHERE
-			day = "'.date('Y-m-d').'"';
-		$result = mysql_query($sql);
-		if (!$result) {
-			die("Database Error");
-		}
-		$pageViews = $count;
-	} else {
-		// Create new record
-		$sql = 'INSERT INTO cms_visitors(day, visitors)
-			VALUES ( "'.date('Y-m-d').'", 1 )';
-		$result = mysql_query($sql);
-		if (!$result) {
-			echo mysql_error();
-			die("Database Error.");
-		}
-		$pageViews = 1;
-	}
-
 	// Detect a bot/crawler/spider whatever you want to call it
 
 	$search = array("bot", "spider", "crawler", "search", "archive");
@@ -101,6 +66,41 @@
 			}
 		}
 	} else {
+		// Increment pageview count
+		$sql = 'SELECT day, visitors
+			FROM cms_visitors
+			WHERE day = "'.date('Y-m-d').'"';
+		$result = mysql_query($sql);
+		if (!$result) {
+			die("Database Error!");
+		}
+		$row = mysql_fetch_array($result);
+		if ($row) {
+			// Theres a record for this day
+			$count = $row['visitors'];
+			$count++;
+			$sql = 'UPDATE cms_visitors
+				SET
+				visitors = '.$count.'
+				WHERE
+				day = "'.date('Y-m-d').'"';
+			$result = mysql_query($sql);
+			if (!$result) {
+				die("Database Error");
+			}
+			$pageViews = $count;
+		} else {
+			// Create new record
+			$sql = 'INSERT INTO cms_visitors(day, visitors)
+				VALUES ( "'.date('Y-m-d').'", 1 )';
+			$result = mysql_query($sql);
+			if (!$result) {
+				echo mysql_error();
+				die("Database Error.");
+			}
+			$pageViews = 1;
+		}
+
 		// Insert day and ip into cms_visit
 		// --> Log visitor
 		$sql = 'SELECT day, ip
