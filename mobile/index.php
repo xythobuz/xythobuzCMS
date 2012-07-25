@@ -45,7 +45,7 @@ function onReady() {
 <body>
 <div id="topbar">
 <? if (isset($_GET['p']) || isset($_GET['search'])) {
-	if (strpos($_SERVER['HTTP_REFERER'], $xythobuzCMS_root."/index.php") === 0) { ?>
+	if ((isset($_SERVER['HTTP_REFERER'])) && (strpos($_SERVER['HTTP_REFERER'], $xythobuzCMS_root."/index.php") === 0)) { ?>
 	<div id="leftnav"><a href="index.php"><img src="images/home.png" alt="Home" /></a></div>
 	<? } else { ?>
 	<div id="leftnav"><a href="javascript:history.back();">Back</a></div>

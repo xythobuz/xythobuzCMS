@@ -8,6 +8,8 @@
 		}
 	}
 
+	$pageViews = 1;
+
 	// Log referer if desired
 	$tmp = basename($_SERVER['PHP_SELF']);
 	if (($tmp == "news.php") || ($tmp == "index.php")) {
@@ -29,10 +31,9 @@
 	}
 
 	// Detect a bot/crawler/spider whatever you want to call it
-
 	$search = array("bot", "spider", "crawler", "search", "archive");
 	$pattern = '/('.implode('|', $search).')/';
-	if (preg_match($pattern, strtolower($_SERVER['HTTP_USER_AGENT'])) > 0) {
+	if ((isset($_SERVER['HTTP_USER_AGENT'])) && (preg_match($pattern, strtolower($_SERVER['HTTP_USER_AGENT']))) > 0) {
 		// Log bot
 		$sql = 'SELECT day, bots
 			FROM cms_bots

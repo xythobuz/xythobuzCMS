@@ -20,7 +20,7 @@
 			WHERE
 				username = "'.$username.'"';
 		$result = mysql_query($sql);
-		if (!result) {
+		if (!$result) {
 			echo "Query Error!\n";
 			exit;
 		}

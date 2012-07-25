@@ -1,9 +1,6 @@
 <?
 include('config.php');
-$iPod = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
-$iPhone = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
-$iPad = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
-if ($iPod || $iPhone || $iPad) {
+if ((isset($_SERVER['HTTP_USER_AGENT'])) && (stripos($_SERVER['HTTP_USER_AGENT'],"iPod") || stripos($_SERVER['HTTP_USER_AGENT'],"iPhone") || stripos($_SERVER['HTTP_USER_AGENT'],"iPad"))) {
 	if (!isset($_GET['desktop'])) {
 		if ($_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.1') {
 			if (php_sapi_name() == 'cgi') {
@@ -109,7 +106,7 @@ if (!$result) {
 	die ('Etwas stimmte mit dem Query nicht');
 }
 $row = mysql_fetch_array($result);
-if (($row['inhalt'] != "") || ($row['inhalt_en'] != "")) {
+if ($row && (isset($row['inhalt']) || isset($row['inhalt_en'])) && (($row['inhalt'] != "") || ($row['inhalt_en'] != ""))) {
 	if ($temp == "inhalt") {
 		echo stripslashes($row['inhalt']);
 	} else {

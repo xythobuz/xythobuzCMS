@@ -40,6 +40,7 @@
 	$grey = imagecolorallocate($img, 176, 176, 69);
 	$blue = imagecolorallocate($img, 42, 42, 242);
 
+	$clause = ""; // Prevent log-filling warnings
 	if (isset($_GET['d'])) { // d is the number of days to show, ending today
 		$d = $_GET['d'];
 		if (date('d') < $d) { // Can't go past current month
@@ -125,6 +126,7 @@
 
 	imagestring($img, 3, 5, 45, $max, $black); // Max Number
 	
+	$str = ""; // Prevent log-filling warning
 	if (($max / 2) < 1000) {
 		$str = number_format($max / 2, 1, ".", "");
 	} else {

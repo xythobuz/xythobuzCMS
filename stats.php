@@ -31,9 +31,9 @@ if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 <body>
 <div class="admin">
 <h1>xythobuzCMS Statistics</h1>
-<p>The left diagram shows the Pageviews this month,
-the right diagram shows the Visitors this month.
-Below, you see the referers of the visitors.
+<p>The left diagram shows the Pageviews, the central diagram shows the Visitors,
+the right diagram shows the Bots this month.</p>
+<p>Below, you see the referers of the visitors.
 Google search terms are listed separately, as are internal and external links.</p>
 <hr>
 <?
@@ -57,7 +57,7 @@ Google search terms are listed separately, as are internal and external links.</
 		echo "<p>".$viewsThisMonth." this month</p>";
 	$viewsThisMonthA = $viewsThisMonth;
 
-	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m')-1;
+	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.(intval(date('m')) - 1);
 	$result = mysql_query($sql);
 	if ($result) {
 		$viewsLastMonth = 0;
@@ -112,7 +112,7 @@ Google search terms are listed separately, as are internal and external links.</
 	$sql = 'SELECT count(ip) AS count, day
 		FROM cms_visit
 		GROUP BY day
-		HAVING MONTH(day) = '.date('m') - 1;
+		HAVING MONTH(day) = '.(intval(date('m')) - 1);
 	$result = mysql_query($sql);
 	if ($result) {
 		$visitsLastMonth = 0;
@@ -168,7 +168,7 @@ Google search terms are listed separately, as are internal and external links.</
 	$sql = 'SELECT bots AS count, day
 		FROM cms_bots
 		GROUP BY day
-		HAVING MONTH(day) = '.date('m') - 1;
+		HAVING MONTH(day) = '.(intval(date('m')) - 1);
 	$result = mysql_query($sql);
 	if ($result) {
 		$visitsLastMonth = 0;
@@ -200,7 +200,7 @@ Google search terms are listed separately, as are internal and external links.</
 <?
 	if (($viewsThisMonthA != 0) && ($visitsThisMonthA != 0))
 		echo "<p>~".floor($viewsThisMonthA / $visitsThisMonthA)." Views / Visitor this month</p>";
-	if (($viewsLastMonth != 0) && ($visitsLastMonth != 0))
+	if (($viewsLastMonthA != 0) && ($visitsLastMonthA != 0))
 		echo "<p>~".floor($viewsLastMonthA / $visitsLastMonthA)." Views / Visitor last month</p>";
 	if (($viewsA != 0) && ($visitsA != 0))
 		echo "<p>~".floor($viewsA / $visitsA)." Views / Visitor overall</p>";
@@ -225,7 +225,7 @@ if (!isset($_GET['clean'])) {
 		$g = 0; // Index for googleTerm
 		$googleTerm = array(); // Store google search terms
 		$googleLink = array(); // Store full google link
-		$internalLinks = 0; // Count internal links
+		$internalLinks = array();
 		$o = 0; // Index for otherLinks
 		$otherLinks = array(); // Store other links (index: o)
 		while ($row = mysql_fetch_array($result)) {
@@ -233,13 +233,23 @@ if (!isset($_GET['clean'])) {
 			if (eregi('google\.', $ref)) {
 				// Google visitor
 				$googleLink[$g] = $ref;
-				$ref = $ref.'&';
-				preg_match('/q=(.*)&/UiS', $ref, $googleTerm[$g]); // Store search term
-				$googleTerm[$g] = $googleTerm[$g][1]; // Thats the search term
-				$g++;
+				preg_match('/q=(.*)&/UiS', $ref.'&', $googleTerm[$g]); // Store search term
+				if (isset($googleTerm[$g][1])) {
+					$googleTerm[$g] = $googleTerm[$g][1]; // Thats the search term
+					$g++;
+				}
 			} else if (eregi(str_ireplace('www.', '', parse_url($xythobuzCMS_root, PHP_URL_HOST)), $ref)) {
 				// Internal link
-				$internalLinks++;
+				preg_match('/p=(.*)&/UiS', $ref.'&', $link);
+				if (isset($link[0])) {
+					$link = str_replace("p=", "", $link[0]);
+					$link = str_replace("&", "", $link);
+					if (!isset($internalLinks[$link])) {
+						$internalLinks[$link] = 1;
+					} else {
+						$internalLinks[$link]++;
+					}
+				}
 			} else {
 				// Other link. Save it
 				$otherLinks[$o++] = $ref;
@@ -284,11 +294,20 @@ if (!isset($_GET['clean'])) {
 			echo "</div>\n";
 
 			// Internal Links
-			echo "<div style=\"float: left; width: 33%; align: center;\">";
-			if ($internalLinks > 0) {
-				echo "<p>Counted ".$internalLinks." internal page hops.</p>";
+			echo "<div style=\"float: left; width: 33%;\">";
+			if ((isset($internalLinks)) && (count($internalLinks) > 0)) {
+				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Page</th><th>Count</th></tr>";
+				foreach ($internalLinks as $link => $count) {
+					echo "<tr><td>";
+					echo "<a href=\"".$xythobuzCMS_root."/index.php?p=".$link."\">";
+					echo $link;
+					echo "</td><td>";
+					echo $count;
+					echo "</td></tr>";
+				}
+				echo "</table>";
 			} else {
-				echo "<p>No internal page hops recorded.</p>";
+				echo "<p>No internal links detected.</p>";
 			}
 			echo "</div>\n";
 

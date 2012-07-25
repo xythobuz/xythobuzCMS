@@ -196,7 +196,7 @@ function bottom2() {
 			$url = $url.'?beitrag='.$_GET['beitrag'];
 		}
 	} else {
-		if ($_GET['p'] != '') {
+		if (isset($_GET['p'])) {
 			$url = $url.'?p='.$_GET['p'];
 		}
 	}
@@ -313,8 +313,15 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 	for ($i = 1; $i < ($numOfInvocations+1); $i++) {
 		echo "-&gt; ";
 	}
-	
-	if ($r[$pos]['nolink'] != 1) {
+
+	$printLink = 1;
+	if (isset($r[$pos]['nolink'])) {
+		if (($r[$pos]['nolink'] == 1)) {
+			$printLink = 0;
+		}
+	}
+
+	if ($printLink == 1) {
 		echo "<a href=\"index.php?p=";
 		echo $r[$pos]['kuerzel'];
 		if ($lang == "en") {
@@ -323,9 +330,10 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 		echo "\">";
 	}	
 	echo $r[$pos]['linktext'];
-	if ($r[$pos]['nolink'] != 1) {
+	if ($printLink == 1) {
 		echo "</a>";
 	}
+
 	echo "<br>\n";
 	if ($found == true) {
 		sort2d_asc($results, 'id');
