@@ -145,7 +145,7 @@ if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 	$content = mysql_real_escape_string($_POST['content']);
 	$content_en = mysql_real_escape_string($_POST['content_en']);
 	$id = mysql_real_escape_string($_GET['id']);
-	if ($_POST['click'] == "true") {
+	if (isset($_POST['click']) && ($_POST['click'] == "true")) {
 		$click = "1";
 	} else {
 		$click = "0";
@@ -170,7 +170,7 @@ if ( (!isset($_POST['id'])) && (!isset($_GET['id'])) ) {
 	}
 	echo "Edited ";
 	echo $link;
-	echo "successfully!";
+	echo " successfully!";
 }
 
 mysql_close($db);

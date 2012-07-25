@@ -106,11 +106,11 @@ if (!$result) {
 	die ('Etwas stimmte mit dem Query nicht');
 }
 $row = mysql_fetch_array($result);
-if ($row && (isset($row['inhalt']) || isset($row['inhalt_en'])) && (($row['inhalt'] != "") || ($row['inhalt_en'] != ""))) {
-	if ($temp == "inhalt") {
-		echo stripslashes($row['inhalt']);
-	} else {
-		echo stripslashes($row['inhalt_en']);
+if ($row && (isset($row['inhalt']) || isset($row['inhalt_en']))) {
+	if (($temp == "inhalt") && isset($row['inhalt'])) {
+			echo stripslashes($row['inhalt']);
+	} else if (isset($row['inhalt_en'])) {
+			echo stripslashes($row['inhalt_en']);
 	}
 	if ((isset($xythobuzCMS_flattrusername)) && (isset($_GET['p'])) && ($_GET['p'] != "home")) {
 	$link = "https://flattr.com/submit/auto?user_id=".$xythobuzCMS_flattrusername."&amp;url=".$xythobuzCMS_root."/index.php?p=".$_GET['p']."&amp;title=".htmlspecialchars($row['linktext']);
