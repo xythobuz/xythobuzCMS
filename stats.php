@@ -297,6 +297,8 @@ if (!isset($_GET['clean'])) {
 			echo "<div style=\"float: left; width: 33%;\">";
 			if ((isset($internalLinks)) && (count($internalLinks) > 0)) {
 				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Page</th><th>Count</th></tr>";
+				asort($internalLinks);
+				$internalLinks = array_reverse($internalLinks, true);
 				foreach ($internalLinks as $link => $count) {
 					echo "<tr><td>";
 					echo "<a href=\"".$xythobuzCMS_root."/index.php?p=".$link."\">";
