@@ -41,7 +41,7 @@ Google search terms are listed separately, as are internal and external links.</
 ?>
 <div style="float: left; width: 33%;">
 <h3>Pageviews</h3>
-<a href="stats.php?img&amp;w=600"><img src="stats.php?img&amp;w=200" alt="Pageviews this Month"></a>
+<a href="stats.php?img&amp;w=600"><img src="stats.php?img&amp;w=250" alt="Pageviews this Month"></a>
 <?
 	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m');
 	$result = mysql_query($sql);
@@ -89,7 +89,7 @@ Google search terms are listed separately, as are internal and external links.</
 
 <div style="float: left; width: 33%;">
 <h3>Visitors</h3>
-<a href="stats.php?imgB&amp;w=600"><img src="stats.php?imgB&amp;w=200" alt="Visitors this Month"></a>
+<a href="stats.php?imgB&amp;w=600"><img src="stats.php?imgB&amp;w=250" alt="Visitors this Month"></a>
 <?
 	$sql = 'SELECT count(ip) AS count, day
 		FROM cms_visit
@@ -146,7 +146,7 @@ Google search terms are listed separately, as are internal and external links.</
 
 <div style="float: left; width: 33%;">
 <h3>Bots</h3>
-<a href="stats.php?imgC&amp;w=600"><img src="stats.php?imgC&amp;w=200" alt="Bots this Month"></a>
+<a href="stats.php?imgC&amp;w=600"><img src="stats.php?imgC&amp;w=250" alt="Bots this Month"></a>
 <?
 	$sql = 'SELECT bots AS count, day
 		FROM cms_bots
