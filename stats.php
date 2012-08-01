@@ -372,7 +372,7 @@ if (!isset($_GET['clean'])) {
 					echo " disabled";
 				}
 				echo '><input type="submit" name="clean" value="Clear Internal"';
-				if (!($internalLinks > 0)) {
+				if (!(count($internalLinks) > 0)) {
 					echo " disabled";
 				}
 				echo '><br><input type="submit" name="clean" value="Clear All" /></form>';
