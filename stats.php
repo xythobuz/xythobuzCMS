@@ -268,7 +268,7 @@ if (!isset($_GET['clean'])) {
 				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Google search terms</th></tr>";
 				foreach ($googleTerm as $key => $term) {
 					$link = $googleLink[$key];
-					if (eregi('url?', $link)) {
+					if (preg_match('~url?~', $link)) {
 						$link = str_replace("url?", "#", $link);
 					}
 					if (urldecode($term) != "") {
@@ -308,8 +308,48 @@ if (!isset($_GET['clean'])) {
 					$link = str_ireplace("www.", "", $link);
 					$link = str_ireplace("http://", "", $link);
 					$link = str_ireplace(parse_url($xythobuzCMS_root, PHP_URL_HOST), "", $link);
-					echo $link;
-					echo "</td><td>";
+					$link = substr($link, 1);
+					if (!preg_match("~mobile/~", $link)) {
+						if (preg_match("~index.php~", $link)) {
+							// Page
+							$tmp = array();
+							preg_match("/p=(.*)&/UiS", $link.'&', $tmp);
+							if (isset($tmp[1])) {
+								echo $tmp[1];
+							} else {
+								echo "Home";
+							}
+						} else if (preg_match("~news.php~", $link)) {
+							// News
+							$tmp = array();
+							preg_match("/beitrag=(.*)&/UiS", $link.'&', $tmp);
+							if (isset($tmp[1])) {
+								echo "News: ";
+								echo $tmp[1];
+							} else {
+								if (preg_match("/p=(.*)&/UiS", $link.'&', $tmp)) {
+									if (isset($tmp[1])) {
+										echo $tmp[1];
+									} else {
+										echo "News...?";
+									}
+								} else {
+									echo "News";
+								}
+							}
+						} else {
+							// Something else...
+							echo $link;
+						}
+					} else {
+						// Mobile version
+						echo "iOS";
+						$link = str_ireplace("mobile/index.php", "", $link);
+						if (strlen($link) > 0) {
+							echo ": ".str_ireplace("?", "", $link);
+						}
+					}
+					echo "</a></td><td>";
 					echo $count;
 					echo "</td></tr>";
 				}
