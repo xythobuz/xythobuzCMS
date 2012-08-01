@@ -230,7 +230,12 @@ if (!isset($_GET['clean'])) {
 		$otherLinks = array(); // Store other links (index: o)
 		while ($row = mysql_fetch_array($result)) {
 			$ref = $row['referer'];
-			if (eregi('google\.', $ref)) {
+			
+			// for second if condition:
+			$regex = str_ireplace('www.', '', parse_url($xythobuzCMS_root, PHP_URL_HOST));
+			$regex = "~".$regex."~"; // Delimiter
+
+			if (preg_match('~google\.~', $ref)) {
 				// Google visitor
 				$googleLink[$g] = $ref;
 				preg_match('/q=(.*)&/UiS', $ref.'&', $googleTerm[$g]); // Store search term
@@ -238,17 +243,15 @@ if (!isset($_GET['clean'])) {
 					$googleTerm[$g] = $googleTerm[$g][1]; // Thats the search term
 					$g++;
 				}
-			} else if (eregi(str_ireplace('www.', '', parse_url($xythobuzCMS_root, PHP_URL_HOST)), $ref)) {
-				// Internal link
-				preg_match('/p=(.*)&/UiS', $ref.'&', $link);
-				if (isset($link[0])) {
-					$link = str_replace("p=", "", $link[0]);
-					$link = str_replace("&", "", $link);
-					if (!isset($internalLinks[$link])) {
-						$internalLinks[$link] = 1;
-					} else {
-						$internalLinks[$link]++;
-					}
+			} else if (preg_match($regex, $ref)) { // --> internal link
+				$ref = str_ireplace("www.", "", $ref);
+				if ($ref == str_ireplace("www.", "", $xythobuzCMS_root)."/") {
+					$ref = $ref."index.php";
+				}
+				if (!isset($internalLinks[$ref])) {
+					$internalLinks[$ref] = 1;
+				} else {
+					$internalLinks[$ref]++;
 				}
 			} else {
 				// Other link. Save it
@@ -296,12 +299,15 @@ if (!isset($_GET['clean'])) {
 			// Internal Links
 			echo "<div style=\"float: left; width: 33%;\">";
 			if ((isset($internalLinks)) && (count($internalLinks) > 0)) {
-				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Page</th><th>Count</th></tr>";
+				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>Internal Link</th><th>Count</th></tr>";
 				asort($internalLinks);
 				$internalLinks = array_reverse($internalLinks, true);
 				foreach ($internalLinks as $link => $count) {
 					echo "<tr><td>";
-					echo "<a href=\"".$xythobuzCMS_root."/index.php?p=".$link."\">";
+					echo "<a href=\"".$link."\">";
+					$link = str_ireplace("www.", "", $link);
+					$link = str_ireplace("http://", "", $link);
+					$link = str_ireplace(parse_url($xythobuzCMS_root, PHP_URL_HOST), "", $link);
 					echo $link;
 					echo "</td><td>";
 					echo $count;

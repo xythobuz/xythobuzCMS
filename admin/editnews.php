@@ -48,7 +48,7 @@ if (!isset($_GET['w'])) {
 			ueberschrift,
 			inhalt
 		FROM cms_news
-		WHERE id = '.stripslashes($_GET[w]);
+		WHERE id = '.stripslashes($_GET['w']);
 		$result = mysql_query($sql);
 		if (!$result) {
 			die ('Could not read table cms_news');

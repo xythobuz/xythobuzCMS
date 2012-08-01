@@ -15,7 +15,7 @@ header1();
 <?
 
 // Create a new user
-if ($_GET['p'] == "newuser") {
+if (isset($_GET['p']) && ($_GET['p'] == "newuser")) {
 	if ($_POST['pass1'] != $_POST['pass2']) {
 		echo "New Passwords not equal!";
 		exit;
@@ -39,7 +39,7 @@ if ($_GET['p'] == "newuser") {
 		exit;
 	}
 	echo "User created!<br>\n";
-} else if ($_GET['p'] == "deluser") {
+} else if (isset($_GET['p']) && ($_GET['p'] == "deluser")) {
 	$sql = 'SELECT username FROM cms_user';
 	$result = mysql_query($sql);
 	if (!$result) {
