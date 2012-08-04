@@ -329,13 +329,22 @@ if (!isset($_GET['clean'])) {
 							} else {
 								if (preg_match("/p=(.*)&/UiS", $link.'&', $tmp)) {
 									if (isset($tmp[1])) {
-										echo $tmp[1];
+										echo "News: ".$tmp[1];
 									} else {
 										echo "News...?";
 									}
 								} else {
 									echo "News";
 								}
+							}
+						} else if (preg_match("~search.php~", $link)) {
+							$tmp = array();
+							preg_match("/term=(.*)&/UiS", $link.'&', $tmp);
+							if (isset($tmp[1])) {
+								echo "Search: ";
+								echo $tmp[1];
+							} else {
+								echo "Search";
 							}
 						} else {
 							// Something else...
@@ -346,7 +355,11 @@ if (!isset($_GET['clean'])) {
 						echo "iOS";
 						$link = str_ireplace("mobile/index.php", "", $link);
 						if (strlen($link) > 0) {
-							echo ": ".str_ireplace("?", "", $link);
+							$link = str_ireplace("?", "", $link);
+							$link = str_ireplace("=", ":", $link);
+							$link = str_ireplace("p:", "", $link);
+							$link = str_ireplace("news:", "News: ", $link);
+							echo ": ".$link;
 						}
 					}
 					echo "</a></td><td>";
