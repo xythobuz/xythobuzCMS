@@ -41,9 +41,9 @@ header1();
 <hr>
 <?
 	// Update sitemap
-	$sitemap = "<?xml version='1.0' encoding='UTF-8'?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\nxmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\nxsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9\nhttp://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">\n\n<url>\n\t<loc>".$xythobuzCMS_root."/index.php</loc>\n</url>\n<url>\n\t<loc>".$xythobuzCMS_root."/news.php</loc>\n</url>\n\n";
+	$sitemap = "<?xml version='1.0' encoding='UTF-8'?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\nxmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\nxsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9\nhttp://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">\n<url><loc>".$xythobuzCMS_root."/index.php</loc></url>\n<url><loc>".$xythobuzCMS_root."/news.php</loc></url>\n";
 	$sql = 'SELECT
-				kuerzel
+				kuerzel, inhalt_en
 			FROM
 				cms
 			WHERE NOT
@@ -55,16 +55,34 @@ header1();
 		die ('Query-Error!');
 	}
 	while ($row = mysql_fetch_array($result)) {
-		$sitemap = $sitemap."<url>\n\t<loc>";
+		$sitemap = $sitemap."<url><loc>";
 		$sitemap = $sitemap.$xythobuzCMS_root."/index.php?p=";
 		$sitemap = $sitemap.$row['kuerzel'];
-		$sitemap = $sitemap."</loc>\n</url>\n\n";
+		$sitemap = $sitemap."</loc></url>\n";
 
-		$sitemap = $sitemap."<url>\n\t<loc>";
-		$sitemap = $sitemap.$xythobuzCMS_root."/index.php?p=";
-		$sitemap = $sitemap.$row['kuerzel'];
-		$sitemap = $sitemap."&amp;lang=".$xythobuzCMS_lang2;
-		$sitemap = $sitemap."</loc>\n</url>\n\n";
+		if (!(($row['inhalt_en'] == "<p>No translation available...</p>") || ($row['inhalt_en'] == "No translation available..."))) {
+			$sitemap = $sitemap."<url><loc>";
+			$sitemap = $sitemap.$xythobuzCMS_root."/index.php?p=";
+			$sitemap = $sitemap.$row['kuerzel'];
+			$sitemap = $sitemap."&amp;lang=".$xythobuzCMS_lang2;
+			$sitemap = $sitemap."</loc></url>\n";
+		}
+	}
+	$sql = 'SELECT
+				id
+			FROM
+				cms_news
+			ORDER BY
+				datum DESC';
+	$result = mysql_query($sql);
+	if (!$result) {
+		die("Query Error!");
+	}
+	while ($row = mysql_fetch_array($result)) {
+		$sitemap = $sitemap."<url><loc>";
+		$sitemap = $sitemap.$xythobuzCMS_root."/news.php?beitrag=";
+		$sitemap = $sitemap.$row['id'];
+		$sitemap = $sitemap."</loc></url>\n";
 	}
 	$sitemap = $sitemap."</urlset>";
 	$path = 'sitemap.xml';

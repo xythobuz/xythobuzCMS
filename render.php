@@ -111,11 +111,11 @@
 	imagefilledrectangle($img, WIDTH-1, 0, WIDTH-2, HEIGHT-1, $black); // Line right
 	imagefilledrectangle($img, WIDTH-1, HEIGHT-1, 0, HEIGHT-2, $black); // Line bottom
 	if ($renderVisitors) {
-		imagestring($img, 4, 3, 3, "Visitors ".date('m.Y')." ".$xythobuzCMS_title, $black);
+		imagestring($img, 4, 3, 3, "Visitors ".date('d.m.Y')." ".$xythobuzCMS_title, $black);
 	} else if ($renderBots) {
-		imagestring($img, 4, 3, 3, "Bots ".date('m.Y')." ".$xythobuzCMS_title, $black);
+		imagestring($img, 4, 3, 3, "Bots ".date('d.m.Y')." ".$xythobuzCMS_title, $black);
 	} else {
-		imagestring($img, 4, 3, 3, "Pageviews ".date('m.Y')." ".$xythobuzCMS_title, $black);
+		imagestring($img, 4, 3, 3, "Views ".date('d.m.Y')." ".$xythobuzCMS_title, $black);
 	}
 	imagefilledrectangle($img, 50, 30, 52, (HEIGHT - 15), $black); // Y-Axis
 	imagefilledrectangle($img, 40, (HEIGHT - 25), (WIDTH - 15), (HEIGHT - 27), $black); // X-Axis

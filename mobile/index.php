@@ -154,7 +154,7 @@ function onReady() {
 			exit;
 		}
 		$row = mysql_fetch_array($result);
-?>	<span class="graytitle"><? echo $row['ueberschrift']." (".$row['datum'].")"; ?></span>
+?>	<span class="graytitle"><? echo stripslashes(stripslashes($row['ueberschrift']))." (".$row['datum'].")"; ?></span>
 	<ul class="pageitem">
 		<li class="textbox">
 <?		$content = stripslashes($row['inhalt']);

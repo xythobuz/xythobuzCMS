@@ -103,7 +103,7 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			exit;
 		}
 		$row = mysql_fetch_array($result);
-?><h2><? echo stripslashes($row['ueberschrift']); ?></h2>
+?><h2><? echo stripslashes(stripslashes($row['ueberschrift'])); ?></h2>
 <p style="font-size:xx-small"><? echo $row['datum']; ?></p>
 <p><? echo stripslashes($row['inhalt']); ?></p>
 <?
@@ -196,7 +196,7 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 			$skip2--;
 			$i--;
 		} else {
-?><h2><a href="news.php?beitrag=<? echo $row['id']; ?>"><? echo stripslashes($row['ueberschrift']); ?></a></h2>
+?><h2><a href="news.php?beitrag=<? echo $row['id']; ?>"><? echo stripslashes(stripslashes($row['ueberschrift'])); ?></a></h2>
 <p style="font-size:xx-small"><? echo $row['datum']; ?></p>
 <p><? echo stripslashes($row['inhalt']); ?></p>
 <hr>

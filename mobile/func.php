@@ -11,7 +11,7 @@ function listNews() {
 ?>	<ul class="pageitem">
 		<li class="menu">
 			<a href="index.php?news=<? echo $row['id'] ?>">
-				<span class="name"><? echo $row['ueberschrift']." (".$row['datum'].")"; ?></span>
+				<span class="name"><? echo stripslashes(stripslashes($row['ueberschrift']))." (".$row['datum'].")"; ?></span>
 				<span class="arrow"></span>
 			</a>
 		</li>
