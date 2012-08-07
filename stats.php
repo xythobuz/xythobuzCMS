@@ -27,6 +27,7 @@ if (basename($_SERVER['PHP_SELF']) == "stats.php") {
 	header1();
 ?>
 <title>xythobuzCMS Statistics</title>
+<meta name="robots" content="nofollow">
 </head>
 <body>
 <div class="admin">

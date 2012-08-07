@@ -225,14 +225,14 @@ No Comments!
 	<span class="graytitle">Links</span>
 	<ul class="pageitem">
 <?
-		$sql = 'SELECT url, title FROM cms_links ORDER BY ord ASC';
+		$sql = 'SELECT url, title, nofollow FROM cms_links ORDER BY ord ASC';
 		$result = mysql_query($sql);
 		if(!$result) {
 			die("Database error...");
 		}
 		while ($row = mysql_fetch_array($result)) {
 ?>		<li class="menu">
-			<a class="noeffect" href="<? echo $row['url']; ?>">
+			<a class="noeffect" href="<? echo $row['url']; ?>"<? if ($row['nofollow'] == 1) { echo " rel=\"nofollow\""; } ?>>
 				<span class="name"><? echo $row['title']; ?></span>
 				<span class="arrow"></span>
 			</a>

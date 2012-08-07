@@ -169,7 +169,7 @@ function bottom2() {
 ?></p><p>
 <? 
 	$sql = 'SELECT
-		url, title
+		url, title, nofollow
 	FROM
 		cms_links
 	ORDER BY
@@ -179,7 +179,11 @@ function bottom2() {
 		die ("Could not connect to database!");
 	}
 	while ($row = mysql_fetch_array($result)) {
-?><a href="<? echo htmlspecialchars($row['url']); ?>"><? echo $row['title']; ?></a><br>
+?><a href="<? echo htmlspecialchars($row['url']); ?>"<?
+		if ($row['nofollow'] == 1) {
+			echo " rel=\"nofollow\"";
+		}
+?>><? echo $row['title']; ?></a><br>
 <?
 	}
 ?><br><a href="mailto:<? echo $xythobuzCMS_authormail; ?>"><? echo $xythobuzCMS_authormail; ?></a><br>

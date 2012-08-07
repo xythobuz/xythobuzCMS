@@ -58,7 +58,8 @@ if (isset($_POST['Host'])) {
 		id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
 		url TEXT NOT NULL,
 		title TEXT NOT NULL,
-		ord INT )';
+		ord INT,
+		nofollow BOOL DEFAULT 0)';
 	$result = mysql_query($sql);
 	if (!$result) {
 		die ("Could not create table 'cms_links'");
