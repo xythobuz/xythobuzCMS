@@ -112,7 +112,7 @@ if (isset($_GET['beitrag']) && is_numeric($_GET['beitrag'])) {
 <?
 		}
 		if (isset($xythobuzCMS_flattrusername)) {
-			$link = "https://flattr.com/submit/auto?user_id=".$xythobuzCMS_flattrusername."&amp;url=".$xythobuzCMS_root."/news.php?beitrag=".$_GET['beitrag']."&amp;title=".htmlspecialchars($row['ueberschrift']);
+			$link = "https://flattr.com/submit/auto?user_id=".$xythobuzCMS_flattrusername."&amp;url=".$xythobuzCMS_root."/news.php?beitrag=".$_GET['beitrag']."&amp;title=".urlencode($row['ueberschrift']);
 ?><p><a href="<? echo $link; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a></p>
 <?
 		} else if (isset($xythobuzCMS_flattr)) {

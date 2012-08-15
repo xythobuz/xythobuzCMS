@@ -113,7 +113,7 @@ if ($row && (isset($row['inhalt']) || isset($row['inhalt_en']))) {
 			echo stripslashes($row['inhalt_en']);
 	}
 	if ((isset($xythobuzCMS_flattrusername)) && (isset($_GET['p'])) && ($_GET['p'] != "home")) {
-	$link = "https://flattr.com/submit/auto?user_id=".$xythobuzCMS_flattrusername."&amp;url=".$xythobuzCMS_root."/index.php?p=".$_GET['p']."&amp;title=".htmlspecialchars($row['linktext']);
+	$link = "https://flattr.com/submit/auto?user_id=".$xythobuzCMS_flattrusername."&amp;url=".$xythobuzCMS_root."/index.php?p=".$_GET['p']."&amp;title=".urlencode($row['linktext']);
 ?><p><a href="<? echo $link; ?>" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this"></a></p>
 <?
 	} else if ((isset($xythobuzCMS_flattr)) && (isset($_GET['p'])) && ($_GET['p'] != "home")) {
