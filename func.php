@@ -124,10 +124,10 @@ function prefered_language ($available_languages,$http_accept_language="auto") {
 function bottom1($lang) {
 	include("config.php");
 	if ($lang == "en") {
-?><br>-&gt; <a href="news.php?lang=en">Blog</a><br>
+?>- <a href="news.php?lang=en">Blog</a><br>
 <?
 	} else {
-?><br>-&gt; <a href="news.php">Blog</a><br>
+?>- <a href="news.php">Blog</a><br>
 <?
 	}
 ?><br><form action="search.php" method="get"><input type="text" name="term">
@@ -314,8 +314,9 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 			echo "<br>";
 		}
 	}
+	echo "<li>";
 	for ($i = 1; $i < ($numOfInvocations+1); $i++) {
-		echo "-&gt; ";
+		echo "- ";
 	}
 
 	$printLink = 1;
@@ -338,7 +339,7 @@ function printID($r, $pos, $numOfInvocations, $lang) {
 		echo "</a>";
 	}
 
-	echo "<br>\n";
+	echo "</li>\n";
 	if ($found == true) {
 		sort2d_asc($results, 'id');
 		$resPos = 0;

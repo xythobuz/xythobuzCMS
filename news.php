@@ -243,7 +243,7 @@ while ($row = mysql_fetch_array($result)) {
 	$rows[$co] = $row;
 	$co++;
 }
-
+echo "<ul class=\"navigation\">";
 foreach ($rows as $i => $v) {
 	if ($v['kategorie'] == 0) {
 		if ((isset($_GET['lang'])) && ($_GET['lang'] == "en")) {
@@ -253,6 +253,7 @@ foreach ($rows as $i => $v) {
 		}
 	}
 }
+echo "</ul>\n";
 if (isset($_GET['lang'])) {
 	bottom1($_GET['lang']);
 } else {

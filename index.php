@@ -148,7 +148,7 @@ while ($row = mysql_fetch_array($result)) {
 	$rows[$co] = $row;
 	$co++;
 }
-
+echo "<ul class=\"navigation\">";
 foreach ($rows as $i => $v) {
 	if ($v['kategorie'] == 0) {
 		if ($_GET['lang'] == "en") {
@@ -158,6 +158,7 @@ foreach ($rows as $i => $v) {
 		}
 	}
 }
+echo "</ul>\n";
 bottom1($_GET['lang']);
 mysql_close();
 bottom2();

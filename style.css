@@ -35,7 +35,7 @@ nav {
 	background-color: #31363C;
 	float: left;
 	width: 30%;
-	padding: 10px;
+	padding-left: 10px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border-radius: 15px;
@@ -120,11 +120,8 @@ pre {
 	padding: 10px;
 }
 
-ul {
+.navigation {
 	list-style-type: none;
-}
-
-ul li:before {
-	content: "- ";
-	line-height: 1.5em;
+	marign-left: 0;
+	padding-left: 0;
 }
