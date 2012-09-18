@@ -272,7 +272,7 @@ if (!isset($_GET['clean'])) {
 					if (preg_match('~url?~', $link)) {
 						$link = str_replace("url?", "#", $link);
 					}
-					if (urldecode($term) != "") {
+					if ((urldecode($term) != "") && (!(filter_var($link, FILTER_VALIDATE_URL) === FALSE))) {
 						echo "<tr><td><a href=\"".$link."\">".urldecode($term)."</a></td></tr>";
 					}
 				}
@@ -287,9 +287,11 @@ if (!isset($_GET['clean'])) {
 			if (count($otherLinks) > 0) {
 				echo "<table style=\"width: 100%;\" border=\"1\"><tr><th>External link</th></tr>";
 				foreach ($otherLinks as $link) {
-					echo "<tr><td>";
-					echo '<a href="'.$link.'">'.getPageTitle($link).'</a>';
-					echo "</td></tr>";
+					if (!(filter_var($link, FILTER_VALIDATE_URL) === FALSE)) {
+						echo "<tr><td>";
+						echo '<a href="'.$link.'">'.getPageTitle($link).'</a>';
+						echo "</td></tr>";
+					}
 				}
 				echo "</table>";
 			} else {
@@ -304,68 +306,70 @@ if (!isset($_GET['clean'])) {
 				asort($internalLinks);
 				$internalLinks = array_reverse($internalLinks, true);
 				foreach ($internalLinks as $link => $count) {
-					echo "<tr><td>";
-					echo "<a href=\"".$link."\">";
-					$link = str_ireplace("www.", "", $link);
-					$link = str_ireplace("http://", "", $link);
-					$link = str_ireplace(parse_url($xythobuzCMS_root, PHP_URL_HOST), "", $link);
-					$link = substr($link, 1);
-					if (!preg_match("~mobile/~", $link)) {
-						if (preg_match("~index.php~", $link)) {
-							// Page
-							$tmp = array();
-							preg_match("/p=(.*)&/UiS", $link.'&', $tmp);
-							if (isset($tmp[1])) {
-								echo $tmp[1];
-							} else {
-								echo "Home";
-							}
-						} else if (preg_match("~news.php~", $link)) {
-							// News
-							$tmp = array();
-							preg_match("/beitrag=(.*)&/UiS", $link.'&', $tmp);
-							if (isset($tmp[1])) {
-								echo "News: ";
-								echo $tmp[1];
-							} else {
-								if (preg_match("/p=(.*)&/UiS", $link.'&', $tmp)) {
-									if (isset($tmp[1])) {
-										echo "News: ".$tmp[1];
-									} else {
-										echo "News...?";
-									}
+					if (!(filter_var($link, FILTER_VALIDATE_URL) === FALSE)) {
+						echo "<tr><td>";
+						echo "<a href=\"".$link."\">";
+						$link = str_ireplace("www.", "", $link);
+						$link = str_ireplace("http://", "", $link);
+						$link = str_ireplace(parse_url($xythobuzCMS_root, PHP_URL_HOST), "", $link);
+						$link = substr($link, 1);
+						if (!preg_match("~mobile/~", $link)) {
+							if (preg_match("~index.php~", $link)) {
+								// Page
+								$tmp = array();
+								preg_match("/p=(.*)&/UiS", $link.'&', $tmp);
+								if (isset($tmp[1])) {
+									echo $tmp[1];
 								} else {
-									echo "News";
+									echo "Home";
 								}
-							}
-						} else if (preg_match("~search.php~", $link)) {
-							$tmp = array();
-							preg_match("/term=(.*)&/UiS", $link.'&', $tmp);
-							if (isset($tmp[1])) {
-								echo "Search: ";
-								echo $tmp[1];
+							} else if (preg_match("~news.php~", $link)) {
+								// News
+								$tmp = array();
+								preg_match("/beitrag=(.*)&/UiS", $link.'&', $tmp);
+								if (isset($tmp[1])) {
+									echo "News: ";
+									echo $tmp[1];
+								} else {
+									if (preg_match("/p=(.*)&/UiS", $link.'&', $tmp)) {
+										if (isset($tmp[1])) {
+											echo "News: ".$tmp[1];
+										} else {
+											echo "News...?";
+										}
+									} else {
+										echo "News";
+									}
+								}
+							} else if (preg_match("~search.php~", $link)) {
+								$tmp = array();
+								preg_match("/term=(.*)&/UiS", $link.'&', $tmp);
+								if (isset($tmp[1])) {
+									echo "Search: ";
+									echo $tmp[1];
+								} else {
+									echo "Search";
+								}
 							} else {
-								echo "Search";
+								// Something else...
+								echo $link;
 							}
 						} else {
-							// Something else...
-							echo $link;
+							// Mobile version
+							echo "iOS";
+							$link = str_ireplace("mobile/index.php", "", $link);
+							if (strlen($link) > 0) {
+								$link = str_ireplace("?", "", $link);
+								$link = str_ireplace("=", ":", $link);
+								$link = str_ireplace("p:", "", $link);
+								$link = str_ireplace("news:", "News: ", $link);
+								echo ": ".$link;
+							}
 						}
-					} else {
-						// Mobile version
-						echo "iOS";
-						$link = str_ireplace("mobile/index.php", "", $link);
-						if (strlen($link) > 0) {
-							$link = str_ireplace("?", "", $link);
-							$link = str_ireplace("=", ":", $link);
-							$link = str_ireplace("p:", "", $link);
-							$link = str_ireplace("news:", "News: ", $link);
-							echo ": ".$link;
-						}
+						echo "</a></td><td>";
+						echo $count;
+						echo "</td></tr>";
 					}
-					echo "</a></td><td>";
-					echo $count;
-					echo "</td></tr>";
 				}
 				echo "</table>";
 			} else {
