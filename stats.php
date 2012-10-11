@@ -44,6 +44,14 @@ Google search terms are listed separately, as are internal and external links.</
 <h3>Pageviews</h3>
 <a href="stats.php?img&amp;w=600"><img src="stats.php?img&amp;w=250" alt="Pageviews this Month"></a>
 <?
+	// Clear old stuff, only keep last 100 days
+	$sql = 'DELETE FROM cms_visit WHERE ('.time().' - UNIX_TIMESTAMP(day)) > (60*60*24*100)';
+	mysql_query($sql);
+	$sql = 'DELETE FROM cms_visitors WHERE ('.time().' - UNIX_TIMESTAMP(day)) > (60*60*24*100)';
+	mysql_query($sql);
+	$sql = 'DELETE FROM cms_bots WHERE ('.time().' - UNIX_TIMESTAMP(day)) > (60*60*24*100)';
+	mysql_query($sql);
+
 	$sql = 'SELECT day, visitors FROM cms_visitors WHERE MONTH(day) = '.date('m');
 	$result = mysql_query($sql);
 	if ($result) {
