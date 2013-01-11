@@ -32,8 +32,6 @@ header1();
 <h2>Misc</h2>
 <a href="admin/users.php">Manage Users</a><br>
 <h2>Code</h2>
-<a href="admin/addcodebody.php">Add Code Body</a><br>
-<a href="admin/editcodebody.php">Edit Code Body</a><br>
 <a href="admin/addcodenav.php">Add Code Footer</a><br>
 <a href="admin/editcodenav.php">Edit Code Footer</a><br>
 <a href="admin/addcodehead.php">Add Code Head</a><br>
@@ -105,7 +103,7 @@ header1();
 	fclose($handle);
 	print "Saved $path...<br>\n";
 
-	
+
 	// Recreate RSS Feed
 	$sql = 'SELECT
 				datum,
@@ -129,7 +127,7 @@ header1();
 	$rss = $rss."\t\t<language>de-de</language>\n";
 	$rss = $rss."\t\t<generator>xythobuz.org CMS</generator>\n";
 	$rss = $rss."\t\t<ttl>60</ttl>\n";
-	
+
 	$count = 0;
 	while ($row = mysql_fetch_array($result)) {
 		if ($count >= 20) {

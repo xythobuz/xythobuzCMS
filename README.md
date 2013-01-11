@@ -1,5 +1,7 @@
 # xythobuzCMS
 
+This CMS is now succeeded by [xyCMS](https://github.com/xythobuz/xyCMS), which uses basically the same database layout, built upon Bootstrap, using Disqus and generally more pretty, but also even more hacked-together...
+
 xythobuzCMS is a PHP CMS, dependent on MySQL, which is used on [this website](http://xythobuz.org).
 A special version is served if an iOS Device browses the site. This is using [iWebKit](http://snippetspace.com/).
 
